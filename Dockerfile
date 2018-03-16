@@ -20,7 +20,7 @@ RUN mkdir /root/.ssh/ && \
 
 ADD ims-components-rsa /root/.ssh/ims-components-ims
 ADD lumavate-components-rsa /root/.ssh/lumavate-components-ims
-
+RUN chmod 400 /root/.ssh/*-ims
 RUN go get -u github.com/astaxie/beego && \
   go get -u github.com/beego/bee && \
   go get -u github.com/Lumavate-Team/go-signer && \
