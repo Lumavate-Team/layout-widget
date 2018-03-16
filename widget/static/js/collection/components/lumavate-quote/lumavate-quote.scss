@@ -1,0 +1,39 @@
+lumavate-quote {
+  flex:0 0 auto;
+  width:100%;
+  .container, .container-shadow {
+    min-height:48px;
+  }
+
+  .container-shadow {
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.5);
+    border-radius:2px;
+  }
+
+  .quote-container {
+    display:flex;
+  }
+
+  .quote-text {
+    font-family:Roboto;
+    font-style:italic;
+    min-height:24px;
+    margin:0px 24px;
+  }
+
+  .spacer {
+    height:24px;
+    width:24px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+   }
+
+  .start {
+    justify-content:flex-start;
+  }
+  .end {
+    justify-content:flex-end;
+  }
+
+}

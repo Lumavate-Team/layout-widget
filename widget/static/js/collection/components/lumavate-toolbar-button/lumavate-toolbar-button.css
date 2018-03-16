@@ -1,0 +1,13 @@
+lumavate-toolbar-button div {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; }
+  lumavate-toolbar-button div div {
+    padding: 4px 4px;
+    cursor: pointer; }
+  lumavate-toolbar-button div .button-text {
+    font-size: 12px;
+    margin-top: 4px;
+    line-height: 0; }

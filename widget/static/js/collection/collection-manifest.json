@@ -1,0 +1,106 @@
+{
+  "components": [
+    {
+      "tag": "lumavate-quote",
+      "dependencies": [],
+      "componentClass": "LumavateQuote",
+      "componentPath": "components/lumavate-quote/lumavate-quote.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/lumavate-quote/lumavate-quote.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "CardColor",
+          "type": "String"
+        },
+        {
+          "name": "Color",
+          "type": "String"
+        },
+        {
+          "name": "FontSize",
+          "type": "String"
+        },
+        {
+          "name": "QuotationMarks",
+          "type": "Boolean"
+        },
+        {
+          "name": "QuoteText",
+          "type": "String"
+        },
+        {
+          "name": "ShowCard",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "tag": "lumavate-toolbar",
+      "dependencies": [
+        "lumavate-toolbar-button"
+      ],
+      "componentClass": "LumavateToolbar",
+      "componentPath": "components/lumavate-toolbar/lumavate-toolbar.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/lumavate-toolbar/lumavate-toolbar.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "backgroundcolor",
+          "type": "String"
+        },
+        {
+          "name": "items",
+          "type": "String"
+        }
+      ],
+      "listeners": [
+        {
+          "event": "navigate",
+          "method": "navigateHandler",
+          "passive": false,
+          "capture": false
+        }
+      ]
+    },
+    {
+      "tag": "lumavate-toolbar-button",
+      "dependencies": [],
+      "componentClass": "LumavateToolbarButton",
+      "componentPath": "components/lumavate-toolbar-button/lumavate-toolbar-button.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/lumavate-toolbar-button/lumavate-toolbar-button.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "item",
+          "type": "Any"
+        }
+      ],
+      "events": [
+        {
+          "event": "navigate"
+        }
+      ]
+    }
+  ],
+  "collections": [],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "0.6.13",
+    "typescriptVersion": "2.7.2"
+  }
+}

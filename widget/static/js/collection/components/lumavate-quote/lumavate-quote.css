@@ -1,0 +1,25 @@
+lumavate-quote {
+  flex: 0 0 auto;
+  width: 100%; }
+  lumavate-quote .container, lumavate-quote .container-shadow {
+    min-height: 48px; }
+  lumavate-quote .container-shadow {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 2px; }
+  lumavate-quote .quote-container {
+    display: flex; }
+  lumavate-quote .quote-text {
+    font-family: Roboto;
+    font-style: italic;
+    min-height: 24px;
+    margin: 0px 24px; }
+  lumavate-quote .spacer {
+    height: 24px;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  lumavate-quote .start {
+    justify-content: flex-start; }
+  lumavate-quote .end {
+    justify-content: flex-end; }
