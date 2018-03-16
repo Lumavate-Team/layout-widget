@@ -3,7 +3,7 @@ from golang:alpine
 RUN apk add --no-cache \
                 git \
                 curl \
-								openssh \
+                openssh \
 #&& git rev-parse HEAD > /revision \
 #&& rm -rf .git \
   && mkdir -p /go/src/widget
@@ -22,8 +22,8 @@ RUN go get -u github.com/Lumavate-Team/go-signer
 RUN go get -u github.com/Lumavate-Team/go-properties
 RUN cd /go/src/github.com/Lumavate-Team && \
   git clone git@github.com:Lumavate-Team/ims-go-components.git && \
-	cd ims-go-components && \
-	rm -rf .git && \
-	rm /root/.ssh/id_rsa
+  cd ims-go-components && \
+  rm -rf .git && \
+  rm /root/.ssh/id_rsa
 
 CMD bee run
