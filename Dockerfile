@@ -13,6 +13,7 @@ RUN apk update && \
 
 ADD git.sh /git.sh
 ENV GOPATH=/go
+ENV PATH="/go/bin:${PATH}"
 
 WORKDIR /go/src/widget
 COPY ./widget /go/src/widget
@@ -24,10 +25,10 @@ RUN mkdir /root/.ssh/ && \
 ADD ims-components-rsa /root/.ssh/ims-components-ims
 ADD lumavate-components-rsa /root/.ssh/lumavate-components-ims
 RUN chmod 400 /root/.ssh/*-ims
-RUN go get -u github.com/astaxie/beego && \
-  go get -u github.com/beego/bee && \
-  go get -u github.com/Lumavate-Team/go-signer && \
-  go get -u github.com/Lumavate-Team/go-properties && \
+RUN go get github.com/astaxie/beego && \
+  go get github.com/beego/bee && \
+  go get github.com/Lumavate-Team/go-signer && \
+  go get github.com/Lumavate-Team/go-properties && \
   cd /go/src/github.com/Lumavate-Team && \
   sh /git.sh -i /root/.ssh/ims-components-ims clone git@github.com:Lumavate-Team/ims-go-components.git && \
   cd ims-go-components && \
