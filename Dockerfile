@@ -1,15 +1,18 @@
-from golang:alpine
+FROM node:8.9-alpine as builder
 
-RUN apk add --no-cache \
+RUN apk update && \
+                apk add --no-cache \
                 git \
                 curl \
                 openssh \
-                nodejs-current nodejs-npm \
+                libc-dev \
+                go \
 #&& git rev-parse HEAD > /revision \
 #&& rm -rf .git \
   && mkdir -p /go/src/widget
 
 ADD git.sh /git.sh
+ENV GOPATH=/go
 
 WORKDIR /go/src/widget
 COPY ./widget /go/src/widget
@@ -29,12 +32,12 @@ RUN go get -u github.com/astaxie/beego && \
   sh /git.sh -i /root/.ssh/ims-components-ims clone git@github.com:Lumavate-Team/ims-go-components.git && \
   cd ims-go-components && \
   rm -rf .git && \
-	cd / && \
-	sh /git.sh -i /root/.ssh/lumavate-components-ims clone git@github.com:Lumavate-Team/lumavate-components.git && \
-	cd lumavate-components && \
-	npm install && \
-	npm run build && \
+  cd / && \
+  sh /git.sh -i /root/.ssh/lumavate-components-ims clone git@github.com:Lumavate-Team/lumavate-components.git && \
+  cd lumavate-components && \
+  npm install && \
+  npm run build && \
   rm /root/.ssh/* && \
-	cp -r /lumavate-components/dist/* /go/src/widget/static/js
+  cp -r /lumavate-components/dist/* /go/src/widget/static/js
 
 CMD bee run
