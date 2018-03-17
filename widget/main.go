@@ -15,6 +15,7 @@ func ComponentHtml(in component_data.ComponentData) (out template.HTML){
 
 func main() {
 	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX") + "static","static")
+	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX") + "lc","/lumavate-components/dist")
 	beego.AddFuncMap("componentHtml", ComponentHtml)
 	beego.Run()
 }

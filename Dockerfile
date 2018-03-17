@@ -38,7 +38,6 @@ RUN go get github.com/astaxie/beego && \
   cd lumavate-components && \
   npm install && \
   npm run build && \
-  rm /root/.ssh/* && \
-  cp -r /lumavate-components/dist/* /go/src/widget/static/js
+  rm /root/.ssh/*
 
 CMD bee run

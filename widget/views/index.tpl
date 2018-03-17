@@ -94,6 +94,6 @@
   </footer>
   <div class="backdrop"></div>
 
-  <script src="static/js/lumavate-components.js"></script>
+  <script src="lc/lumavate-components.js"></script>
 </body>
 </html>
