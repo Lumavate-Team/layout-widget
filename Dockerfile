@@ -22,20 +22,26 @@ RUN mkdir /root/.ssh/ && \
   touch /root/.ssh/known_hosts && \
   ssh-keyscan github.com >> /root/.ssh/known_hosts
 
-ADD ims-components-rsa /root/.ssh/ims-components-ims
-ADD lumavate-components-rsa /root/.ssh/lumavate-components-ims
-RUN chmod 400 /root/.ssh/*-ims
+ADD ims-go-components-rsa /root/.ssh/ims-go-components-rsa
+ADD lumavate-components-rsa /root/.ssh/lumavate-components-rsa
+ADD ims-lumavate-components-rsa /root/.ssh/ims-lumavate-components-rsa
+RUN chmod 400 /root/.ssh/*-rsa
 RUN go get github.com/astaxie/beego && \
   go get github.com/beego/bee && \
   go get github.com/Lumavate-Team/go-signer && \
   go get github.com/Lumavate-Team/go-properties && \
   cd /go/src/github.com/Lumavate-Team && \
-  sh /git.sh -i /root/.ssh/ims-components-ims clone git@github.com:Lumavate-Team/ims-go-components.git && \
+  sh /git.sh -i /root/.ssh/ims-go-components-rsa clone git@github.com:Lumavate-Team/ims-go-components.git && \
   cd ims-go-components && \
   rm -rf .git && \
   cd / && \
-  sh /git.sh -i /root/.ssh/lumavate-components-ims clone git@github.com:Lumavate-Team/lumavate-components.git && \
+  sh /git.sh -i /root/.ssh/lumavate-components-rsa clone git@github.com:Lumavate-Team/lumavate-components.git && \
   cd lumavate-components && \
+  npm install && \
+  npm run build && \
+  cd / && \
+  sh /git.sh -i /root/.ssh/ims-lumavate-components-rsa clone git@github.com:Lumavate-Team/ims-lumavate-components.git && \
+  cd ims-lumavate-components && \
   npm install && \
   npm run build && \
   rm /root/.ssh/*

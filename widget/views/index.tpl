@@ -15,6 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+  <!-- TODO: MOVE stylesheet to separate file -->
   <style type="text/css">
     *,body {
       margin: 0px;
@@ -80,6 +81,7 @@
       left: 0px;
     }
   </style>
+  <!-- TODO: Move stylesheet to separate file -->
 </head>
 
 <body>
@@ -95,5 +97,6 @@
   <div class="backdrop"></div>
 
   <script src="lc/lumavate-components.js"></script>
+  <script src="ims/ims-lumavate-components.js"></script>
 </body>
 </html>

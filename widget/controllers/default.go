@@ -4,7 +4,7 @@ import (
   "github.com/astaxie/beego"
   signer "github.com/Lumavate-Team/go-signer"
   "github.com/Lumavate-Team/go-properties/component_data"
-  ims_components "github.com/Lumavate-Team/ims-go-components"
+  ims_go_components "github.com/Lumavate-Team/ims-go-components"
   "fmt"
   "os"
   "net/http"
@@ -20,7 +20,7 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       PageType component_data.PageTypeStruct
-      Title ims_components.ImsTitleStruct
+      Title ims_go_components.ImsTitleStruct
       SampleText string
     }
   }
