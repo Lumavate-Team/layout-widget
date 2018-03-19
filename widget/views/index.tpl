@@ -88,7 +88,7 @@
     <div class="description">
       Beego is a simple & powerful Go web framework.
     </div>
-    {{ componentHtml .data.Quote }}
+    {{ componentHtml .data.Title }}
   </header>
   <footer>
   </footer>

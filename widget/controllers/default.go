@@ -4,6 +4,7 @@ import (
   "github.com/astaxie/beego"
   signer "github.com/Lumavate-Team/go-signer"
   "github.com/Lumavate-Team/go-properties/component_data"
+  ims_components "github.com/Lumavate-Team/ims-go-components"
   "fmt"
   "os"
   "net/http"
@@ -19,7 +20,7 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       PageType component_data.PageTypeStruct
-      Quote component_data.QuoteStruct
+      Title ims_components.ImsTitleStruct
       SampleText string
     }
   }
@@ -50,15 +51,17 @@ func (this *MainController) Get() {
   req.Header.Add("Content-Type", "application/json")
   req.Header.Add("Authorization", "Bearer " + pwa_jwt)
 
-	res, _ := http.DefaultClient.Do(req)
+  res, _ := http.DefaultClient.Do(req)
 
   defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+  body, _ := ioutil.ReadAll(res.Body)
 
   if res.StatusCode == 401 {
     this.Ctx.Redirect(302, no_auth_redirect_url)
   } else if res.StatusCode == 403 {
     this.Abort("403")
+  } else if res.StatusCode == 404 {
+    this.Abort("404")
   } else if res.StatusCode == 500 {
     this.Abort("500")
   }
