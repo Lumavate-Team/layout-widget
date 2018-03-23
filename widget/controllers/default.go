@@ -10,6 +10,7 @@ import (
   "net/http"
   "io/ioutil"
   "encoding/json"
+  "github.com/bitly/go-simplejson"
 )
 
 type MainController struct {
@@ -21,7 +22,9 @@ type LumavateRequest struct {
     Data struct {
       PageType component_data.PageTypeStruct
       Title ims_go_components.ImsTitleStruct
-      SampleText string
+      ParkingImage component_data.ImageStruct
+      NavBar component_data.NavBarStruct `json:"navBarItems"`
+      BackgroundColor string
     }
   }
 }
@@ -56,6 +59,9 @@ func (this *MainController) Get() {
   defer res.Body.Close()
   body, _ := ioutil.ReadAll(res.Body)
 
+  test, _ := simplejson.NewJson(body)
+  fmt.Println(test)
+
   if res.StatusCode == 401 {
     this.Ctx.Redirect(302, no_auth_redirect_url)
   } else if res.StatusCode == 403 {
@@ -70,5 +76,12 @@ func (this *MainController) Get() {
   json.Unmarshal(body, &luma_response)
 
   this.Data["data"] = luma_response.Payload.Data
+  this.Data["image"] = luma_response.Payload.Data.ParkingImage.PreviewLarge
+
   this.TplName = "index.tpl"
 }
+
+
+
+
+

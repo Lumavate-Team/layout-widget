@@ -30,6 +30,7 @@ RUN go get github.com/astaxie/beego && \
   go get github.com/beego/bee && \
   go get github.com/Lumavate-Team/go-signer && \
   go get github.com/Lumavate-Team/go-properties && \
+  go get github.com/bitly/go-simplejson && \
   cd /go/src/github.com/Lumavate-Team && \
   sh /git.sh -i /root/.ssh/ims-go-components-rsa clone git@github.com:Lumavate-Team/ims-go-components.git && \
   cd ims-go-components && \
