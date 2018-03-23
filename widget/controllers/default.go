@@ -23,7 +23,8 @@ type LumavateRequest struct {
       PageType component_data.PageTypeStruct
       Title ims_go_components.ImsTitleStruct
       ParkingImage component_data.ImageStruct
-      NavBar component_data.NavBarStruct `json:"navBarItems"`
+      NavBarItems component_data.NavBarItemsStruct `json:"navBarItems"`
+      NavBar component_data.NavBarStruct
       BackgroundColor string
     }
   }
@@ -74,6 +75,7 @@ func (this *MainController) Get() {
 
   luma_response := LumavateRequest{}
   json.Unmarshal(body, &luma_response)
+  luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
 
   this.Data["data"] = luma_response.Payload.Data
   this.Data["image"] = luma_response.Payload.Data.ParkingImage.PreviewLarge
