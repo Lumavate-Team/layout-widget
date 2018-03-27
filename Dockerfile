@@ -34,6 +34,7 @@ RUN go get github.com/astaxie/beego && \
   cd /go/src/github.com/Lumavate-Team && \
   sh /git.sh -i /root/.ssh/ims-go-components-rsa clone git@github.com:Lumavate-Team/ims-go-components.git && \
   cd ims-go-components && \
+  mv static/views/ /go/src/widget/views/layout/ && \
   rm -rf .git && \
   cd / && \
   sh /git.sh -i /root/.ssh/lumavate-components-rsa clone git@github.com:Lumavate-Team/lumavate-components.git && \
