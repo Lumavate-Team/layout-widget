@@ -9,41 +9,28 @@ import (
 type LumavateProperties struct {
 }
 
-func (lp *LumavateProperties) GetNavBarProperty() *properties.PropertyComponent {
-  return &properties.PropertyComponent{
-    &properties.PropertyBase{"navBar", "Nav Bar", "Nav Bar Properties", "Nav Bar", ""},
-    lp.GetNavBarComponent(), properties.PropertyOptionsComponent{[] string {"navBar"}, [] *properties.Component {lp.GetNavBarComponent()} },
+/*
+ * Returns parking property for the widget
+ */
+func (lp *LumavateProperties) GetParkingProperty() *properties.PropertyComponents {
+  return &properties.PropertyComponents {
+    &properties.PropertyBase{"parking", "Parking", "Alernate Settings", "", ""},
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"parking"}, [] *properties.Component {lp.GetParkingComponent()} },
   }
 }
 
 /*
- * Gets a property that allows entry for 'NavBarItems' data
+ * Returns parking component for the widget
  */
-func (lp *LumavateProperties) GetNavBarItemsProperty() *properties.PropertyComponents {
-  return &properties.PropertyComponents{
-    &properties.PropertyBase{"navBarItems", "Nav Bar", "Nav Bar Items", "Nav Bar", ""},
-    [] *properties.Component {}, properties.PropertyOptionsComponent{[] string {"navBarItem"}, [] *properties.Component {lp.GetNavBarItemComponent()} },
-  }
-}
+func (lp *LumavateProperties) GetParkingComponent() *properties.Component {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyText{
+    &properties.PropertyBase{"altDate", "", "", "Alternate Date", ""}, "Alternate Date", properties.PropertyOptionsText{}})
 
-/*
- * Gets a description for the 'NavBar' component.  This is defined in a central place
- */
-func (lp *LumavateProperties) GetNavBarComponent() *properties.Component {
-  //return properties.LoadComponent(os.Getenv("BASE_URL"), "1.0.0", "quote")
-        comp := properties.LoadComponent("https://experience.john.labelnexusdev.com", "1.0.0", "navBar")
-        comp.Category = "navBar"
-        return comp
-}
+  props = append(props, &properties.PropertyImage{
+      &properties.PropertyBase{"altImage", "", "", "Alternate Parking Image", ""}})
 
-/*
- * Gets a description for the 'NavBarItem' component.  This is defined in a central place
- */
-func (lp *LumavateProperties) GetNavBarItemComponent() *properties.Component {
-  //return properties.LoadComponent(os.Getenv("BASE_URL"), "1.0.0", "quote")
-        comp :=properties.LoadComponent("https://experience.john.labelnexusdev.com", "1.0.0", "navBarItem")
-        comp.Category = "navBarItem"
-        return comp
+  return &properties.Component{"parking", "", "parking", "Parking", "", "Parking", props }
 }
 
 /*
@@ -51,14 +38,15 @@ func (lp *LumavateProperties) GetNavBarItemComponent() *properties.Component {
  */
 func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
   return [] properties.PropertyType {
+    ims_components.GetTitleProperty(),
+    ims_components.GetNavBarProperty(),
+    ims_components.GetNavBarItemsProperty(),
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Properties", "Background Color", ""},
       "#ffffff"},
   	&properties.PropertyImage{
-		  &properties.PropertyBase{"parkingImage", "General", "Properties", "Parking Image", ""}},
-    ims_components.GetTitleProperty(),
-    lp.GetNavBarProperty(),
-    lp.GetNavBarItemsProperty(),
+		  &properties.PropertyBase{"parkingImage", "Parking", "Main Settings", "Main Parking Image", ""}},
+    lp.GetParkingProperty(),
   }
 }
 
@@ -68,7 +56,8 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
     ims_components.GetTitleComponent(),
-    lp.GetNavBarComponent(),
-    lp.GetNavBarItemComponent(),
+    ims_components.GetNavBarComponent(),
+    ims_components.GetNavBarItemComponent(),
+    lp.GetParkingComponent(),
   }
 }

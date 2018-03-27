@@ -1,89 +1,54 @@
 package controllers
 
 import (
-  "github.com/astaxie/beego"
-  signer "github.com/Lumavate-Team/go-signer"
-  "github.com/Lumavate-Team/go-properties/component_data"
   ims_go_components "github.com/Lumavate-Team/ims-go-components"
-  "fmt"
-  "os"
-  "net/http"
-  "io/ioutil"
+ "fmt"
+  "log"
+  "time"
   "encoding/json"
   "github.com/bitly/go-simplejson"
+  "widget/models"
 )
 
 type MainController struct {
-  beego.Controller
-}
-
-type LumavateRequest struct {
-  Payload struct {
-    Data struct {
-      PageType component_data.PageTypeStruct
-      Title ims_go_components.ImsTitleStruct
-      ParkingImage component_data.ImageStruct
-      NavBarItems component_data.NavBarItemsStruct `json:"navBarItems"`
-      NavBar component_data.NavBarStruct
-      BackgroundColor string
-    }
-  }
+  ims_go_components.LumavateController
 }
 
 func (this *MainController) Get() {
-  pwa_jwt := this.Ctx.GetCookie("pwa_jwt")
+  luma_response := models.LumavateRequest {}
+  err := json.Unmarshal(this.LumavateGetData(), &luma_response)
 
-  no_auth_redirect_url := fmt.Sprintf("%s%s?u=/%s/%s/%s",
-    os.Getenv("PROTO"),
-    this.Ctx.Input.Host(),
-    this.Ctx.Input.Param(":ic"),
-    this.Ctx.Input.Param(":url_ref"),
-    this.Ctx.Input.Param(":wid"),
-    )
+  data, err := simplejson.NewJson(this.LumavateGetData())
 
-  widget_data_url := fmt.Sprintf("/pwa/v1/widget-instances/%s",
-    this.Ctx.Input.Param(":wid"),
-    )
-
-  s := signer.Signer{}
-
-  signed_widget_data_url := fmt.Sprintf("%s%s",
-    os.Getenv("BASE_URL"),
-    s.GetSignature("get", widget_data_url, []byte{}))
-
-  req, _ := http.NewRequest("GET", signed_widget_data_url, nil)
-  req.Header.Add("Content-Type", "application/json")
-  req.Header.Add("Authorization", "Bearer " + pwa_jwt)
-
-  res, _ := http.DefaultClient.Do(req)
-
-  defer res.Body.Close()
-  body, _ := ioutil.ReadAll(res.Body)
-
-  test, _ := simplejson.NewJson(body)
-  fmt.Println(test)
-
-  if res.StatusCode == 401 {
-    this.Ctx.Redirect(302, no_auth_redirect_url)
-  } else if res.StatusCode == 403 {
-    this.Abort("403")
-  } else if res.StatusCode == 404 {
-    this.Abort("404")
-  } else if res.StatusCode == 500 {
+  fmt.Println(data)
+  if err != nil {
+    fmt.Println(err)
+    log.Fatal(err)
     this.Abort("500")
   }
-
-  luma_response := LumavateRequest{}
-  json.Unmarshal(body, &luma_response)
-  luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
-
   this.Data["data"] = luma_response.Payload.Data
-  this.Data["image"] = luma_response.Payload.Data.ParkingImage.PreviewLarge
 
+  now := time.Now()
+  t :=now.Add(-4 * time.Hour)
+  time := t.Format("January 2")
+
+  fmt.Println(time)
+  fmt.Println(luma_response.Payload.Data.AltDate)
+
+  if luma_response.Payload.Data.AltDate == time {
+    this.Data["image"] = luma_response.Payload.Data.AltImage.Preview
+    fmt.Println("ALTERNATE IMAGE USED")
+  } else {
+    this.Data["image"] = luma_response.Payload.Data.ParkingImage.Preview
+    fmt.Println("ORIGINAL IMAGE USED")
+  }
+  
+  this.Layout = "layout/layout.tpl"
   this.TplName = "index.tpl"
+
+  this.LayoutSections = make(map[string]string)
+  this.LayoutSections["HtmlHead"] = "html_head.tpl"
+  this.LayoutSections["HeaderContent"] = "layout/header_content.tpl"
+  this.LayoutSections["FooterContent"] = "layout/footer_content.tpl"
+  this.LayoutSections["Scripts"] = ""
 }
-
-
-
-
-
