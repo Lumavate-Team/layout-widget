@@ -3,7 +3,8 @@ package controllers
 import (
   properties "github.com/Lumavate-Team/go-properties"
   ims_components "github.com/Lumavate-Team/ims-go-components"
-  _ "os"
+  "os"
+  "fmt"
 )
 
 type LumavateProperties struct {
@@ -14,8 +15,8 @@ type LumavateProperties struct {
  */
 func (lp *LumavateProperties) GetParkingProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
-    &properties.PropertyBase{"parking", "Parking", "Alernate Settings", "", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"parking"}, [] *properties.Component {lp.GetParkingComponent()} },
+    &properties.PropertyBase{"alternateParking", "Parking", "Alternate Settings", "Alternate Settings", ""},
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"park"}, [] *properties.Component {lp.GetParkingComponent()} },
   }
 }
 
@@ -30,7 +31,8 @@ func (lp *LumavateProperties) GetParkingComponent() *properties.Component {
   props = append(props, &properties.PropertyImage{
       &properties.PropertyBase{"altImage", "", "", "Alternate Parking Image", ""}})
 
-  return &properties.Component{"parking", "", "parking", "Parking", "", "Parking", props }
+  image := fmt.Sprintf("%v%vstatic/images/parking.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+  return &properties.Component{"park", "", "parking-component", "Parking", image, "Parking", props }
 }
 
 /*
@@ -44,8 +46,8 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Properties", "Background Color", ""},
       "#ffffff"},
-  	&properties.PropertyImage{
-		  &properties.PropertyBase{"parkingImage", "Parking", "Main Settings", "Main Parking Image", ""}},
+    &properties.PropertyImage{
+      &properties.PropertyBase{"parkingImage", "Parking", "Main Settings", "Main Parking Image", ""}},
     lp.GetParkingProperty(),
   }
 }
