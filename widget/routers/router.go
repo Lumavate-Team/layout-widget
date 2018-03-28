@@ -18,7 +18,7 @@ func init() {
     AllowMethods:     []string{"GET"},
     AllowHeaders:     []string{"Origin", "content-type", "Access-Control-Allow-Origin"},
     ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
-    AllowCredentials: true,
+    AllowCredentials: false,
 }))
 
 }
