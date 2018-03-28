@@ -26,21 +26,22 @@ func (this *MainController) Get() {
     log.Fatal(err)
     this.Abort("500")
   }
-  this.Data["data"] = luma_response.Payload.Data
 
+  // gets current date and formats it "Month Day"
   now := time.Now()
   t :=now.Add(-4 * time.Hour)
   time := t.Format("January 2")
 
-  fmt.Println(time)
-  fmt.Println(luma_response.Payload.Data.AltDate)
+  //sets default image and navbar
+  this.Data["image"] = luma_response.Payload.Data.ParkingImage.Preview
+  luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
+  this.Data["data"] = luma_response.Payload.Data
 
-  if luma_response.Payload.Data.AltDate == time {
-    this.Data["image"] = luma_response.Payload.Data.AltImage.Preview
-    fmt.Println("ALTERNATE IMAGE USED")
-  } else {
-    this.Data["image"] = luma_response.Payload.Data.ParkingImage.Preview
-    fmt.Println("ORIGINAL IMAGE USED")
+  // loops through all parking options and changes to alternate image if there is a matching date
+  for _, element := range luma_response.Payload.Data.Alt {
+    if element.ComponentData.AltDate == time {
+      this.Data["image"] = element.ComponentData.AltImage.Preview
+    }
   }
   
   this.Layout = "layout/layout.tpl"
