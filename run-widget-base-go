@@ -9,8 +9,8 @@ docker run -d --rm \
 -e "PUBLIC_KEY=mIhuoMJh0jbA5W4pUUNK" \
 -e "PRIVATE_KEY=LXycaMpw5BzgfhsS4ydNxGzJ36qMnPrQHI8u2x3wQCZCZyGtZ4sOQbkEWnHmVchZEa79a0Y3xK7IKCymSLkugyabbJUGuXfyuoKL" \
 -e "BASE_URL=http://$DOCKER_IP" \
--e "WIDGET_URL_PREFIX=/ic/image/" \
+-e "WIDGET_URL_PREFIX=/ic/contact/" \
 -e "PROTO=http://" \
 --name=widget-base-go \
 -p 8091:8080 \
-ims-image-go-widget:abc
+ims-contact-go-widget:abc

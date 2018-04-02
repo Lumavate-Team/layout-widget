@@ -1,21 +1,24 @@
-.container {
-	z-index: 1;
+.starting {
+	padding-top: 75px;
+	padding-bottom: 32px;
 }
 
-.parking {
-	margin: 0px;
-	padding: 0px;
-	overflow: hidden;
+.name {
+	font-family: 'Teko', sans-serif;
+	text-transform: uppercase;
+	font-size: 40px;
+	margin-left: 15px;
 }
 
-iframe {
-	overflow:hidden;
-	overflow-x:hidden;
-	overflow-y:hidden;
-	width:100%;
-	position:absolute;
-	top:0px;
-	left:0px;
-	right:0px;
-	bottom:0px;
+.info {
+	font-family: 'Roboto', sans-serif;
+	font-size: 22px;
+	margin-left: 35px;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	line-height: 120%;
+}
+
+a {
+	color: #6ba3ff;
 }

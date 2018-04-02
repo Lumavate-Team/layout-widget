@@ -3,36 +3,45 @@ package controllers
 import (
   properties "github.com/Lumavate-Team/go-properties"
   ims_components "github.com/Lumavate-Team/ims-go-components"
-  "os"
-  "fmt"
+  _"os"
+  _"fmt"
 )
 
 type LumavateProperties struct {
 }
 
-/*
- * Returns parking property for the widget
- */
-func (lp *LumavateProperties) GetParkingProperty() *properties.PropertyComponents {
+func (lp *LumavateProperties) GetPrimaryContactProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
-    &properties.PropertyBase{"alternateParking", "Parking", "Alternate Settings", "Alternate Settings", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"park"}, [] *properties.Component {lp.GetParkingComponent()} },
+    &properties.PropertyBase{"primaryContacts", "Contacts", "Primary Contact Settings", "Contact Settings", ""},
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"contact"}, [] *properties.Component {lp.GetContactComponent()} },
   }
 }
 
-/*
- * Returns parking component for the widget
- */
-func (lp *LumavateProperties) GetParkingComponent() *properties.Component {
+func (lp *LumavateProperties) GetSecondaryContactProperty() *properties.PropertyComponents {
+  return &properties.PropertyComponents {
+    &properties.PropertyBase{"secondaryContacts", "Contacts", "Secondary Contact Settings", "Contact Settings", ""},
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"contact"}, [] *properties.Component {lp.GetContactComponent()} },
+  }
+}
+
+func (lp *LumavateProperties) GetContactComponent() *properties.Component {
   props := [] properties.PropertyType {}
   props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"altDate", "", "", "Alternate Date", ""}, "Alternate Date", properties.PropertyOptionsText{}})
+    &properties.PropertyBase{"firstName", "", "", "First Name", ""}, "First Name", properties.PropertyOptionsText{}})
 
-  props = append(props, &properties.PropertyImage{
-      &properties.PropertyBase{"altImage", "", "", "Alternate Parking Image", ""}})
+  props = append(props, &properties.PropertyText{
+    &properties.PropertyBase{"lastName", "", "", "Last Name", ""}, "Last Name", properties.PropertyOptionsText{}})
 
-  image := fmt.Sprintf("%v%vstatic/images/parking.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
-  return &properties.Component{"park", "", "parking-component", "Parking", image, "Parking", props }
+  props = append(props, &properties.PropertyText{
+    &properties.PropertyBase{"jobTitle", "", "", "Title", ""}, "Title", properties.PropertyOptionsText{}})
+
+  props = append(props, &properties.PropertyText{
+    &properties.PropertyBase{"phoneNumber", "", "", "Phone Number", ""}, "Phone Number", properties.PropertyOptionsText{}})
+
+  props = append(props, &properties.PropertyText{
+    &properties.PropertyBase{"email", "", "", "Email", ""}, "Email", properties.PropertyOptionsText{}})
+
+  return &properties.Component{"contact", "", "contact-component", "Contact", "x", "Contact", props}
 }
 
 /*
@@ -46,9 +55,8 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Properties", "Background Color", ""},
       "#ffffff"},
-    &properties.PropertyImage{
-      &properties.PropertyBase{"parkingImage", "Parking", "Main Settings", "Main Parking Image", ""}},
-    lp.GetParkingProperty(),
+    lp.GetPrimaryContactProperty(),
+    lp.GetSecondaryContactProperty(),
   }
 }
 
@@ -60,6 +68,6 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
     ims_components.GetTitleComponent(),
     ims_components.GetNavBarComponent(),
     ims_components.GetNavBarItemComponent(),
-    lp.GetParkingComponent(),
+    lp.GetContactComponent(),
   }
 }
