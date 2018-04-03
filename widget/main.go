@@ -1,7 +1,7 @@
 package main
 
 import (
-  "github.com/Lumavate-Team/go-properties/component_data"
+  "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
 	_ "widget/routers"
 	"github.com/astaxie/beego"
   "html/template"

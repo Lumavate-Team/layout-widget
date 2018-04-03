@@ -1,7 +1,8 @@
 package controllers
 
 import (
-  properties "github.com/Lumavate-Team/go-properties"
+  properties "github.com/Lumavate-Team/lumavate-go-common/properties"
+  components "github.com/Lumavate-Team/lumavate-go-common/components"
   ims_components "github.com/Lumavate-Team/ims-go-components"
   _"os"
   _"fmt"
@@ -50,8 +51,8 @@ func (lp *LumavateProperties) GetContactComponent() *properties.Component {
 func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
   return [] properties.PropertyType {
     ims_components.GetTitleProperty(),
-    ims_components.GetNavBarProperty(),
-    ims_components.GetNavBarItemsProperty(),
+    components.GetNavBarProperty(),
+    components.GetNavBarItemsProperty(),
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Properties", "Background Color", ""},
       "#ffffff"},
@@ -66,8 +67,8 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
     ims_components.GetTitleComponent(),
-    ims_components.GetNavBarComponent(),
-    ims_components.GetNavBarItemComponent(),
+    components.GetNavBarComponent(),
+    components.GetNavBarItemComponent(),
     lp.GetContactComponent(),
   }
 }

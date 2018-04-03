@@ -1,14 +1,9 @@
 package models
 
 import (
-	_"github.com/Lumavate-Team/go-properties/component_data"
-  	ims_go_components "github.com/Lumavate-Team/ims-go-components"
+	_"github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
     ims_models "github.com/Lumavate-Team/ims-go-components/models"
 )
-
-type MainController struct {
-  ims_go_components.LumavateController
-}
 
 type ContactStruct struct {
 	ComponentData struct {

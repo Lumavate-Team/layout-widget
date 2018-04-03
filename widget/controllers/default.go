@@ -1,7 +1,7 @@
 package controllers
 
 import (
-  ims_go_components "github.com/Lumavate-Team/ims-go-components"
+  common "github.com/Lumavate-Team/lumavate-go-common"
  "fmt"
   "log"
   _"time"
@@ -11,7 +11,7 @@ import (
 )
 
 type MainController struct {
-  ims_go_components.LumavateController
+  common.LumavateController
 }
 
 func (this *MainController) Get() {

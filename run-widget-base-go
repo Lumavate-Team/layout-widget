@@ -1,16 +1,15 @@
 DOCKER_IP=`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`
 
-mkdir -p ~/dev/ims-image-go-widget/widget/views/layout/ && cp ~/dev/ims-go-components/static/views/*.tpl $_
+mkdir -p ~/dev/ims-contact-go-widget/widget/views/layout/ && cp ~/dev/ims-go-components/static/views/*.tpl $_
 
 docker run -d --rm \
 --volume "$(pwd)"/widget:/go/src/widget:rw \
---volume "$(pwd)"/../go-properties:/go/src/github.com/Lumavate-Team/go-properties \
 --volume "$(pwd)"/../ims-go-components:/go/src/github.com/Lumavate-Team/ims-go-components \
 -e "PUBLIC_KEY=mIhuoMJh0jbA5W4pUUNK" \
 -e "PRIVATE_KEY=LXycaMpw5BzgfhsS4ydNxGzJ36qMnPrQHI8u2x3wQCZCZyGtZ4sOQbkEWnHmVchZEa79a0Y3xK7IKCymSLkugyabbJUGuXfyuoKL" \
 -e "BASE_URL=http://$DOCKER_IP" \
 -e "WIDGET_URL_PREFIX=/ic/contact/" \
 -e "PROTO=http://" \
---name=widget-base-go \
+--name=ims-contact-widget \
 -p 8091:8080 \
-ims-contact-go-widget:abc
+ims-contact-go-widget:latest
