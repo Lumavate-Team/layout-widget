@@ -1,35 +1,22 @@
+<style>
+	#tiles {
+		height:100%;
+		width:100%;
+		display:grid;
+		grid-template-columns: {{.data.GridTemplateColumns}};
+		grid-template-rows: {{.data.GridTemplateRows}};
+		grid-gap: {{ .data.Padding }}px;
+		//border: 1px solid #000;
+	}
+</style>
 <div class="starting">
-	<div class="primary">
-		{{range .primary}}
-
-			<div class="name">
-				{{.ComponentData.FirstName}} {{.ComponentData.LastName}}
+	<div id="tiles" class="primary">
+		{{range $index, $element := .data.Tiles}}
+			<div class="name" style="border-radius:5px;border:solid 1px #000;text-align:center;padding:2px;grid-area:{{$element.ComponentData.TemplateRowStart}}/{{$element.ComponentData.TemplateColumnStart}}/{{$element.ComponentData.TemplateRowEnd}}/{{$element.ComponentData.TemplateColumnEnd}}">
+				{{$index}} {{componentHtml $element.ComponentData}}
 			</div>
-
-			<div class="info">
-				{{.ComponentData.JobTitle}}<br>
-				<a href="tel:{{.ComponentData.PhoneNumber}}">{{.ComponentData.PhoneNumber}}</a><br>
-				<a href="mailto:{{.ComponentData.Email}}">{{.ComponentData.Email}}</a>
-			</div>
-
-			{{end}}
+		{{end}}
 	</div>
-
 	<HR COLOR="black"><br>
 
-	<div class="secondary">
-		{{range .secondary}}
-
-			<div class="name">
-				{{.ComponentData.FirstName}} {{.ComponentData.LastName}}
-			</div>
-
-			<div class="info">
-				{{.ComponentData.JobTitle}}<br>
-				<a href="tel:{{.ComponentData.PhoneNumber}}">{{.ComponentData.PhoneNumber}}</a><br>
-				<a href="mailto:{{.ComponentData.Email}}">{{.ComponentData.Email}}</a>
-			</div>
-
-			{{end}}
-	</div>
 </div>

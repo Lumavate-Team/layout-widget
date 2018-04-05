@@ -3,7 +3,6 @@ package controllers
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   components "github.com/Lumavate-Team/lumavate-go-common/components"
-  ims_components "github.com/Lumavate-Team/ims-go-components"
   _"os"
   _"fmt"
 )
@@ -11,38 +10,41 @@ import (
 type LumavateProperties struct {
 }
 
-func (lp *LumavateProperties) GetPrimaryContactProperty() *properties.PropertyComponents {
-  return &properties.PropertyComponents {
-    &properties.PropertyBase{"primaryContacts", "Contacts", "Primary Contact Settings", "Contact Settings", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"contact"}, [] *properties.Component {lp.GetContactComponent()} },
-  }
-}
-
-func (lp *LumavateProperties) GetSecondaryContactProperty() *properties.PropertyComponents {
-  return &properties.PropertyComponents {
-    &properties.PropertyBase{"secondaryContacts", "Contacts", "Secondary Contact Settings", "Contact Settings", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"contact"}, [] *properties.Component {lp.GetContactComponent()} },
-  }
-}
-
-func (lp *LumavateProperties) GetContactComponent() *properties.Component {
+func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props := [] properties.PropertyType {}
-  props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"firstName", "", "", "First Name", ""}, "First Name", properties.PropertyOptionsText{}})
 
   props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"lastName", "", "", "Last Name", ""}, "Last Name", properties.PropertyOptionsText{}})
-
+		&properties.PropertyBase{"templateRowStart", "", "", "Grid Row Start", ""}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"jobTitle", "", "", "Title", ""}, "Title", properties.PropertyOptionsText{}})
-
+		&properties.PropertyBase{"templateRowEnd", "", "", "Grid Row End", ""}, "", properties.PropertyOptionsText{ Rows: 3 }})
   props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"phoneNumber", "", "", "Phone Number", ""}, "Phone Number", properties.PropertyOptionsText{}})
-
+		&properties.PropertyBase{"templateColumnStart", "", "", "Grid Column Start", ""}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"email", "", "", "Email", ""}, "Email", properties.PropertyOptionsText{}})
+		&properties.PropertyBase{"templateColumnEnd", "", "", "Grid Column End", ""}, "", properties.PropertyOptionsText{Rows: 3}})
+	return props
+}
 
-  return &properties.Component{"contact", "", "contact-component", "Contact", "x", "Contact", props}
+func (lp *LumavateProperties) GetTilesProperty() *properties.PropertyComponents {
+  return &properties.PropertyComponents {
+    &properties.PropertyBase{"tiles", "Tiles", "Tile Settings", "Tile Settings", ""},
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"tile", "quote"}, [] *properties.Component {lp.GetTileComponent(), lp.GetQuoteComponent()} },
+  }
+}
+
+func (lp *LumavateProperties) GetTileComponent() *properties.Component {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyTranslatedText{
+    &properties.PropertyBase{"title", "", "", "Title", ""}, "Tile", properties.PropertyOptionsText{}})
+	props = append(props, lp.GetLayoutProperties()...)
+  return &properties.Component{"tile", "", "tile-component", "Tiles", "x", "Tile", props}
+}
+
+func (lp *LumavateProperties) GetQuoteComponent() *properties.Component {
+	comp :=properties.LoadComponent("https://experience.john.labelnexusdev.com", "1.0.0", "quote")
+	comp.Properties = append(comp.Properties, lp.GetLayoutProperties()...)
+	comp.Category = "quote"
+	comp.Section = ""
+	return comp
 }
 
 /*
@@ -50,14 +52,18 @@ func (lp *LumavateProperties) GetContactComponent() *properties.Component {
  */
 func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
   return [] properties.PropertyType {
-    ims_components.GetTitleProperty(),
     components.GetNavBarProperty(),
     components.GetNavBarItemsProperty(),
     &properties.PropertyColor{
-      &properties.PropertyBase{"backgroundColor", "General", "Properties", "Background Color", ""},
+      &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""},
       "#ffffff"},
-    lp.GetPrimaryContactProperty(),
-    lp.GetSecondaryContactProperty(),
+		&properties.PropertyNumeric{
+			&properties.PropertyBase{"padding", "Tiles", "Tile Layout", "Padding", ""}, 0, properties.PropertyOptionsNumeric{ Min: 0, Max: 32}},
+		&properties.PropertyText{
+			&properties.PropertyBase{"gridTemplateRows", "Tiles", "Tile Layout", "Grid Row Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+		&properties.PropertyText{
+			&properties.PropertyBase{"gridTemplateColumns", "Tiles", "Tile Layout", "Grid Column Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+    lp.GetTilesProperty(),
   }
 }
 
@@ -66,9 +72,9 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
  */
 func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
-    ims_components.GetTitleComponent(),
     components.GetNavBarComponent(),
     components.GetNavBarItemComponent(),
-    lp.GetContactComponent(),
+    lp.GetTileComponent(),
+		lp.GetQuoteComponent(),
   }
 }

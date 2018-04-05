@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego"
   "html/template"
 	"os"
+	"fmt"
 )
 
 func ComponentHtml(in component_data.ComponentData) (out template.HTML){
@@ -13,12 +14,18 @@ func ComponentHtml(in component_data.ComponentData) (out template.HTML){
     return
 }
 
+func SafeHTML(in string) (out template.HTML){
+    out = template.HTML(in)
+		fmt.Println("SafeHTML")
+		fmt.Println(out)
+    return
+}
+
 func main() {
 	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX") + "static","static")
 	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX") + "lc","/lumavate-components/dist")
-	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX") + "ims","/ims-lumavate-components/dist")
-	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX") + "ims-go","/go/src/github.com/Lumavate-Team/ims-go-components/static")
 	beego.AddFuncMap("componentHtml", ComponentHtml)
+	beego.AddFuncMap("safeHTML", SafeHTML)
 	beego.Run()
 }
 
