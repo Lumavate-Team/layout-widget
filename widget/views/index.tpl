@@ -11,9 +11,9 @@
 </style>
 <div class="starting">
 	<div id="tiles" class="primary">
-		{{range $index, $element := .data.Tiles}}
-			<div class="name" style="border-radius:5px;border:solid 1px #000;text-align:center;padding:2px;grid-area:{{$element.ComponentData.TemplateRowStart}}/{{$element.ComponentData.TemplateColumnStart}}/{{$element.ComponentData.TemplateRowEnd}}/{{$element.ComponentData.TemplateColumnEnd}}">
-				{{$index}} {{componentHtml $element.ComponentData}}
+		{{range $index, $element := .data.GridItems}}
+			<div class="name" style="border-radius:5px;border:solid 1px #000;text-align:center;padding:2px;grid-area:{{$element.componentData.templateRowStart}}/{{$element.componentData.templateColumnStart}}/{{$element.componentData.templateRowEnd}}/{{$element.componentData.templateColumnEnd}}">
+				{{$index}} {{componentHtml $element}}
 			</div>
 		{{end}}
 	</div>

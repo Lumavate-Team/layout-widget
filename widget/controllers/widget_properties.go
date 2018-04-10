@@ -26,7 +26,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 
 func (lp *LumavateProperties) GetTilesProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
-    &properties.PropertyBase{"tiles", "Tiles", "Tile Settings", "Tile Settings", ""},
+    &properties.PropertyBase{"gridItems", "Tiles", "Tile Settings", "Tile Settings", ""},
     [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"tile", "quote"}, [] *properties.Component {lp.GetTileComponent(), lp.GetQuoteComponent()} },
   }
 }
@@ -36,7 +36,7 @@ func (lp *LumavateProperties) GetTileComponent() *properties.Component {
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "Tile", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
-  return &properties.Component{"tile", "", "tile-component", "Tiles", "x", "Tile", props}
+  return &properties.Component{"tile", "", "tile", "Tiles", "x", "Tile", props}
 }
 
 func (lp *LumavateProperties) GetQuoteComponent() *properties.Component {
