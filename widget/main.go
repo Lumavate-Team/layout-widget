@@ -2,15 +2,14 @@ package main
 
 import (
 	_ "widget/routers"
+	models "widget/models"
 	"github.com/astaxie/beego"
   "html/template"
 	"os"
-	"fmt"
 )
 
-func ComponentHtml(in map[string]interface{}) (out template.HTML){
-	fmt.Println(in)
-		out = "Hello"
+func ComponentHtml(in models.LayoutContainer) (out template.HTML){
+		out = template.HTML(in.GetHtml())
     return
 }
 
