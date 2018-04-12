@@ -45,7 +45,7 @@ func (this TileStruct) GetHtml() string {
 			this.ComponentData.Title)
 	} else {
 		return fmt.Sprintf(`
-			<div class="nav-item" onclick="alert('%v')">
+			<div class="nav-item" onclick="navigate('%v')">
 					%v
 			</div>`,
 			this.ComponentData.Title,
