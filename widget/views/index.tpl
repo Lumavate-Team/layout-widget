@@ -7,7 +7,19 @@
 		grid-template-rows: {{.data.GridTemplateRows}};
 		grid-gap: {{ .data.Padding }}px;
 	}
+	.nav-tile {
+		position:absolute;
+		width:100%;
+		height:100%;
+		background-position:center;
+		background-size:cover;
+	}
 </style>
+<script>
+	function navigate(url) {
+		window.location.href = url;
+	}
+</script>
 <div class="starting">
 	<div id="tiles" class="primary">
 		{{range $index, $element := .data.GridItems}}

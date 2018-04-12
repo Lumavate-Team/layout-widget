@@ -33,8 +33,12 @@ func (lp *LumavateProperties) GetTilesProperty() *properties.PropertyComponents 
 
 func (lp *LumavateProperties) GetTileComponent() *properties.Component {
   props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyImage{
+    &properties.PropertyBase{"image", "", "", "Background Image", ""}})
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "Tile", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyPageLink{
+    &properties.PropertyBase{"pageLink", "", "", "Page URL", ""}})
 	props = append(props, lp.GetLayoutProperties()...)
   return &properties.Component{"tile", "", "tile", "Tiles", "x", "Tile", props}
 }
