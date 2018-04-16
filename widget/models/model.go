@@ -4,6 +4,7 @@ import (
 	common "github.com/Lumavate-Team/lumavate-go-common"
 	widget "github.com/Lumavate-Team/lumavate-go-common/models"
 	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
+	components "widget/models/components"
 	"fmt"
 	"encoding/json"
 	"reflect"
@@ -23,34 +24,6 @@ type LumavateRequest struct {
 			GridItems []LayoutContainer
     }
   }
-}
-
-type TileStruct struct {
-	ComponentData struct {
-		Title string
-		Image component_data.ImageStruct
-		PageLink component_data.PageLinkStruct
-	}
-}
-
-func (this TileStruct) GetHtml() string {
-	fmt.Println("Call Tile GetHtml")
-	if this.ComponentData.Image.Preview != "" {
-		return fmt.Sprintf(`
-			<div class="nav-item nav-tile" onclick="navigate('%v')" style="background-image:url('%v');">
-					%v
-			</div>`,
-			this.ComponentData.PageLink.Url,
-			this.ComponentData.Image.Preview,
-			this.ComponentData.Title)
-	} else {
-		return fmt.Sprintf(`
-			<div class="nav-item" onclick="navigate('%v')">
-					%v
-			</div>`,
-			this.ComponentData.Title,
-			this.ComponentData.Title)
-	}
 }
 
 type tmpLayoutStruct struct {
@@ -75,7 +48,7 @@ func (this LayoutContainer) GetHtml() string {
 	fmt.Println(this.Component)
 	return fmt.Sprintf(`
     <div class="grid-item"
-		style="position:relative;border-radius:5px;border:solid 1px #ccc;text-align:center;padding:2px;grid-area:%v/%v/%v/%v">
+		style="position:relative;text-align:center;padding:2px;grid-area:%v/%v/%v/%v">
 				%v
 		</div>`,
     this.TemplateRowStart,
@@ -94,7 +67,8 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 	// Instantiate proper Component
 	component, err := UnmarshalCustomValue(data, "componentType", "componentData",
 		map[string]reflect.Type{
-			"tile": reflect.TypeOf(TileStruct{}),
+			"navigation": reflect.TypeOf(components.NavigationStruct{}),
+			"video": reflect.TypeOf(components.VideoStruct{}),
 			"quote": reflect.TypeOf(component_data.QuoteStruct{}),
 		})
 	if err != nil {
@@ -123,8 +97,14 @@ func UnmarshalCustomValue(data []byte, typeField, resultField string, customType
 
 	typeName := m[typeField].(string)
 	switch typeName {
-		case "tile":
-			var newObj TileStruct
+		case "navigation":
+			var newObj components.NavigationStruct
+			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
+				return nil, err
+			}
+			return newObj, nil
+		case "video":
+			var newObj components.VideoStruct
 			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
 				return nil, err
 			}

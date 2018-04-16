@@ -24,23 +24,35 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	return props
 }
 
-func (lp *LumavateProperties) GetTilesProperty() *properties.PropertyComponents {
+func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
-    &properties.PropertyBase{"gridItems", "Tiles", "Tile Settings", "Tile Settings", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"tile", "quote"}, [] *properties.Component {lp.GetTileComponent(), lp.GetQuoteComponent()} },
+    &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video", "quote"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetQuoteComponent()} },
   }
 }
 
-func (lp *LumavateProperties) GetTileComponent() *properties.Component {
+func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
   props := [] properties.PropertyType {}
   props = append(props, &properties.PropertyImage{
     &properties.PropertyBase{"image", "", "", "Background Image", ""}})
   props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "Tile", properties.PropertyOptionsText{}})
+    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
   props = append(props, &properties.PropertyPageLink{
     &properties.PropertyBase{"pageLink", "", "", "Page URL", ""}})
+		//Image Scaling
+		//Fill, Fit, Stretch, Tile
 	props = append(props, lp.GetLayoutProperties()...)
-  return &properties.Component{"tile", "", "tile", "Tiles", "x", "Tile", props}
+  return &properties.Component{"navigation", "", "navigation", "Navigation", "x", "Navigation", props}
+}
+
+func (lp *LumavateProperties) GetVideoComponent() *properties.Component {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyTranslatedText{
+    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyText{
+		&properties.PropertyBase{"video", "", "", "Video URL", ""}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
+	props = append(props, lp.GetLayoutProperties()...)
+  return &properties.Component{"video", "", "video", "Video", "x", "Video", props}
 }
 
 func (lp *LumavateProperties) GetQuoteComponent() *properties.Component {
@@ -62,12 +74,12 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
       &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""},
       "#ffffff"},
 		&properties.PropertyNumeric{
-			&properties.PropertyBase{"padding", "Tiles", "Tile Layout", "Padding", ""}, 0, properties.PropertyOptionsNumeric{ Min: 0, Max: 32}},
+			&properties.PropertyBase{"padding", "Grid", "Grid Layout", "Padding", ""}, 0, properties.PropertyOptionsNumeric{ Min: 0, Max: 32}},
 		&properties.PropertyText{
-			&properties.PropertyBase{"gridTemplateRows", "Tiles", "Tile Layout", "Grid Row Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+			&properties.PropertyBase{"gridTemplateRows", "Grid", "Grid Layout", "Grid Row Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{
-			&properties.PropertyBase{"gridTemplateColumns", "Tiles", "Tile Layout", "Grid Column Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
-    lp.GetTilesProperty(),
+			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+    lp.GetGridItemsProperty(),
   }
 }
 
@@ -78,7 +90,8 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
     components.GetNavBarComponent(),
     components.GetNavBarItemComponent(),
-    lp.GetTileComponent(),
+    lp.GetNavigationComponent(),
+    lp.GetVideoComponent(),
 		lp.GetQuoteComponent(),
   }
 }
