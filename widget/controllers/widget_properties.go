@@ -3,8 +3,8 @@ package controllers
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   components "github.com/Lumavate-Team/lumavate-go-common/components"
-  _"os"
-  _"fmt"
+  "os"
+  "fmt"
 )
 
 type LumavateProperties struct {
@@ -27,22 +27,34 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video", "quote"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetQuoteComponent()} },
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent()} },
   }
 }
 
 func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
   props := [] properties.PropertyType {}
+
   props = append(props, &properties.PropertyImage{
     &properties.PropertyBase{"image", "", "", "Background Image", ""}})
+
+	// Background Image Scaling Options
+	options := make(map[string]string)
+	options["fill"] = "Fill"
+	options["fit"] = "Fit"
+	options["stretch"] = "Stretch"
+	options["repeat"] = "Repeat"
+  props = append(props, &properties.PropertyDropdown{
+		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", ""}, "fill",options})
+
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
+
   props = append(props, &properties.PropertyPageLink{
     &properties.PropertyBase{"pageLink", "", "", "Page URL", ""}})
-		//Image Scaling
-		//Fill, Fit, Stretch, Tile
+
 	props = append(props, lp.GetLayoutProperties()...)
-  return &properties.Component{"navigation", "", "navigation", "Navigation", "x", "Navigation", props}
+	image := fmt.Sprintf("%v%vstatic/images/navigation.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+  return &properties.Component{"navigation", "", "navigation", "Navigation", image, "Navigation", props}
 }
 
 func (lp *LumavateProperties) GetVideoComponent() *properties.Component {
@@ -52,7 +64,8 @@ func (lp *LumavateProperties) GetVideoComponent() *properties.Component {
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"video", "", "", "Video URL", ""}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
-  return &properties.Component{"video", "", "video", "Video", "x", "Video", props}
+	image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+  return &properties.Component{"video", "", "video", "Video", image, "Video", props}
 }
 
 func (lp *LumavateProperties) GetQuoteComponent() *properties.Component {

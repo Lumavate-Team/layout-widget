@@ -9,6 +9,7 @@ type NavigationStruct struct {
 	ComponentData struct {
 		Title string
 		Image component_data.ImageStruct
+		ImageScaling string
 		PageLink component_data.PageLinkStruct
 	}
 }
@@ -16,12 +17,10 @@ type NavigationStruct struct {
 func (this NavigationStruct) GetHtml() string {
 	if this.ComponentData.Image.Preview != "" {
 		return fmt.Sprintf(`
-			<div class="nav-item nav-tile" onclick="navigate('%v')" style="background-image:url('%v');">
-					%v
-			</div>`,
+			<div class="nav-item nav-tile %v" onclick="navigate('%v')" style="background-image:url('%v');"> </div>`,
+			this.ComponentData.ImageScaling,
 			this.ComponentData.PageLink.Url,
-			this.ComponentData.Image.Preview,
-			this.ComponentData.Title)
+			this.ComponentData.Image.Preview)
 	} else {
 		return fmt.Sprintf(`
 			<div class="nav-item" onclick="navigate('%v')">
