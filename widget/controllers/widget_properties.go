@@ -14,13 +14,13 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props := [] properties.PropertyType {}
 
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateRowStart", "", "", "Grid Row Start", ""}, "", properties.PropertyOptionsText{Rows: 3}})
+		&properties.PropertyBase{"templateRowStart", "", "", "Grid Row Start", "This is Row at which this grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateRowEnd", "", "", "Grid Row End", ""}, "", properties.PropertyOptionsText{ Rows: 3 }})
+		&properties.PropertyBase{"templateRowEnd", "", "", "Grid Row End", ""}, "This is the Row at which this grid item will end", properties.PropertyOptionsText{ Rows: 3 }})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateColumnStart", "", "", "Grid Column Start", ""}, "", properties.PropertyOptionsText{Rows: 3}})
+		&properties.PropertyBase{"templateColumnStart", "", "", "Grid Column Start", "This is the Column at which the grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateColumnEnd", "", "", "Grid Column End", ""}, "", properties.PropertyOptionsText{Rows: 3}})
+		&properties.PropertyBase{"templateColumnEnd", "", "", "Grid Column End", ""}, "This is the Column at which the grid item will end", properties.PropertyOptionsText{Rows: 3}})
 	return props
 }
 
@@ -44,7 +44,7 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
 	options["stretch"] = "Stretch"
 	options["repeat"] = "Repeat"
   props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", ""}, "fill",options})
+		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", "Denotes how the image will appear as the grid item background"}, "fill",options})
 
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
@@ -80,6 +80,26 @@ func (lp *LumavateProperties) GetQuoteComponent() *properties.Component {
  * Returns all properties for the widget
  */
 func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
+	var rowhelp string = `Denotes the number of Rows in the grid.  This can be denoted by the following:
+
+	- Pixels(px) - Defines the row in static pixel amount
+	- Percentage(%) - Defines the row in terms of percentage of screen height
+	- Fractional Units(fr) - Defines the row in terms of fractional units of the screen height
+
+	###Example
+	Define 4 rows:
+	The first is 25px tall, row 2 is 10% of the total screen height, and rows 3 & 4 use the remaining height and creates the third row that is twice the height of the fourth row
+	25px 10% 2fr 1fr`
+	var colhelp string = `Denotes the number of Columns in the grid.  This can be denoted by the following:
+
+	- Pixels(px) - Defines the column in static pixel amount
+	- Percentage(%) - Defines the column in terms of percentage of screen height
+	- Fractional Units(fr) - Defines the column in terms of fractional units of the screen height
+
+	###Example
+	Define 5 columns:
+	The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining width and creates the third column that is twice the width of the second and fourth column, which are equivalent in size
+	25px 1fr 2fr 1fr 25px`
   return [] properties.PropertyType {
     components.GetNavBarProperty(),
     components.GetNavBarItemsProperty(),
@@ -87,11 +107,11 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
       &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""},
       "#ffffff"},
 		&properties.PropertyNumeric{
-			&properties.PropertyBase{"padding", "Grid", "Grid Layout", "Padding", ""}, 0, properties.PropertyOptionsNumeric{ Min: 0, Max: 32}},
+			&properties.PropertyBase{"padding", "Grid", "Grid Layout", "Padding", "Denotes the number of pixels to be used for padding between grid items"}, 0, properties.PropertyOptionsNumeric{ Min: 0, Max: 32}},
 		&properties.PropertyText{
-			&properties.PropertyBase{"gridTemplateRows", "Grid", "Grid Layout", "Grid Row Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+			&properties.PropertyBase{"gridTemplateRows", "Grid", "Grid Layout", "Grid Row Template", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{
-			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
     lp.GetGridItemsProperty(),
   }
 }
