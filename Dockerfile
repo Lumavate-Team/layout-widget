@@ -7,8 +7,6 @@ RUN apk update && \
                 openssh \
                 libc-dev \
                 go \
-#&& git rev-parse HEAD > /revision \
-#&& rm -rf .git \
   && mkdir -p /go/src/widget
 
 ADD git.sh /git.sh

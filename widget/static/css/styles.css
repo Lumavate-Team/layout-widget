@@ -1,8 +1,3 @@
-.starting {
-	padding-top: 75px;
-	padding-bottom: 32px;
-}
-
 .name {
 	font-family: 'Teko', sans-serif;
 	text-transform: uppercase;
@@ -21,14 +16,6 @@
 
 a {
 	color: #6ba3ff;
-}
-#tiles {
-	height:100%;
-	width:100%;
-	display:grid;
-	grid-template-columns: {{.data.GridTemplateColumns}};
-	grid-template-rows: {{.data.GridTemplateRows}};
-	grid-gap: {{ .data.Padding }}px;
 }
 .nav-tile {
 	position:absolute;

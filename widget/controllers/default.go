@@ -20,6 +20,7 @@ func (this *MainController) Get() {
 
   luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
   this.Data["data"] = luma_response.Payload.Data
+
 	this.Layout = "layout/layout.tpl"
   this.TplName = "index.tpl"
 

@@ -62,7 +62,7 @@ func (lp *LumavateProperties) GetVideoComponent() *properties.Component {
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"video", "", "", "Video URL", ""}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
+		&properties.PropertyBase{"video", "", "", "Video URL", "This should be in the format: https://www.youtube.com/embed/[VIDEOID]"}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
 	image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
   return &properties.Component{"video", "", "video", "Video", image, "Video", props}
