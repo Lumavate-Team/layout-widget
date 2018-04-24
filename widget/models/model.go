@@ -69,7 +69,7 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 		map[string]reflect.Type{
 			"navigation": reflect.TypeOf(components.NavigationStruct{}),
 			"video": reflect.TypeOf(components.VideoStruct{}),
-			"quote": reflect.TypeOf(component_data.QuoteStruct{}),
+			"text": reflect.TypeOf(components.TextStruct{}),
 		})
 	if err != nil {
 		return err
@@ -109,8 +109,8 @@ func UnmarshalCustomValue(data []byte, typeField, resultField string, customType
 				return nil, err
 			}
 			return newObj, nil
-		case "quote":
-			var newObj component_data.QuoteStruct
+		case "text":
+			var newObj components.TextStruct
 			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
 				return nil, err
 			}

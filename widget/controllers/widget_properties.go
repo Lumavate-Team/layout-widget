@@ -27,7 +27,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent()} },
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video", "text"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent()} },
   }
 }
 
@@ -66,6 +66,17 @@ func (lp *LumavateProperties) GetVideoComponent() *properties.Component {
 	props = append(props, lp.GetLayoutProperties()...)
 	image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
   return &properties.Component{"video", "", "video", "Video", image, "Video", props}
+}
+
+func (lp *LumavateProperties) GetTextComponent() *properties.Component {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyTranslatedText{
+    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyText{
+		&properties.PropertyBase{"text", "", "", "Text", ""}, "", properties.PropertyOptionsText{}})
+	props = append(props, lp.GetLayoutProperties()...)
+	image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+  return &properties.Component{"text", "", "text", "Text", image, "Text", props}
 }
 
 func (lp *LumavateProperties) GetQuoteComponent() *properties.Component {
@@ -125,6 +136,6 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
     components.GetNavBarItemComponent(),
     lp.GetNavigationComponent(),
     lp.GetVideoComponent(),
-		lp.GetQuoteComponent(),
+		lp.GetTextComponent(),
   }
 }
