@@ -14,6 +14,10 @@
 	line-height: 120%;
 }
 
+lumavate-nav-bar-item div {
+  flex-direction: row;
+}
+
 a {
 	color: #6ba3ff;
 }

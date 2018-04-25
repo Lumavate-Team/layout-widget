@@ -16,17 +16,33 @@ type NavigationStruct struct {
 
 func (this NavigationStruct) GetHtml() string {
 	if this.ComponentData.Image.Preview != "" {
-		return fmt.Sprintf(`
-			<div class="nav-item nav-tile %v" onclick="navigate('%v')" style="background-image:url('%v');"> </div>`,
-			this.ComponentData.ImageScaling,
-			this.ComponentData.PageLink.Url,
-			this.ComponentData.Image.Preview)
+		if this.ComponentData.PageLink.Url != "" {
+			return fmt.Sprintf(`
+				<div class="nav-item nav-tile %v" onclick="navigate('%v')" style="background-image:url('%v');"> </div>`,
+				this.ComponentData.ImageScaling,
+				this.ComponentData.PageLink.Url,
+				this.ComponentData.Image.Preview)
+		} else {
+			return fmt.Sprintf(`
+				<div class="nav-item nav-tile %v" style="background-image:url('%v');"> </div>`,
+				this.ComponentData.ImageScaling,
+				this.ComponentData.Image.Preview)
+		}
 	} else {
-		return fmt.Sprintf(`
-			<div class="nav-item" onclick="navigate('%v')">
-					%v
-			</div>`,
-			this.ComponentData.Title,
-			this.ComponentData.Title)
+		if this.ComponentData.PageLink.Url != "" {
+			return fmt.Sprintf(`
+				<div class="nav-item" onclick="navigate('%v')">
+						%v
+				</div>`,
+				this.ComponentData.Title,
+				this.ComponentData.Title)
+		} else {
+			return fmt.Sprintf(`
+				<div class="nav-item" onclick="navigate('%v')">
+						%v
+				</div>`,
+				this.ComponentData.Title,
+				this.ComponentData.Title)
+		}
 	}
 }

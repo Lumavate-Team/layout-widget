@@ -4,6 +4,8 @@ import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common"
   "encoding/json"
   "widget/models"
+	"os"
+	"fmt"
 )
 
 type MainController struct {
@@ -20,6 +22,7 @@ func (this *MainController) Get() {
 
   luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
   this.Data["data"] = luma_response.Payload.Data
+	this.Data["dnsInfo"] = fmt.Sprintf("%s%s", os.Getenv("PROTO"), this.Ctx.Input.Host())
 
 	this.Layout = "layout/layout.tpl"
   this.TplName = "index.tpl"
