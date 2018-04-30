@@ -1,3 +1,18 @@
+@supports not (grid-area: 1/1/1/1) {
+	.degraded {
+		display:none;
+	}
+	.grid {
+		display:flex;
+		flex-direction:column;
+	}
+}
+.grid-item {
+	display: flex;
+	flex: 1;
+	vertical-align: top;
+}
+
 .name {
 	font-family: 'Teko', sans-serif;
 	text-transform: uppercase;
@@ -21,6 +36,15 @@ lumavate-nav-bar-item div {
 a {
 	color: #6ba3ff;
 }
+.Tprimary {
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	max-width: 300px;
+	max-height: 400px;
+}
+
 .nav-tile {
 	position:absolute;
 	width:100%;
