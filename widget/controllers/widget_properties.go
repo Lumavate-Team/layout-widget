@@ -13,8 +13,14 @@ type LumavateProperties struct {
 func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props := [] properties.PropertyType {}
 
-  props = append(props, &properties.PropertyToggle{
-		&properties.PropertyBase{"displayDegraded", "", "", "Display when Degraded", "In older browsers, when degrading, should this item be displayed"}, true})
+	// Background Image Scaling Options
+	displayOptions := make(map[string]string)
+	displayOptions["both"] = "Both"
+	displayOptions["optimal"] = "Optimal"
+	displayOptions["degraded"] = "Degraded"
+
+  props = append(props, &properties.PropertyDropdown{
+		&properties.PropertyBase{"displayMode", "", "", "Display Mode", "When should this tiem be displayed: Only upon a degraded experience (due to old browsers), Only when fully optimzied, or display at all times (Both)"}, "both", displayOptions})
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"templateRowStart", "", "", "Grid Row Start", "This is Row at which this grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{

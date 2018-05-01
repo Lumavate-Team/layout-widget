@@ -1,11 +1,26 @@
-@supports not (grid-area: 1/1/1/1) {
+@supports (grid-area: 1/1/1/1) {
 	.degraded {
 		display:none;
 	}
+}
+@supports not (grid-area: 1/1/1/1) {
 	.grid {
 		display:flex;
 		flex-direction:column;
 	}
+	.optimal {
+		display:none;
+	}
+	.degraded {
+		display: flex;
+		flex:1;
+		vertical-align: top;
+	}
+}
+.both {
+	display: flex;
+	flex: 1;
+	vertical-align: top;
 }
 .grid-item {
 	display: flex;

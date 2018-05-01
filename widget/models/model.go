@@ -32,7 +32,7 @@ type tmpLayoutStruct struct {
 		TemplateRowEnd string
 		TemplateColumnStart string
 		TemplateColumnEnd string
-		DisplayDegraded bool
+		DisplayMode string
 	}
 }
 
@@ -41,21 +41,17 @@ type LayoutContainer struct {
 	TemplateRowEnd string
 	TemplateColumnStart string
 	TemplateColumnEnd string
-	DisplayDegraded bool
+	DisplayMode string
 	Component component_data.ComponentData
 }
 
 func (this LayoutContainer) GetHtml() string {
-	var style = "grid-item"
-	if (!this.DisplayDegraded) {
-		style = "degraded"
-	}
 	return fmt.Sprintf(`
     <div class="%v"
 		style="position:relative;text-align:center;padding:2px;grid-area:%v/%v/%v/%v">
 				%v
 		</div>`,
-		style,
+		this.DisplayMode,
     this.TemplateRowStart,
     this.TemplateColumnStart,
     this.TemplateRowEnd,
@@ -80,7 +76,7 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	lc.DisplayDegraded = tmp.ComponentData.DisplayDegraded
+	lc.DisplayMode = tmp.ComponentData.DisplayMode
 	lc.TemplateRowStart = tmp.ComponentData.TemplateRowStart
 	lc.TemplateRowEnd = tmp.ComponentData.TemplateRowEnd
 	lc.TemplateColumnStart = tmp.ComponentData.TemplateColumnStart
