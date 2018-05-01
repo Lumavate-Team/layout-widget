@@ -48,6 +48,9 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
   props = append(props, &properties.PropertyDropdown{
 		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", "Denotes how the image will appear as the grid item background"}, "fill",options})
 
+  props = append(props, &properties.PropertyColor{
+    &properties.PropertyBase{"backgroundColor", "", "", "Background Color", ""}, "#ffffff"})
+
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
 
