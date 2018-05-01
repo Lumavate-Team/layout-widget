@@ -6,6 +6,7 @@ import (
   "widget/models"
 	"os"
 	"fmt"
+	"strings"
 )
 
 type MainController struct {
@@ -25,7 +26,12 @@ func (this *MainController) Get() {
 	this.Data["dnsInfo"] = fmt.Sprintf("%s%s", os.Getenv("PROTO"), this.Ctx.Input.Host())
 
 	this.Layout = "layout/layout.tpl"
-  this.TplName = "index.tpl"
+	mode := this.GetString("mode")
+	if strings.ToLower(mode) != "degraded" {
+		this.TplName = "index.tpl"
+	} else {
+		this.TplName = "degraded.tpl"
+	}
 
   this.LayoutSections["HtmlHead"] = "html_head.tpl"
   this.LayoutSections["FooterContent"] = "home_footer.tpl"
