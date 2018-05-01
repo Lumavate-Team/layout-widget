@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>
+      Layout
     </title>
     <meta charset="utf-8">
     <base href="{{.WidgetUrlPrefix}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description" content="HardingPoorman Layout Page">
+    <meta name="theme-color" content="#ffffff">
     <noscript>Javascript required for this site to work.</noscript>
 
     <link rel="apple-touch-icon" sizes="180x180" href="/iot/favicon-180x180.png">
@@ -50,6 +53,8 @@
     {{.FooterContent}}
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
 
+    <script type="text/javascript" src="/iot/sw-register.min.js"></script>
+    <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
     <script type="text/javascript" src="lc/lumavate-components.js"></script>
     {{.Scripts}}
 
