@@ -90,14 +90,6 @@ func (lp *LumavateProperties) GetTextComponent() *properties.Component {
   return &properties.Component{"text", "", "text", "Text", image, "Text", props}
 }
 
-func (lp *LumavateProperties) GetQuoteComponent() *properties.Component {
-	comp :=properties.LoadComponent("https://experience.john.labelnexusdev.com", "1.0.0", "quote")
-	comp.Properties = append(comp.Properties, lp.GetLayoutProperties()...)
-	comp.Category = "quote"
-	comp.Section = ""
-	return comp
-}
-
 /*
  * Returns all properties for the widget
  */
