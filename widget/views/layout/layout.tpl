@@ -34,21 +34,30 @@
 				display:grid;
 				grid-template-columns: {{.data.GridTemplateColumns}};
 				grid-template-rows: {{.data.GridTemplateRows}};
-				grid-gap: {{ .data.Padding }}px;
+				grid-gap: {{.data.Padding}}px;
 			}
 			@supports not (grid-area: 1/1/1/1) {
 				.grid-item {
-					margin: {{ .data.Padding }}px;
+					margin: {{.data.Padding}}px;
 				}
+			}
+			body {
+				{{ if .data.DisplayBackgroundImage }}
+				background-image: url({{.data.BackgroundImage.Preview}});
+				background-position:center center;
+				background-size: cover;
+				background-repeat:no-repeat;
+				{{ else if .data.BackgroundColor }}
+				background-color: {{.data.BackgroundColor}};
+				{{ end }}
 			}
 		</style>
 		{{.HtmlHead}}
   </head>
   <body>
-  <div class="body-wrapper">
-    {{.HeaderContent}}
-        {{.LayoutContent}}
-
+		<div class="body-wrapper">
+			{{.HeaderContent}}
+      {{.LayoutContent}}
     </div>
     {{.FooterContent}}
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>

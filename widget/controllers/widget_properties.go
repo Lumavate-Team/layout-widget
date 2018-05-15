@@ -20,7 +20,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	displayOptions["degraded"] = "Degraded"
 
   props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"displayMode", "", "", "Display Mode", "When should this tiem be displayed: Only upon a degraded experience (due to old browsers), Only when fully optimzied, or display at all times (Both)"}, "both", displayOptions})
+		&properties.PropertyBase{"displayMode", "", "", "Display Mode", "When should this item be displayed: Only upon a degraded experience (due to old browsers), Only when fully optimzied, or display at all times (Both)"}, "both", displayOptions})
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"templateRowStart", "", "", "Grid Row Start", "This is Row at which this grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
@@ -51,8 +51,19 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
 	options["fit"] = "Fit"
 	options["stretch"] = "Stretch"
 	options["repeat"] = "Repeat"
+
+	var scaleHelp string = `Denotes how the image will appear as the grid item scales.
+
+* Fill: Sets _background-size_ to "cover" & will fill the entire width/height even if the image cannot be fully displayed
+
+* Fit: Sets _background-size_ to "contain" & will fit the image inside the item maintaining aspect ratio so the entire image may be displayed
+
+* Stretch: Sets _background-size_ to "100% 100%", stretching the image to the exact size of the item disregarding aspect ratios
+
+* Repeat: Sets _background-repeat_ to repeat the image starting from the center of the item`
+
   props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", "Denotes how the image will appear as the grid item background"}, "fill",options})
+		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", scaleHelp}, "fill",options})
 
   props = append(props, &properties.PropertyColor{
     &properties.PropertyBase{"backgroundColor", "", "", "Background Color", ""}, "#ffffff"})
@@ -69,11 +80,16 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
 }
 
 func (lp *LumavateProperties) GetVideoComponent() *properties.Component {
+	var videoHelp = `This should be the URL to the desired YouTube video, using the "embed" URL provided by YouTube & containing any relevant querystring parameters
+
+### Example
+
+https://www.youtube.com/embed/[VIDEOID]`
   props := [] properties.PropertyType {}
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"video", "", "", "Video URL", "This should be in the format: https://www.youtube.com/embed/[VIDEOID]"}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
+		&properties.PropertyBase{"video", "", "", "Video URL", videoHelp}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
 	image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
   return &properties.Component{"video", "", "video", "Video", image, "Video", props}
@@ -95,31 +111,39 @@ func (lp *LumavateProperties) GetTextComponent() *properties.Component {
  */
 func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
 	var rowhelp string = `Denotes the number of Rows in the grid.  This can be denoted by the following:
+- Pixels(px): Defines the row in static pixel amount
+- Percentage(%): Defines the row in terms of percentage of screen height
+- Fractional Units(fr): Defines the row in terms of fractional units of the screen height
 
-	- Pixels(px) - Defines the row in static pixel amount
-	- Percentage(%) - Defines the row in terms of percentage of screen height
-	- Fractional Units(fr) - Defines the row in terms of fractional units of the screen height
+### Example
 
-	###Example
-	Define 4 rows:
-	The first is 25px tall, row 2 is 10% of the total screen height, and rows 3 & 4 use the remaining height and creates the third row that is twice the height of the fourth row
-	25px 10% 2fr 1fr`
+#### Define 4 rows:
+The first is 25px tall, row 2 is 10% of the total screen height, and rows 3 & 4 use the remaining height and creates the third row that is twice the height of the fourth row
+
+#### Correct Setting:
+25px 10% 2fr 1fr`
 	var colhelp string = `Denotes the number of Columns in the grid.  This can be denoted by the following:
+* Pixels(px): Defines the column in static pixel amount
+* Percentage(%): Defines the column in terms of percentage of screen height
+* Fractional Units(fr): Defines the column in terms of fractional units of the screen width
 
-	- Pixels(px) - Defines the column in static pixel amount
-	- Percentage(%) - Defines the column in terms of percentage of screen height
-	- Fractional Units(fr) - Defines the column in terms of fractional units of the screen height
+## Example
 
-	###Example
-	Define 5 columns:
-	The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining width and creates the third column that is twice the width of the second and fourth column, which are equivalent in size
-	25px 1fr 2fr 1fr 25px`
+#### Define 5 columns:
+The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining width and creates the third column that is twice the width of the second and fourth column, which are equivalent in size
+
+#### Correct Setting:
+25px 1fr 2fr 1fr 25px`
   return [] properties.PropertyType {
     components.GetNavBarProperty(),
     components.GetNavBarItemsProperty(),
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""},
       "#ffffff"},
+		&properties.PropertyToggle{
+			&properties.PropertyBase{"displayBackgroundImage", "General", "Settings", "Display Background Image", ""}, false},
+		&properties.PropertyImage{
+			&properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
 		&properties.PropertyNumeric{
 			&properties.PropertyBase{"padding", "Grid", "Grid Layout", "Padding", "Denotes the number of pixels to be used for padding between grid items"}, 0, properties.PropertyOptionsNumeric{ Min: 0, Max: 32}},
 		&properties.PropertyText{

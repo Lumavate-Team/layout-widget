@@ -19,6 +19,9 @@ type LumavateRequest struct {
     Data struct {
       widget.CommonWidgetStruct
 			Padding int
+			DisplayBackgroundImage bool
+			BackgroundImage component_data.ImageStruct
+			BackgroundColor string
 			GridTemplateColumns string
 			GridTemplateRows string
 			GridItems []LayoutContainer
