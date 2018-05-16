@@ -42,11 +42,12 @@
 				}
 			}
 			body {
+				position:absolute;
+				height: 100%;
+				width:100%;
 				{{ if .data.DisplayBackgroundImage }}
 				background-image: url({{.data.BackgroundImage.Preview}});
-				background-position:center center;
-				background-size: cover;
-				background-repeat:no-repeat;
+				background-repeat:repeat;
 				{{ else if .data.BackgroundColor }}
 				background-color: {{.data.BackgroundColor}};
 				{{ end }}
@@ -71,7 +72,7 @@
       $(function(){
 
         var setWrapperHeight = function(){
-          $(".body-wrapper").css("height", window.innerHeight-58);
+          $(".body-wrapper").css("height", window.innerHeight-56);
         }
 
         var resizeTimer;

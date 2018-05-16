@@ -19,16 +19,21 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	displayOptions["optimal"] = "Optimal"
 	displayOptions["degraded"] = "Degraded"
 
+	var displayHelp string = `Denotes when this item should be displayed:
+* Both: Display during _optimal_ & _degraded_ rendering (default)
+* Optimal: Display during _optimal_ rendering on newer browsers supporting CSS Grid
+* Degraded: Display only during _degraded_ rendering (browsers that do **not** support CSS Grid)`
+
   props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"displayMode", "", "", "Display Mode", "When should this item be displayed: Only upon a degraded experience (due to old browsers), Only when fully optimzied, or display at all times (Both)"}, "both", displayOptions})
+		&properties.PropertyBase{"displayMode", "", "", "Display Mode", displayHelp}, "both", displayOptions})
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"templateRowStart", "", "", "Grid Row Start", "This is Row at which this grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateRowEnd", "", "", "Grid Row End", ""}, "This is the Row at which this grid item will end", properties.PropertyOptionsText{ Rows: 3 }})
+		&properties.PropertyBase{"templateRowEnd", "", "", "Grid Row End", "This is the Row at which this grid item will end"}, "", properties.PropertyOptionsText{ Rows: 3 }})
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"templateColumnStart", "", "", "Grid Column Start", "This is the Column at which the grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateColumnEnd", "", "", "Grid Column End", ""}, "This is the Column at which the grid item will end", properties.PropertyOptionsText{Rows: 3}})
+		&properties.PropertyBase{"templateColumnEnd", "", "", "Grid Column End", "This is the Column at which the grid item will end"}, "", properties.PropertyOptionsText{Rows: 3}})
 	return props
 }
 
@@ -41,6 +46,9 @@ func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyCompone
 
 func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
   props := [] properties.PropertyType {}
+
+  props = append(props, &properties.PropertyToggle{
+    &properties.PropertyBase{"useBackgroundImage", "", "", "Use Background Image", ""}, false})
 
   props = append(props, &properties.PropertyImage{
     &properties.PropertyBase{"image", "", "", "Background Image", ""}})
@@ -65,6 +73,9 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
   props = append(props, &properties.PropertyDropdown{
 		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", scaleHelp}, "fill",options})
 
+  props = append(props, &properties.PropertyToggle{
+    &properties.PropertyBase{"useBackgroundColor", "", "", "Use Background Color", ""}, false})
+
   props = append(props, &properties.PropertyColor{
     &properties.PropertyBase{"backgroundColor", "", "", "Background Color", ""}, "#ffffff"})
 
@@ -75,7 +86,7 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
     &properties.PropertyBase{"pageLink", "", "", "Page URL", ""}})
 
 	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%vstatic/images/navigation.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+	image := fmt.Sprintf("%v%v%v/static/images/navigation.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"), os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"navigation", "", "navigation", "Navigation", image, "Navigation", props}
 }
 
@@ -91,7 +102,7 @@ https://www.youtube.com/embed/[VIDEOID]`
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"video", "", "", "Video URL", videoHelp}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+	image := fmt.Sprintf("%v%v%v/static/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"video", "", "video", "Video", image, "Video", props}
 }
 
@@ -102,7 +113,7 @@ func (lp *LumavateProperties) GetTextComponent() *properties.Component {
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"text", "", "", "Text", ""}, "", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+	image := fmt.Sprintf("%v%v%v/static/images/text.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"text", "", "text", "Text", image, "Text", props}
 }
 
