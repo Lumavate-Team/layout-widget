@@ -86,7 +86,7 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
     &properties.PropertyBase{"pageLink", "", "", "Page URL", ""}})
 
 	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v%v/static/images/navigation.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"), os.Getenv("PUBLIC_KEY"))
+	image := fmt.Sprintf("%v%v/static/images/navigation.svg", os.Getenv("WIDGET_URL_PREFIX"), os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"navigation", "", "navigation", "Navigation", image, "Navigation", props}
 }
 
@@ -102,7 +102,7 @@ https://www.youtube.com/embed/[VIDEOID]`
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"video", "", "", "Video URL", videoHelp}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v%v/static/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
+	image := fmt.Sprintf("%v%v/static/images/video.svg", os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"video", "", "video", "Video", image, "Video", props}
 }
 
@@ -113,7 +113,7 @@ func (lp *LumavateProperties) GetTextComponent() *properties.Component {
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"text", "", "", "Text", ""}, "", properties.PropertyOptionsText{}})
 	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v%v/static/images/text.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
+	image := fmt.Sprintf("%v%v/static/images/text.svg", os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"text", "", "text", "Text", image, "Text", props}
 }
 
@@ -126,31 +126,40 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
 - Percentage(%): Defines the row in terms of percentage of screen height
 - Fractional Units(fr): Defines the row in terms of fractional units of the screen height
 
+**_Scroll down for links to additional resources_**
 ### Example
 
 #### Define 4 rows:
 The first is 25px tall, row 2 is 10% of the total screen height, and rows 3 & 4 use the remaining height and creates the third row that is twice the height of the fourth row
 
 #### Correct Setting:
-25px 10% 2fr 1fr`
+25px 10% 2fr 1fr
+
+#### Layout is based on CSS Grid.
+Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.asp" target="_blank">W3Schools</a> <a href="https://cssgridgarden.com/" target="_blank">CSS Grid Garden</a>`
+
 	var colhelp string = `Denotes the number of Columns in the grid.  This can be denoted by the following:
 * Pixels(px): Defines the column in static pixel amount
 * Percentage(%): Defines the column in terms of percentage of screen height
 * Fractional Units(fr): Defines the column in terms of fractional units of the screen width
 
-## Example
+**_Scroll down for links to additional resources_**
+### Example
 
 #### Define 5 columns:
 The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining width and creates the third column that is twice the width of the second and fourth column, which are equivalent in size
 
 #### Correct Setting:
-25px 1fr 2fr 1fr 25px`
+25px 1fr 2fr 1fr 25px
+
+### Layout is based on CSS Grid.
+Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.asp" target="_blank">W3Schools</a> <a href="https://cssgridgarden.com/" target="_blank">CSS Grid Garden</a>`
+
   return [] properties.PropertyType {
     components.GetNavBarProperty(),
     components.GetNavBarItemsProperty(),
     &properties.PropertyColor{
-      &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""},
-      "#ffffff"},
+      &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
 		&properties.PropertyToggle{
 			&properties.PropertyBase{"displayBackgroundImage", "General", "Settings", "Display Background Image", ""}, false},
 		&properties.PropertyImage{
