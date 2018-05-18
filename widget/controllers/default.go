@@ -21,6 +21,8 @@ func (this *MainController) Get() {
     this.Abort("500")
   }
 
+  fmt.Println("This is the form branch")
+
   luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
   this.Data["data"] = luma_response.Payload.Data
 	this.Data["dnsInfo"] = fmt.Sprintf("%s%s", os.Getenv("PROTO"), this.Ctx.Input.Host())
