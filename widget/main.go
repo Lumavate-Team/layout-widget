@@ -10,13 +10,13 @@ import (
 )
 
 func ComponentHtml(in component_data.ComponentData) (out template.HTML){
-		out = template.HTML(in.GetHtml())
-    return
+	out = template.HTML(in.GetHtml())
+	return
 }
 
 func LayoutHtml(in models.LayoutContainer) (out template.HTML){
-		out = template.HTML(in.GetHtml())
-    return
+	out = template.HTML(in.GetHtml())
+	return
 }
 
 func main() {

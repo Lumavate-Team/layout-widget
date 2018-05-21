@@ -26,33 +26,6 @@
     <link href="https://fonts.googleapis.com/css?family=Teko:400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">  
-		<style>
-			.grid {
-				position:absolute;
-				height:100%;
-				width:100%;
-				display:grid;
-				grid-template-columns: {{.data.GridTemplateColumns}};
-				grid-template-rows: {{.data.GridTemplateRows}};
-				grid-gap: {{.data.Padding}}px;
-			}
-			@supports not (grid-area: 1/1/1/1) {
-				.grid-item {
-					margin: {{.data.Padding}}px;
-				}
-			}
-			body {
-				position:absolute;
-				height: 100%;
-				width:100%;
-				{{ if .data.DisplayBackgroundImage }}
-				background-image: url({{.data.BackgroundImage.Preview}});
-				background-repeat:repeat;
-				{{ else if .data.BackgroundColor }}
-				background-color: {{.data.BackgroundColor}};
-				{{ end }}
-			}
-		</style>
 		{{.HtmlHead}}
   </head>
   <body>
@@ -61,11 +34,6 @@
       {{.LayoutContent}}
     </div>
     {{.FooterContent}}
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
-
-    <script type="text/javascript" src="/iot/sw-register.min.js"></script>
-    <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
-    <script type="text/javascript" src="lc/lumavate-components.js"></script>
     {{.Scripts}}
 
     <script type="text/javascript">

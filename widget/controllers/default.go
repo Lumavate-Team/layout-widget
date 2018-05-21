@@ -34,5 +34,6 @@ func (this *MainController) Get() {
 	}
 
   this.LayoutSections["HtmlHead"] = "html_head.tpl"
+  this.LayoutSections["Scripts"] = "script.tpl"
   this.LayoutSections["FooterContent"] = "home_footer.tpl"
 }
