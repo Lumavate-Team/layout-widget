@@ -35,7 +35,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video", "text"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent()} },
+    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent(), lp.GetGridFormComponent()} },
   }
 }
 
@@ -90,6 +90,17 @@ func (lp *LumavateProperties) GetTextComponent() *properties.Component {
   return &properties.Component{"text", "", "text", "Text", image, "Text", props}
 }
 
+func (lp *LumavateProperties) GetGridFormComponent() *properties.Component {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyTranslatedText{
+    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyText{
+    &properties.PropertyBase{"text", "", "", "Text", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, lp.GetLayoutProperties()...)
+  image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
+  return &properties.Component{"form", "", "form", "Form", image, "Form", props}
+}
+
 /*
  * Returns all properties for the widget
  */
@@ -127,6 +138,8 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
 		&properties.PropertyText{
 			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
     lp.GetGridItemsProperty(),
+    components.GetFormProperty(),
+    components.GetFormItemsProperty(),
   }
 }
 
@@ -140,5 +153,14 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
     lp.GetNavigationComponent(),
     lp.GetVideoComponent(),
 		lp.GetTextComponent(),
+    lp.GetGridFormComponent(),
+    components.GetFormComponent(),
+		components.GetTextFormComponent(),
+		components.GetDateFormComponent(),
+		components.GetDropDownFormComponent(),
+		components.GetCheckboxFormComponent(),
+		components.GetAddressFormComponent(),
+		components.GetEmailFormComponent(),
+		components.GetHiddenFormComponent(),
   }
 }

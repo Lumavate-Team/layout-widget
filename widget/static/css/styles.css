@@ -45,7 +45,7 @@
 }
 
 lumavate-nav-bar-item div {
-  flex-direction: row;
+  flex-direction: column;
 }
 
 a {
