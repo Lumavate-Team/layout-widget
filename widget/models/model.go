@@ -18,6 +18,7 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
+			InlineCss string
 			Padding int
 			DisplayBackgroundImage bool
 			BackgroundImage component_data.ImageStruct
@@ -35,6 +36,7 @@ type tmpLayoutStruct struct {
 		TemplateRowEnd string
 		TemplateColumnStart string
 		TemplateColumnEnd string
+		CssClass string
 		DisplayMode string
 	}
 }
@@ -44,17 +46,19 @@ type LayoutContainer struct {
 	TemplateRowEnd string
 	TemplateColumnStart string
 	TemplateColumnEnd string
+	CssClass string
 	DisplayMode string
 	Component component_data.ComponentData
 }
 
 func (this LayoutContainer) GetHtml() string {
 	return fmt.Sprintf(`
-    <div class="%v"
+    <div class="layout-%v %v"
 		style="position:relative;text-align:center;grid-area:%v/%v/%v/%v">
 				%v
 		</div>`,
 		this.DisplayMode,
+    this.CssClass,
     this.TemplateRowStart,
     this.TemplateColumnStart,
     this.TemplateRowEnd,
@@ -80,6 +84,7 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	lc.CssClass = tmp.ComponentData.CssClass
 	lc.DisplayMode = tmp.ComponentData.DisplayMode
 	lc.TemplateRowStart = tmp.ComponentData.TemplateRowStart
 	lc.TemplateRowEnd = tmp.ComponentData.TemplateRowEnd

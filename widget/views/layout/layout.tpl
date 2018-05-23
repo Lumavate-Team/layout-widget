@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>
-      Layout
-    </title>
+    <title>{{.data.InstanceName}}</title>
     <meta charset="utf-8">
     <base href="{{.WidgetUrlPrefix}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="description" content="HardingPoorman Layout Page">
+    <meta name="description" content="{{.data.InstanceName}}">
     <meta name="theme-color" content="#ffffff">
     <noscript>Javascript required for this site to work.</noscript>
 

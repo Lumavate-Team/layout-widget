@@ -27,22 +27,23 @@ func (this NavigationStruct) GetHtml() string {
 		if this.ComponentData.UseBackgroundImage != false {
 			style = style + fmt.Sprintf(`background-image:url('%v')`,this.ComponentData.Image.Preview)
 		}
+
 		if this.ComponentData.PageLink.Url != "" {
 			return fmt.Sprintf(`
-			<div class="nav-item nav-tile %v" onclick="navigate('%v')" style="%v"> </div>`,
+			<div class="layout-nav-item layout-nav-tile layout-%v" onclick="navigate('%v')" style="%v"> </div>`,
 				this.ComponentData.ImageScaling,
 				this.ComponentData.PageLink.Url,
 				style)
 		} else {
 			return fmt.Sprintf(`
-			<div class="nav-item nav-tile %v" style="%v"> </div>`,
+			<div class="layout-nav-item layout-nav-tile layout-%v" style="%v"> </div>`,
 				this.ComponentData.ImageScaling,
 				style)
 		}
 	} else {
 		if this.ComponentData.PageLink.Url != "" {
 			return fmt.Sprintf(`
-			<div class="nav-item" onclick="navigate('%v')" style="%v">
+			<div class="layout-nav-item" onclick="navigate('%v')" style="%v">
 						%v
 				</div>`,
 				this.ComponentData.Title,
@@ -50,7 +51,7 @@ func (this NavigationStruct) GetHtml() string {
 				this.ComponentData.Title)
 		} else {
 			return fmt.Sprintf(`
-			<div class="nav-item" onclick="navigate('%v')" style="%v">
+			<div class="layout-nav-item" onclick="navigate('%v')" style="%v">
 						%v
 				</div>`,
 				this.ComponentData.Title,

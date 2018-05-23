@@ -1,5 +1,5 @@
-<div class="starting">
-	<div id="tiles" class="grid">
+<div class="layout-starting">
+	<div id="tiles" class="layout-grid">
 		{{range $index, $element := .data.GridItems}}
 			{{ layoutHtml $element }}
 		{{end}}

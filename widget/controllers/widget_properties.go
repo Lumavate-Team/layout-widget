@@ -24,6 +24,8 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 * Optimal: Display during _optimal_ rendering on newer browsers supporting CSS Grid
 * Degraded: Display only during _degraded_ rendering (browsers that do **not** support CSS Grid)`
 
+  props = append(props, &properties.PropertyText{
+		&properties.PropertyBase{"cssClass", "", "", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
   props = append(props, &properties.PropertyDropdown{
 		&properties.PropertyBase{"displayMode", "", "", "Display Mode", displayHelp}, "both", displayOptions})
   props = append(props, &properties.PropertyText{
@@ -46,6 +48,9 @@ func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyCompone
 
 func (lp *LumavateProperties) GetAppComponent() *properties.Component {
   props := [] properties.PropertyType {}
+
+  props = append(props, &properties.PropertyTranslatedText{
+    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
 
   props = append(props, &properties.PropertyToggle{
     &properties.PropertyBase{"openNewWindow", "", "", "Open in New Window", ""}, false})
@@ -94,9 +99,6 @@ func (lp *LumavateProperties) GetAppComponent() *properties.Component {
   props = append(props, &properties.PropertyColor{
     &properties.PropertyBase{"backgroundColor", "", "", "Background Color", ""}, "#ffffff"})
 
-  props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
-
 	props = append(props, lp.GetLayoutProperties()...)
 	image := fmt.Sprintf("%v%v/static/images/application.svg", os.Getenv("WIDGET_URL_PREFIX"), os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"app", "", "app", "App", image, "App", props}
@@ -104,6 +106,9 @@ func (lp *LumavateProperties) GetAppComponent() *properties.Component {
 
 func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
   props := [] properties.PropertyType {}
+
+  props = append(props, &properties.PropertyTranslatedText{
+    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
 
   props = append(props, &properties.PropertyToggle{
     &properties.PropertyBase{"useBackgroundImage", "", "", "Use Background Image", ""}, false})
@@ -136,9 +141,6 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
 
   props = append(props, &properties.PropertyColor{
     &properties.PropertyBase{"backgroundColor", "", "", "Background Color", ""}, "#ffffff"})
-
-  props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
 
   props = append(props, &properties.PropertyPageLink{
     &properties.PropertyBase{"pageLink", "", "", "Page URL", ""}})
@@ -213,6 +215,8 @@ The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining widt
 ### Layout is based on CSS Grid.
 Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.asp" target="_blank">W3Schools</a> <a href="https://cssgridgarden.com/" target="_blank">CSS Grid Garden</a>`
 
+	var cssHelp string = `Defines custom CSS used within the Layout.  Use the defined css classes here to add custom styling to each grid item.`
+
   return [] properties.PropertyType {
     components.GetNavBarProperty(),
     components.GetNavBarItemsProperty(),
@@ -228,6 +232,8 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 			&properties.PropertyBase{"gridTemplateRows", "Grid", "Grid Layout", "Grid Row Template", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{
 			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+		&properties.PropertyText{
+			&properties.PropertyBase{"inlineCss", "CSS", "CSS", "Custom CSS", cssHelp}, "", properties.PropertyOptionsText{ReadOnly: false, Rows:5}},
     lp.GetGridItemsProperty(),
   }
 }

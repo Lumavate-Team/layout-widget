@@ -9,6 +9,11 @@ import (
 	"os"
 )
 
+func SafeCss(in string) (out template.CSS){
+	out = template.CSS(in)
+	return
+}
+
 func ComponentHtml(in component_data.ComponentData) (out template.HTML){
 	out = template.HTML(in.GetHtml())
 	return
@@ -24,6 +29,7 @@ func main() {
 	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX") + "lc","/lumavate-components/dist")
 	beego.AddFuncMap("componentHtml", ComponentHtml)
 	beego.AddFuncMap("layoutHtml", LayoutHtml)
+	beego.AddFuncMap("safeCss", SafeCss)
 	beego.Run()
 }
 

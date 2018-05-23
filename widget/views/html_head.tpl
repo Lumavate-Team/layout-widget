@@ -1,6 +1,6 @@
 <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
 <style>
-	.grid {
+	.layout-grid {
 		position:absolute;
 		height:100%;
 		width:100%;
@@ -10,7 +10,7 @@
 		grid-gap: {{.data.Padding}}px;
 	}
 	@supports not (grid-area: 1/1/1/1) {
-		.grid-item {
+		.layout-grid-item {
 			margin: {{.data.Padding}}px;
 		}
 	}
@@ -25,4 +25,5 @@
 		background-color: {{.data.BackgroundColor}};
 		{{ end }}
 	}
+	{{ safeCss .data.InlineCss}}
 </style>

@@ -36,7 +36,7 @@ func (this AppStruct) GetHtml() string {
 
 	data, _ := json.Marshal(this.ComponentData)
 	return fmt.Sprintf(`
-		<div class="nav-item nav-tile %v" style="%v" onclick='appNavigate(%s,event)' > </div>`,
+		<div class="layout-nav-item layout-nav-tile layout-%v" style="%v" onclick='appNavigate(%s,event)' > </div>`,
 		this.ComponentData.ImageScaling,
 		style,
 		data)

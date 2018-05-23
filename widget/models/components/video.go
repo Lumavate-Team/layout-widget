@@ -13,8 +13,8 @@ type VideoStruct struct {
 
 func (this VideoStruct) GetHtml() string {
 	return fmt.Sprintf(`
-		<div class="nav-item nav-tile">
-			<iframe class="video-frame" src="%v" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>
+		<div class="layout-nav-item layout-nav-tile">
+			<iframe class="layout-video-frame" src="%v" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>
 		</div>`,
 		this.ComponentData.Video)
 }
