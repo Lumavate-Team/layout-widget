@@ -44,6 +44,7 @@ type LayoutContainer struct {
 	TemplateColumnEnd string
 	DisplayMode string
 	Component component_data.ComponentData
+	FormItems components.FormStruct
 }
 
 func (this LayoutContainer) GetHtml() string {

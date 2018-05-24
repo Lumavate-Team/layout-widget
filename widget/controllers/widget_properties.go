@@ -138,7 +138,6 @@ func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
 		&properties.PropertyText{
 			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
     lp.GetGridItemsProperty(),
-    components.GetFormProperty(),
     components.GetFormItemsProperty(),
   }
 }
@@ -154,7 +153,6 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
     lp.GetVideoComponent(),
 		lp.GetTextComponent(),
     lp.GetGridFormComponent(),
-    components.GetFormComponent(),
 		components.GetTextFormComponent(),
 		components.GetDateFormComponent(),
 		components.GetDropDownFormComponent(),
