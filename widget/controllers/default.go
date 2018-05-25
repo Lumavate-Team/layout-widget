@@ -2,14 +2,14 @@ package controllers
 
 import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common"
+	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
   "encoding/json"
   "widget/models"
 	"os"
 	"fmt"
 	"strings"
-  "github.com/bitly/go-simplejson"
+  _"github.com/bitly/go-simplejson"
   "reflect"
-  "widget/models/components"
 )
 
 type MainController struct {
@@ -20,26 +20,19 @@ func (this *MainController) Get() {
   luma_response := models.LumavateRequest {}
   err := json.Unmarshal(this.LumavateGetData(), &luma_response)
 
-  data, err := simplejson.NewJson(this.LumavateGetData())
- 
-  fmt.Println(data)
-
   if err != nil {
     this.Abort("500")
   }
 
   luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
-  this.Data["formItems"] = luma_response.Payload.Data.FormItems
-  fmt.Println(luma_response.Payload.Data.FormItems)
 
-  for _, element := range luma_response.Payload.Data.GridItems {
-      if reflect.TypeOf(element.Component) == reflect.TypeOf(components.FormStruct{}) {
-        fmt.Println("IN IF STATEMNT")
-        element.FormItems.ComponentData.FormInputs.FormItems = luma_response.Payload.Data.FormItems
+  for i, element := range luma_response.Payload.Data.GridItems {
+      if reflect.TypeOf(element.Component) == reflect.TypeOf(component_data.FormStruct{}) {
+				var tmpForm component_data.FormStruct
+				tmpForm.FormItems = luma_response.Payload.Data.FormItems
+				luma_response.Payload.Data.GridItems[i].Component = tmpForm
       }
     }
-  
-
 
   this.Data["data"] = luma_response.Payload.Data
 	this.Data["dnsInfo"] = fmt.Sprintf("%s%s", os.Getenv("PROTO"), this.Ctx.Input.Host())

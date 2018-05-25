@@ -94,8 +94,6 @@ func (lp *LumavateProperties) GetGridFormComponent() *properties.Component {
   props := [] properties.PropertyType {}
   props = append(props, &properties.PropertyTranslatedText{
     &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
-  props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"text", "", "", "Text", ""}, "", properties.PropertyOptionsText{}})
   props = append(props, lp.GetLayoutProperties()...)
   image := fmt.Sprintf("%v%vstatic/images/video.svg", os.Getenv("BASE_URL"), os.Getenv("WIDGET_URL_PREFIX"))
   return &properties.Component{"form", "", "form", "Form", image, "Form", props}

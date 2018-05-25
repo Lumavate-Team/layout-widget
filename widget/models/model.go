@@ -18,11 +18,11 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
-	  Padding int
-	  GridTemplateColumns string
-	  GridTemplateRows string
-	  GridItems []LayoutContainer
-	  component_data.FormStruct
+			Padding int
+			GridTemplateColumns string
+			GridTemplateRows string
+			GridItems []LayoutContainer
+			component_data.FormStruct
     }
   }
 }
@@ -44,7 +44,6 @@ type LayoutContainer struct {
 	TemplateColumnEnd string
 	DisplayMode string
 	Component component_data.ComponentData
-	FormItems components.FormStruct
 }
 
 func (this LayoutContainer) GetHtml() string {
@@ -73,7 +72,7 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 			"navigation": reflect.TypeOf(components.NavigationStruct{}),
 			"video": reflect.TypeOf(components.VideoStruct{}),
 			"text": reflect.TypeOf(components.TextStruct{}),
-			"form": reflect.TypeOf(components.FormStruct{}),
+			"form": reflect.TypeOf(component_data.FormStruct{}),
 		})
 	if err != nil {
 		return err
@@ -121,7 +120,7 @@ func UnmarshalCustomValue(data []byte, typeField, resultField string, customType
 			}
 			return newObj, nil
 		case "form":
-			var newObj components.FormStruct
+			var newObj component_data.FormStruct
 			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
 				return nil, err
 			}
