@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>
-      Layout
-    </title>
+    <title>{{.data.InstanceName}}</title>
     <meta charset="utf-8">
     <base href="{{.WidgetUrlPrefix}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="description" content="HardingPoorman Layout Page">
+    <meta name="description" content="{{.data.InstanceName}}">
     <meta name="theme-color" content="#ffffff">
     <noscript>Javascript required for this site to work.</noscript>
 
@@ -26,43 +24,21 @@
     <link href="https://fonts.googleapis.com/css?family=Teko:400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">  
-		<style>
-			.grid {
-				position:absolute;
-				height:100%;
-				width:100%;
-				display:grid;
-				grid-template-columns: {{.data.GridTemplateColumns}};
-				grid-template-rows: {{.data.GridTemplateRows}};
-				grid-gap: {{ .data.Padding }}px;
-			}
-			@supports not (grid-area: 1/1/1/1) {
-				.grid-item {
-					margin: {{ .data.Padding }}px;
-				}
-			}
-		</style>
 		{{.HtmlHead}}
   </head>
   <body>
-  <div class="body-wrapper">
-    {{.HeaderContent}}
-        {{.LayoutContent}}
-
+		<div class="body-wrapper">
+			{{.HeaderContent}}
+      {{.LayoutContent}}
     </div>
     {{.FooterContent}}
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
-
-    <script type="text/javascript" src="/iot/sw-register.min.js"></script>
-    <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
-    <script type="text/javascript" src="lc/lumavate-components.js"></script>
     {{.Scripts}}
 
     <script type="text/javascript">
       $(function(){
 
         var setWrapperHeight = function(){
-          $(".body-wrapper").css("height", window.innerHeight-58);
+          $(".body-wrapper").css("height", window.innerHeight-56);
         }
 
         var resizeTimer;

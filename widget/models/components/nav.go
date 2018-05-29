@@ -8,7 +8,9 @@ import (
 type NavigationStruct struct {
 	ComponentData struct {
 		Title string
+		UseBackgroundColor bool
 		BackgroundColor string
+		UseBackgroundImage bool
 		Image component_data.ImageStruct
 		ImageScaling string
 		PageLink component_data.PageLinkStruct
@@ -16,37 +18,44 @@ type NavigationStruct struct {
 }
 
 func (this NavigationStruct) GetHtml() string {
+	var style = ""
+	if this.ComponentData.UseBackgroundColor != false {
+		style = fmt.Sprintf(`background-color:%v;`,this.ComponentData.BackgroundColor)
+	}
+
 	if this.ComponentData.Image.Preview != "" {
+		if this.ComponentData.UseBackgroundImage != false {
+			style = style + fmt.Sprintf(`background-image:url('%v')`,this.ComponentData.Image.Preview)
+		}
+
 		if this.ComponentData.PageLink.Url != "" {
 			return fmt.Sprintf(`
-			<div class="nav-item nav-tile %v" onclick="navigate('%v')" style="background-image:url('%v');background-color:%v"> </div>`,
+			<div class="layout-nav-item layout-nav-tile layout-%v" onclick="navigate('%v')" style="%v"> </div>`,
 				this.ComponentData.ImageScaling,
 				this.ComponentData.PageLink.Url,
-				this.ComponentData.Image.Preview,
-				this.ComponentData.BackgroundColor)
+				style)
 		} else {
 			return fmt.Sprintf(`
-			<div class="nav-item nav-tile %v" style="background-image:url('%v');background-color:%v"> </div>`,
+			<div class="layout-nav-item layout-nav-tile layout-%v" style="%v"> </div>`,
 				this.ComponentData.ImageScaling,
-				this.ComponentData.Image.Preview,
-				this.ComponentData.BackgroundColor)
+				style)
 		}
 	} else {
 		if this.ComponentData.PageLink.Url != "" {
 			return fmt.Sprintf(`
-			<div class="nav-item" onclick="navigate('%v')" style="background-color:%v">
+			<div class="layout-nav-item" onclick="navigate('%v')" style="%v">
 						%v
 				</div>`,
 				this.ComponentData.Title,
-				this.ComponentData.BackgroundColor,
+				style,
 				this.ComponentData.Title)
 		} else {
 			return fmt.Sprintf(`
-			<div class="nav-item" onclick="navigate('%v')" style="background-color:%v">
+			<div class="layout-nav-item" onclick="navigate('%v')" style="%v">
 						%v
 				</div>`,
 				this.ComponentData.Title,
-				this.ComponentData.BackgroundColor,
+				style,
 				this.ComponentData.Title)
 		}
 	}

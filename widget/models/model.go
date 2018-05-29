@@ -18,7 +18,11 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
+			InlineCss string
 			Padding int
+			DisplayBackgroundImage bool
+			BackgroundImage component_data.ImageStruct
+			BackgroundColor string
 			GridTemplateColumns string
 			GridTemplateRows string
 			GridItems []LayoutContainer
@@ -33,6 +37,7 @@ type tmpLayoutStruct struct {
 		TemplateRowEnd string
 		TemplateColumnStart string
 		TemplateColumnEnd string
+		CssClass string
 		DisplayMode string
 	}
 }
@@ -42,17 +47,19 @@ type LayoutContainer struct {
 	TemplateRowEnd string
 	TemplateColumnStart string
 	TemplateColumnEnd string
+	CssClass string
 	DisplayMode string
 	Component component_data.ComponentData
 }
 
 func (this LayoutContainer) GetHtml() string {
 	return fmt.Sprintf(`
-    <div class="%v"
+    <div class="layout-%v %v"
 		style="position:relative;text-align:center;grid-area:%v/%v/%v/%v">
 				%v
 		</div>`,
 		this.DisplayMode,
+    this.CssClass,
     this.TemplateRowStart,
     this.TemplateColumnStart,
     this.TemplateRowEnd,
@@ -69,6 +76,7 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 	// Instantiate proper Component
 	component, err := UnmarshalCustomValue(data, "componentType", "componentData",
 		map[string]reflect.Type{
+			"app": reflect.TypeOf(components.AppStruct{}),
 			"navigation": reflect.TypeOf(components.NavigationStruct{}),
 			"video": reflect.TypeOf(components.VideoStruct{}),
 			"text": reflect.TypeOf(components.TextStruct{}),
@@ -78,6 +86,7 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	lc.CssClass = tmp.ComponentData.CssClass
 	lc.DisplayMode = tmp.ComponentData.DisplayMode
 	lc.TemplateRowStart = tmp.ComponentData.TemplateRowStart
 	lc.TemplateRowEnd = tmp.ComponentData.TemplateRowEnd
@@ -100,35 +109,12 @@ func UnmarshalCustomValue(data []byte, typeField, resultField string, customType
 	}
 
 	typeName := m[typeField].(string)
-	switch typeName {
-		case "navigation":
-			var newObj components.NavigationStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
-		case "video":
-			var newObj components.VideoStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
-		case "text":
-			var newObj components.TextStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
-		case "form":
-			var newObj component_data.FormStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
+	var newObj component_data.ComponentData
+	if ty, found := customTypes[typeName]; found {
+		newObj = reflect.New(ty).Interface().(component_data.ComponentData)
+		if err = json.Unmarshal(valueBytes, &newObj); err != nil {
+			return nil, err
 		}
-	//var newObj component_data.ComponentData
-	//if ty, found := customTypes[typeName]; found {
-	//	newObj = reflect.New(ty).Interface().(component_data.ComponentData)
-	//}
-	return nil, nil
+	}
+	return newObj, nil
 }
