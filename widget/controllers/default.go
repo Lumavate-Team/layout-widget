@@ -27,7 +27,7 @@ func (this *MainController) Get() {
   luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
 
   for i, element := range luma_response.Payload.Data.GridItems {
-      if reflect.TypeOf(element.Component) == reflect.TypeOf(component_data.FormStruct{}) {
+      if reflect.TypeOf(element.Component).Elem().Name() == "FormStruct" {
 				var tmpForm component_data.FormStruct
 				tmpForm.FormItems = luma_response.Payload.Data.FormItems
 				luma_response.Payload.Data.GridItems[i].Component = tmpForm
