@@ -107,35 +107,12 @@ func UnmarshalCustomValue(data []byte, typeField, resultField string, customType
 	}
 
 	typeName := m[typeField].(string)
-	switch typeName {
-		case "app":
-			var newObj components.AppStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
-		case "navigation":
-			var newObj components.NavigationStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
-		case "video":
-			var newObj components.VideoStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
-		case "text":
-			var newObj components.TextStruct
-			if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-				return nil, err
-			}
-			return newObj, nil
+	var newObj component_data.ComponentData
+	if ty, found := customTypes[typeName]; found {
+		newObj = reflect.New(ty).Interface().(component_data.ComponentData)
+		if err = json.Unmarshal(valueBytes, &newObj); err != nil {
+			return nil, err
 		}
-	//var newObj component_data.ComponentData
-	//if ty, found := customTypes[typeName]; found {
-	//	newObj = reflect.New(ty).Interface().(component_data.ComponentData)
-	//}
-	return nil, nil
+	}
+	return newObj, nil
 }
