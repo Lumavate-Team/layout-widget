@@ -229,6 +229,8 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
   return [] properties.PropertyType {
     components.GetNavBarProperty(),
     components.GetNavBarItemsProperty(),
+    &properties.PropertyText{
+      &properties.PropertyBase{"formAction", "Actions", "Microservices", "Registration URI", ""}, "", properties.PropertyOptionsText{}},
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
 		&properties.PropertyToggle{
