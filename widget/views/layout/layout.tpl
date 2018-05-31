@@ -33,6 +33,7 @@
     </div>
     {{.FooterContent}}
     {{.Scripts}}
+    {{.FormScript}}
 
     <script type="text/javascript">
       $(function(){

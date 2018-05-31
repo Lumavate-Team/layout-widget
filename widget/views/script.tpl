@@ -1,4 +1,4 @@
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/iot/sw-register.min.js"></script>
 <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
 <script type="text/javascript" src="lc/lumavate-components.js"></script>

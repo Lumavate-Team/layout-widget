@@ -18,6 +18,7 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
+      		FormAction string `json:"formAction"`
 			InlineCss string
 			Padding int
 			DisplayBackgroundImage bool
