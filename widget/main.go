@@ -4,7 +4,6 @@ import (
 	_ "widget/routers"
 	models "widget/models"
 	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
-	common_controller "github.com/Lumavate-Team/lumavate-go-common"
 	"github.com/astaxie/beego"
   	"html/template"
 	"os"
@@ -31,7 +30,6 @@ func main() {
 	beego.AddFuncMap("componentHtml", ComponentHtml)
 	beego.AddFuncMap("layoutHtml", LayoutHtml)
 	beego.AddFuncMap("safeCss", SafeCss)
-	beego.ErrorController(&common_controller.ErrorController{})
 	beego.Run()
 }
 
