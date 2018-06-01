@@ -24,17 +24,12 @@ func (this *FormController) Post() {
 		fmt.Println(err)
 	}
 
-	fmt.Println(register)
-
 	b, _ := json.Marshal(&register)
 	q := fmt.Sprintf("%v/%v",
 		luma_response.Payload.Data.FormAction,
 		"persons")
 	resp, status := this.LumavatePost(q, b, true)
 
-	fmt.Println(q)
-
-	fmt.Println(status)
 	if status != "200" {
 		var json_resp map[string]interface{}
 		json.Unmarshal(resp, &json_resp)
