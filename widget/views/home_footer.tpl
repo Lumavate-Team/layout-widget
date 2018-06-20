@@ -1,3 +1,1 @@
-<footer>
-	{{ componentHtml .data.NavBar}}
-</footer>
+{{ componentHtml .data.NavBar}}

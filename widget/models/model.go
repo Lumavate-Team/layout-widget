@@ -26,6 +26,10 @@ type LumavateRequest struct {
 			BackgroundColor string
 			GridTemplateColumns string
 			GridTemplateRows string
+      GridRowGap string
+      GridColumnGap string
+      JustifyContent string
+      AlignContent string
 			GridItems []LayoutContainer
 			component_data.FormStruct
     }
@@ -40,6 +44,8 @@ type tmpLayoutStruct struct {
 		TemplateColumnEnd string
 		CssClass string
 		DisplayMode string
+    JustifySelf string
+    AlignSelf string
 	}
 }
 
@@ -50,17 +56,21 @@ type LayoutContainer struct {
 	TemplateColumnEnd string
 	CssClass string
 	DisplayMode string
+  JustifySelf string
+  AlignSelf string
 	Component component_data.ComponentData
 }
 
 func (this LayoutContainer) GetHtml() string {
 	return fmt.Sprintf(`
     <div class="layout-%v %v"
-		style="position:relative;text-align:center;grid-area:%v/%v/%v/%v">
+    style="position:relative;justify-self:%v;align-self:%v;grid-area:%v/%v/%v/%v">
 				%v
 		</div>`,
 		this.DisplayMode,
     this.CssClass,
+    this.JustifySelf,
+    this.AlignSelf,
     this.TemplateRowStart,
     this.TemplateColumnStart,
     this.TemplateRowEnd,
@@ -93,6 +103,8 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 	lc.TemplateRowEnd = tmp.ComponentData.TemplateRowEnd
 	lc.TemplateColumnStart = tmp.ComponentData.TemplateColumnStart
 	lc.TemplateColumnEnd = tmp.ComponentData.TemplateColumnEnd
+	lc.JustifySelf = tmp.ComponentData.JustifySelf
+	lc.AlignSelf = tmp.ComponentData.AlignSelf
 	lc.Component = component
 
 	return nil

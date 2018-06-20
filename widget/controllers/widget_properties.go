@@ -19,6 +19,13 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	displayOptions["optimal"] = "Optimal"
 	displayOptions["degraded"] = "Degraded"
 
+	justifyOptions := make(map[string]string)
+	justifyOptions["start"] = "Start"
+	justifyOptions["end"] = "End"
+	justifyOptions["center"] = "Center"
+	justifyOptions["stretch"] = "Stretch"
+
+
 	var displayHelp string = `Denotes when this item should be displayed:
 * Both: Display during _optimal_ & _degraded_ rendering (default)
 * Optimal: Display during _optimal_ rendering on newer browsers supporting CSS Grid
@@ -36,6 +43,10 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 		&properties.PropertyBase{"templateColumnStart", "", "", "Grid Column Start", "This is the Column at which the grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"templateColumnEnd", "", "", "Grid Column End", "This is the Column at which the grid item will end"}, "", properties.PropertyOptionsText{Rows: 3}})
+  props = append(props, &properties.PropertyDropdown{
+		&properties.PropertyBase{"justifySelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
+  props = append(props, &properties.PropertyDropdown{
+		&properties.PropertyBase{"alignSelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
 	return props
 }
 
@@ -225,6 +236,16 @@ The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining widt
 Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.asp" target="_blank">W3Schools</a> <a href="https://cssgridgarden.com/" target="_blank">CSS Grid Garden</a>`
 
 	var cssHelp string = `Defines custom CSS used within the Layout.  Use the defined css classes here to add custom styling to each grid item.`
+	// Background Image Scaling Options
+	justifyOptions := make(map[string]string)
+	justifyOptions["start"] = "Start"
+	justifyOptions["end"] = "End"
+	justifyOptions["center"] = "Center"
+	justifyOptions["stretch"] = "Stretch"
+	justifyOptions["space-around"] = "Space Around"
+	justifyOptions["space-between"] = "Space Between"
+	justifyOptions["space-evenly"] = "Space Evenly"
+
 
   return [] properties.PropertyType {
     components.GetNavBarProperty(),
@@ -243,6 +264,14 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 			&properties.PropertyBase{"gridTemplateRows", "Grid", "Grid Layout", "Grid Row Template", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{
 			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+		&properties.PropertyText{
+      &properties.PropertyBase{"gridRowGap", "Grid", "Grid Layout", "Grid Row Gap", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+		&properties.PropertyText{
+      &properties.PropertyBase{"gridColumnGap", "Grid", "Grid Layout", "Grid Column Gap", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+    &properties.PropertyDropdown{
+		  &properties.PropertyBase{"justifyContent", "Grid", "Grid Layout", "Grid Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
+	  &properties.PropertyDropdown{
+		  &properties.PropertyBase{"alignContent", "Grid", "Grid Layout", "Grid Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
 		&properties.PropertyText{
 			&properties.PropertyBase{"inlineCss", "CSS", "CSS", "Custom CSS", cssHelp}, "", properties.PropertyOptionsText{ReadOnly: false, Rows:5}},
     lp.GetGridItemsProperty(),

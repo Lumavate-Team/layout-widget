@@ -23,35 +23,44 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Teko:400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">  
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
 		{{.HtmlHead}}
   </head>
   <body>
-		<div class="body-wrapper">
-			{{.HeaderContent}}
-      {{.LayoutContent}}
+    <div class="container">
+      <div class="wrapper">
+
+      {{if .HeaderContent }}
+        <div class="header">
+          {{ .HeaderContent }}
+        </div>
+      {{end}}
+
+      {{if .data.GridTemplateColumns}}
+        <div class="content" style="
+        display:grid;
+        grid-template-columns:{{safeCss .data.GridTemplateColumns}};
+        grid-template-rows:{{safeCss .data.GridTemplateRows}};
+        grid-row-gap:{{safeCss .data.GridRowGap}};
+        grid-column-gap:{{safeCss .data.GridColumnGap}};
+        justify-content:{{safeCss .data.JustifyContent}};
+        align-content:{{safeCss .data.AlignContent}}">
+          {{.LayoutContent}}
+        </div>
+      {{ else }}
+        <div class="content">
+          {{.LayoutContent}}
+        </div>
+      {{end}}
+      {{if .FooterContent }}
+        <div class="footer">
+          {{.FooterContent}}
+        </div>
+      {{end}}
+
+      </div>
     </div>
-    {{.FooterContent}}
     {{.Scripts}}
     {{.FormScript}}
-
-    <script type="text/javascript">
-      $(function(){
-
-        var setWrapperHeight = function(){
-          $(".body-wrapper").css("height", window.innerHeight-56);
-        }
-
-        var resizeTimer;
-        $(window).on("resize orientationchange", function(e){
-          clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(function() {
-
-            setWrapperHeight();
-          },250);
-        });
-        setWrapperHeight();
-      });
-    </script>
   </body>
 </html>

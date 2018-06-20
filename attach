@@ -2,7 +2,5 @@ docker service update \
  --detach \
  --with-registry-auth \
  --mount-add type=bind,source="$(pwd)"/widget,destination=/go/src/widget \
- --mount-add type=bind,source=/home/john/code/go-properties,destination=/go/src/github.com/Lumavate-Team/go-properties \
- --mount-add type=bind,source=/home/john/code/widgets/ims-components,destination=/go/src/github.com/Lumavate-Team/ims-go-components \
- gowidget-42
+ layoutwidget-71
 #--mount-add type=bind,source=/home/john/code/go-signer,destination=/go/src/github.com/Lumavate-Team/go-signer \
