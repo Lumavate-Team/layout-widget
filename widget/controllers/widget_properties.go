@@ -258,8 +258,6 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 			&properties.PropertyBase{"displayBackgroundImage", "General", "Settings", "Display Background Image", ""}, false},
 		&properties.PropertyImage{
 			&properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
-		&properties.PropertyNumeric{
-			&properties.PropertyBase{"padding", "Grid", "Grid Layout", "Padding", "Denotes the number of pixels to be used for padding between grid items"}, 0, properties.PropertyOptionsNumeric{ Min: 0, Max: 32}},
 		&properties.PropertyText{
 			&properties.PropertyBase{"gridTemplateRows", "Grid", "Grid Layout", "Grid Row Template", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{

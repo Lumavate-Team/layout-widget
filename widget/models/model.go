@@ -20,7 +20,6 @@ type LumavateRequest struct {
       widget.CommonWidgetStruct
       		FormAction string `json:"formAction"`
 			InlineCss string
-			Padding int
 			DisplayBackgroundImage bool
 			BackgroundImage component_data.ImageStruct
 			BackgroundColor string
