@@ -1,15 +1,13 @@
 DOCKER_IP=`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`
 
-mkdir -p ~/dev/ims-contact-go-widget/widget/views/layout/ && cp ~/dev/ims-go-components/static/views/*.tpl $_
-
 docker run -d --rm \
 --volume "$(pwd)"/widget:/go/src/widget:rw \
---volume "$(pwd)"/../ims-go-components:/go/src/github.com/Lumavate-Team/ims-go-components \
--e "PUBLIC_KEY=mIhuoMJh0jbA5W4pUUNK" \
--e "PRIVATE_KEY=LXycaMpw5BzgfhsS4ydNxGzJ36qMnPrQHI8u2x3wQCZCZyGtZ4sOQbkEWnHmVchZEa79a0Y3xK7IKCymSLkugyabbJUGuXfyuoKL" \
+--mount type=bind,src=/Users/ericseidel/Dev/lumavate-go-common,dst=/go/src/github.com/Lumavate-Team/lumavate-go-common \
+-e "PUBLIC_KEY=VJX65E11HOvZN6a6C8dD" \
+-e "PRIVATE_KEY=k19DUvXLczz1XLuepLawkIimOBXLw2g619D34dh3bjLmmfPD1LdWtkRKErUhKoa2lZvdQ0I0I8RlGZTy0nfcAsxCDUmCTtEA9poN" \
 -e "BASE_URL=http://$DOCKER_IP" \
--e "WIDGET_URL_PREFIX=/ic/contact/" \
+-e "WIDGET_URL_PREFIX=/ic/widget4/" \
 -e "PROTO=http://" \
---name=ims-contact-widget \
--p 8091:8080 \
-ims-contact-go-widget:latest
+--name=layout-widget \
+-p 8094:8080 \
+layout-widget:latest
