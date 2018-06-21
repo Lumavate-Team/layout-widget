@@ -63,7 +63,7 @@ type LayoutContainer struct {
 func (this LayoutContainer) GetHtml() string {
 	return fmt.Sprintf(`
     <div class="layout-%v %v"
-    style="position:relative;justify-self:%v;align-self:%v;grid-area:%v/%v/%v/%v">
+    style="justify-self:%v;align-self:%v;grid-area:%v/%v/%v/%v">
 				%v
 		</div>`,
 		this.DisplayMode,
