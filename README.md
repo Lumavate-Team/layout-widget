@@ -1,6 +1,6 @@
 ## Layout Widget
 
-The Layout Widget uses the base GO widget scaffolding to create a widget that utilizes CSS Grid allowing the designer to place the following components in a responsive grid layout:
+The Layout Widget uses the base GO widget found in https://github.com/Lumavate-Team/widget-base-go scaffolding to create a widget that utilizes CSS Grid allowing the designer to place the following components in a responsive grid layout:
 
 * App - Deeplinks to a native app, or redirects to the appropriate app store if the app is not installed
 * Video - Embeds a YouTube video player to the video URL provided
