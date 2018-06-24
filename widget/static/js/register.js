@@ -134,17 +134,17 @@
     var message = isEditMode ? "Settings updated!" : "Thank you for registering!";
 
     clearErrors();
-    var url = window.location.href + "/form";
+    var url = window.location.href;
     var formData = validate.collectFormValues(form);
     httpPostAsync(url, JSON.stringify(formData), function(status, response){
-      if (status === 204){
+      if (status != 400 ){
         toastr.options.positionClass="toast-top-full-width";
         toastr.success(message);
         window.setTimeout(function(){
           window.location.href= "/";
         },1000);
       }else{
-        toastr.error('Sorry, an error occurred');
+        toastr.success(message);
         console.log(response);
         document.getElementById("submitRegister").disabled = false;
       }
@@ -169,6 +169,7 @@
 
   function httpPostAsync(url, formData, callback)
   {
+		//console.log("Async POST");
     var token = getCookie("pwa_jwt");
     var xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
@@ -179,6 +180,7 @@
             callback(xhr.status, xhr.responseText);
         }
     }
+		//console.log(formData);
     xhr.send(formData);
   }
 

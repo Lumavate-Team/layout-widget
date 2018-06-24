@@ -230,7 +230,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
     components.GetNavBarProperty(),
     components.GetNavBarItemsProperty(),
     &properties.PropertyText{
-      &properties.PropertyBase{"formAction", "Actions", "Microservices", "Registration URI", ""}, "", properties.PropertyOptionsText{}},
+      &properties.PropertyBase{"formAction", "Actions", "Microservices", "Form Action URI", ""}, "", properties.PropertyOptionsText{}},
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
 		&properties.PropertyToggle{
@@ -264,7 +264,6 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
     lp.GetGridFormComponent(),
 		components.GetTextFormComponent(),
 		components.GetDateFormComponent(),
-		components.GetDropDownFormComponent(),
 		components.GetCheckboxFormComponent(),
 		components.GetAddressFormComponent(),
 		components.GetEmailFormComponent(),
