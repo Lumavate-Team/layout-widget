@@ -1,3 +1,23 @@
+## Layout Widget
+
+The Layout Widget uses the base GO widget scaffolding to create a widget that utilizes CSS Grid allowing the designer to place the following components in a responsive grid layout:
+
+* App - Deeplinks to a native app, or redirects to the appropriate app store if the app is not installed
+* Video - Embeds a YouTube video player to the video URL provided
+* Text - Custom text to be displayed on the screen
+* Form - Adds the form, as defined on the Form tab, to the Grid
+* Navigation - Allows the designer to choose an image which will be used to navigate to a seperate widget, or custom URL
+
+## Structure
+
+The base GO scaffolding uses the following file structure for eas of use:
+
+* widget/routers/router.go - Defines all routes used within the widget & associates each route to the appropriate Controller
+* widget/controllers - Directory which contains all teh controllers for hte widget.  The default Controller can be found in default.go
+* widget/controllers/widget_properties.go - Houses all the defined properties that will be returned when the Studio issues the call to the discover/properties endpoint
+* widget/models/model.go - Defines the model for each request.
+* widget/models/components - Directory that contains the structure, models, & methods for all components used within the widget
+
 ## Build the container containers
 
 Clone the repo, and from the root directory of the repo, run the following command.
