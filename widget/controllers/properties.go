@@ -9,7 +9,8 @@ type PropertyController struct {
 }
 
 func (this *PropertyController) Get() {
-  lp := &LumavateProperties{}
+  lp := &LumavateProperties{this.Ctx.Request.Header.Get("Authorization"), []*DynamicComponent{}}
+  lp.LoadAllComponentSets()
   this.Data["json"] = lp.GetAllProperties()
   this.ServeJSON()
 }

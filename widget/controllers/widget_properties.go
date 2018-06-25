@@ -3,12 +3,11 @@ package controllers
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   components "github.com/Lumavate-Team/lumavate-go-common/components"
+  "github.com/Lumavate-Team/lumavate-go-common/api_core"
+	"encoding/json"
   "os"
   "fmt"
 )
-
-type LumavateProperties struct {
-}
 
 func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props := [] properties.PropertyType {}
@@ -22,7 +21,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	justifyOptions := make(map[string]string)
 	justifyOptions["start"] = "Start"
 	justifyOptions["end"] = "End"
-	justifyOptions["center"] = "Center"
+  justifyOptions["center"] = "Center"
 	justifyOptions["stretch"] = "Stretch"
 
 
@@ -249,6 +248,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 
   return [] properties.PropertyType {
     components.GetNavBarProperty(),
+    lp.GetFooterProperty(),
     components.GetNavBarItemsProperty(),
     &properties.PropertyText{
       &properties.PropertyBase{"formAction", "Actions", "Microservices", "Registration URI", ""}, "", properties.PropertyOptionsText{}},
@@ -296,5 +296,76 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
 		components.GetAddressFormComponent(),
 		components.GetEmailFormComponent(),
 		components.GetHiddenFormComponent(),
+  }
+}
+
+type LumavateProperties struct {
+	Authorization string
+	Components [] *DynamicComponent
+}
+
+type DynamicComponent struct {
+	Icon string
+	Label string
+	Type string
+	Tags [] string
+	Template string
+	Properties [] properties.PropertyType
+}
+
+type ComponentSetRequest struct {
+	Payload struct {
+		Data [] struct {
+			CurrentVersion struct {
+				DirectIncludes [] string
+				Distribution string
+				Components [] *DynamicComponent
+			}
+		}
+	}
+}
+
+func (self *LumavateProperties) LoadAllComponentSets() {
+	lr := api_core.LumavateRequest{self.Authorization}
+	body, _ := lr.Get("/pwa/v1/component-sets")
+	cs := ComponentSetRequest{}
+	json.Unmarshal(body, &cs)
+
+  foo := string(body[:])
+  fmt.Println(foo)
+
+	for _, set := range cs.Payload.Data {
+		for _, component := range set.CurrentVersion.Components {
+			self.Components = append(self.Components, component)
+		}
+	}
+}
+
+func (self *LumavateProperties) GetComponentsWithTag(tag string) []*properties.Component {
+  components := [] *properties.Component {}
+
+  for _, component := range self.Components {
+    for _, t := range component.Tags {
+      if t == tag {
+        components = append(components, &properties.Component{tag, "", component.Type, "", component.Icon, component.Label, component.Properties})
+      }
+    }
+  }
+
+  return components
+}
+
+
+func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponent {
+  components := self.GetComponentsWithTag("footer")
+
+  if len(components) == 0 {
+    return nil
+  }
+
+
+  return &properties.PropertyComponent{
+    &properties.PropertyBase{"footer", "Footer", "Footer Settings", "Footer Data", ""},
+    components[0], properties.PropertyOptionsComponent{[] string {"footer"}, components },
   }
 }

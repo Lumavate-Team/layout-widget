@@ -38,6 +38,7 @@ func (this *MainController) Get() {
     }
 
   this.Data["data"] = luma_response.Payload.Data
+
 	this.Data["dnsInfo"] = fmt.Sprintf("%s%s", os.Getenv("PROTO"), this.Ctx.Input.Host())
 
   this.Data["ShowHeader"]=true
