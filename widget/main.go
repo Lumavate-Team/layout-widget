@@ -14,6 +14,11 @@ func SafeCss(in string) (out template.CSS){
 	return
 }
 
+func SafeHtml(in string) (out template.HTML){
+	out = template.HTML(in)
+	return
+}
+
 func ComponentHtml(in component_data.ComponentData) (out template.HTML){
 	out = template.HTML(in.GetHtml())
 	return
@@ -30,6 +35,7 @@ func main() {
 	beego.AddFuncMap("componentHtml", ComponentHtml)
 	beego.AddFuncMap("layoutHtml", LayoutHtml)
 	beego.AddFuncMap("safeCss", SafeCss)
+	beego.AddFuncMap("safeHtml", SafeHtml)
 	beego.Run()
 }
 

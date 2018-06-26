@@ -52,9 +52,9 @@
           {{.LayoutContent}}
         </div>
       {{end}}
-      {{if .FooterContent }}
+      {{if .data.Footer.ComponentHtml }}
         <div class="footer">
-          {{.FooterContent}}
+          {{safeHtml .data.Footer.ComponentHtml}}
         </div>
       {{end}}
 

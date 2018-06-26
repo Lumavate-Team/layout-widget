@@ -26,7 +26,6 @@
 
 .footer {
   min-height:48px;
-  background-color: gray;
 }
 
 @supports (grid-area: 1/1/1/1) {

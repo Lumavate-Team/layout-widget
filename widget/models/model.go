@@ -14,11 +14,16 @@ type MainController struct {
   common.LumavateController
 }
 
+type Footer struct {
+  ComponentHtml string
+  ComponentType string
+}
+
 type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
-      		FormAction string `json:"formAction"`
+      FormAction string `json:"formAction"`
 			InlineCss string
 			DisplayBackgroundImage bool
 			BackgroundImage component_data.ImageStruct
@@ -31,6 +36,8 @@ type LumavateRequest struct {
       AlignContent string
 			GridItems []LayoutContainer
 			component_data.FormStruct
+      Footer Footer
+      DirectIncludes []string `json:"__directIncludes"`
     }
   }
 }

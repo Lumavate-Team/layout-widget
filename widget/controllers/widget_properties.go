@@ -331,9 +331,6 @@ func (self *LumavateProperties) LoadAllComponentSets() {
 	cs := ComponentSetRequest{}
 	json.Unmarshal(body, &cs)
 
-  foo := string(body[:])
-  fmt.Println(foo)
-
 	for _, set := range cs.Payload.Data {
 		for _, component := range set.CurrentVersion.Components {
 			self.Components = append(self.Components, component)
