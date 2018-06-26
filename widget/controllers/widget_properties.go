@@ -52,7 +52,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent(), lp.GetAppComponent(), lp.GetGridFormComponent()} },
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent(), lp.GetAppComponent(), lp.GetGridFormComponent()} },
   }
 }
 
@@ -363,9 +363,8 @@ func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponen
     return nil
   }
 
-
   return &properties.PropertyComponent{
     &properties.PropertyBase{"footer", "Footer", "Footer Settings", "Footer Data", ""},
-    components[0], properties.PropertyOptionsComponent{[] string {"footer"}, components },
+    components[0], &properties.PropertyOptionsComponent{[] string {"footer"}, components },
   }
 }
