@@ -2,7 +2,6 @@ package controllers
 
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
-  components "github.com/Lumavate-Team/lumavate-go-common/components"
   "github.com/Lumavate-Team/lumavate-go-common/api_core"
 	"encoding/json"
   "os"
@@ -52,54 +51,8 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetTextComponent()} },
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"text"}, [] *properties.Component { lp.GetTextComponent()} },
   }
-}
-
-func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
-  props := [] properties.PropertyType {}
-
-  props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
-
-  props = append(props, &properties.PropertyToggle{
-    &properties.PropertyBase{"useBackgroundImage", "", "", "Use Background Image", ""}, false})
-
-  props = append(props, &properties.PropertyImage{
-    &properties.PropertyBase{"image", "", "", "Background Image", ""}})
-
-	// Background Image Scaling Options
-	options := make(map[string]string)
-	options["fill"] = "Fill"
-	options["fit"] = "Fit"
-	options["stretch"] = "Stretch"
-	options["repeat"] = "Repeat"
-
-	var scaleHelp string = `Denotes how the image will appear as the grid item scales.
-
-* Fill: Sets _background-size_ to "cover" & will fill the entire width/height even if the image cannot be fully displayed
-
-* Fit: Sets _background-size_ to "contain" & will fit the image inside the item maintaining aspect ratio so the entire image may be displayed
-
-* Stretch: Sets _background-size_ to "100% 100%", stretching the image to the exact size of the item disregarding aspect ratios
-
-* Repeat: Sets _background-repeat_ to repeat the image starting from the center of the item`
-
-  props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", scaleHelp}, "fill",options})
-
-  props = append(props, &properties.PropertyToggle{
-    &properties.PropertyBase{"useBackgroundColor", "", "", "Use Background Color", ""}, false})
-
-  props = append(props, &properties.PropertyColor{
-    &properties.PropertyBase{"backgroundColor", "", "", "Background Color", ""}, "#ffffff"})
-
-  props = append(props, &properties.PropertyPageLink{
-    &properties.PropertyBase{"pageLink", "", "", "Page URL", ""}})
-
-	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v/static/images/navigation.svg", os.Getenv("WIDGET_URL_PREFIX"), os.Getenv("PUBLIC_KEY"))
-  return &properties.Component{"navigation", "", "navigation", "Navigation", image, "Navigation", props}
 }
 
 func (lp *LumavateProperties) GetTextComponent() *properties.Component {
@@ -151,7 +104,6 @@ The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining widt
 ### Layout is based on CSS Grid.
 Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.asp" target="_blank">W3Schools</a> <a href="https://cssgridgarden.com/" target="_blank">CSS Grid Garden</a>`
 
-	var cssHelp string = `Defines custom CSS used within the Layout.  Use the defined css classes here to add custom styling to each grid item.`
 	// Background Image Scaling Options
 	justifyOptions := make(map[string]string)
 	justifyOptions["start"] = "Start"
@@ -164,11 +116,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 
 
   return [] properties.PropertyType {
-    components.GetNavBarProperty(),
     lp.GetFooterProperty(),
-    components.GetNavBarItemsProperty(),
-    &properties.PropertyText{
-      &properties.PropertyBase{"formAction", "Actions", "Microservices", "Registration URI", ""}, "", properties.PropertyOptionsText{}},
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
 		&properties.PropertyToggle{
@@ -187,10 +135,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 		  &properties.PropertyBase{"justifyContent", "Grid", "Grid Layout", "Grid Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
 	  &properties.PropertyDropdown{
 		  &properties.PropertyBase{"alignContent", "Grid", "Grid Layout", "Grid Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
-		&properties.PropertyText{
-			&properties.PropertyBase{"inlineCss", "CSS", "CSS", "Custom CSS", cssHelp}, "", properties.PropertyOptionsText{ReadOnly: false, Rows:5}},
     lp.GetGridItemsProperty(),
-    components.GetFormItemsProperty(),
   }
 }
 
@@ -199,17 +144,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
  */
 func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
-    components.GetNavBarComponent(),
-    components.GetNavBarItemComponent(),
-    lp.GetNavigationComponent(),
 		lp.GetTextComponent(),
-		components.GetTextFormComponent(),
-		components.GetDateFormComponent(),
-		components.GetDropDownFormComponent(),
-		components.GetCheckboxFormComponent(),
-		components.GetAddressFormComponent(),
-		components.GetEmailFormComponent(),
-		components.GetHiddenFormComponent(),
   }
 }
 
