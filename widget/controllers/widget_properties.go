@@ -4,8 +4,6 @@ import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   "github.com/Lumavate-Team/lumavate-go-common/api_core"
 	"encoding/json"
-  "os"
-  "fmt"
 )
 
 func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
@@ -34,13 +32,13 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props = append(props, &properties.PropertyDropdown{
 		&properties.PropertyBase{"displayMode", "", "", "Display Mode", displayHelp}, "both", displayOptions})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateRowStart", "", "", "Grid Row Start", "This is Row at which this grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
+		&properties.PropertyBase{"templateRowStart", "", "", "Body Row Start", "This is Row at which this grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateRowEnd", "", "", "Grid Row End", "This is the Row at which this grid item will end"}, "", properties.PropertyOptionsText{ Rows: 3 }})
+		&properties.PropertyBase{"templateRowEnd", "", "", "Body Row End", "This is the Row at which this grid item will end"}, "", properties.PropertyOptionsText{ Rows: 3 }})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateColumnStart", "", "", "Grid Column Start", "This is the Column at which the grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
+		&properties.PropertyBase{"templateColumnStart", "", "", "Body Column Start", "This is the Column at which the grid item will start"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"templateColumnEnd", "", "", "Grid Column End", "This is the Column at which the grid item will end"}, "", properties.PropertyOptionsText{Rows: 3}})
+		&properties.PropertyBase{"templateColumnEnd", "", "", "Body Column End", "This is the Column at which the grid item will end"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyDropdown{
 		&properties.PropertyBase{"justifySelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
   props = append(props, &properties.PropertyDropdown{
@@ -48,36 +46,19 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	return props
 }
 
-func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
-  return &properties.PropertyComponents {
-    &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"text"}, [] *properties.Component { lp.GetTextComponent()} },
-  }
-}
-
-func (self *LumavateProperties) Foobar() *properties.PropertyComponents {
+func (self *LumavateProperties) GetBodyItems() *properties.PropertyComponents {
   components := self.GetComponentsWithTag("grid")
-
 
   if len(components) == 0 {
     return nil
   }
-
-  return &properties.PropertyComponents{
-    &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"grid"}, components },
+  for _, component := range components {
+    component.Properties = append(component.Properties,self.GetLayoutProperties()...)
   }
-}
-
-func (lp *LumavateProperties) GetTextComponent() *properties.Component {
-  props := [] properties.PropertyType {}
-  props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
-  props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"text", "", "", "Text", ""}, "", properties.PropertyOptionsText{}})
-	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v/static/images/text.svg", os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
-  return &properties.Component{"text", "", "text", "Text", image, "Text", props}
+  return &properties.PropertyComponents{
+    &properties.PropertyBase{"bodyItems", "Body", "Body Items", "Body Items", ""},
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"body"}, components },
+  }
 }
 
 /*
@@ -138,18 +119,18 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 		&properties.PropertyImage{
 			&properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
 		&properties.PropertyText{
-			&properties.PropertyBase{"gridTemplateRows", "Grid", "Grid Layout", "Grid Row Template", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+			&properties.PropertyBase{"bodyTemplateRows", "Body", "Body Layout", "Body Row Template", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{
-			&properties.PropertyBase{"gridTemplateColumns", "Grid", "Grid Layout", "Grid Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+			&properties.PropertyBase{"bodyTemplateColumns", "Body", "Body Layout", "Body Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{
-      &properties.PropertyBase{"gridRowGap", "Grid", "Grid Layout", "Grid Row Gap", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+      &properties.PropertyBase{"bodyRowGap", "Body", "Body Layout", "Body Row Gap", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
 		&properties.PropertyText{
-      &properties.PropertyBase{"gridColumnGap", "Grid", "Grid Layout", "Grid Column Gap", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
+      &properties.PropertyBase{"bodyColumnGap", "Body", "Body Layout", "Body Column Gap", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
     &properties.PropertyDropdown{
-		  &properties.PropertyBase{"justifyContent", "Grid", "Grid Layout", "Grid Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
+		  &properties.PropertyBase{"justifyContent", "Body", "Body Layout", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
 	  &properties.PropertyDropdown{
-		  &properties.PropertyBase{"alignContent", "Grid", "Grid Layout", "Grid Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
-    lp.Foobar(),
+		  &properties.PropertyBase{"alignContent", "Body", "Body Layout", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
+    lp.GetBodyItems(),
   }
 }
 
@@ -158,7 +139,6 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
  */
 func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
-		lp.GetTextComponent(),
   }
 }
 
@@ -214,7 +194,6 @@ func (self *LumavateProperties) GetComponentsWithTag(tag string) []*properties.C
 
   return components
 }
-
 
 func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponent {
   components := self.GetComponentsWithTag("footer")

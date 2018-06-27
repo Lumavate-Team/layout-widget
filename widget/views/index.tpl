@@ -1,4 +1,4 @@
-{{range $index, $element := .data.GridItems}}
+{{range $index, $element := .data.BodyItems}}
   {{ layoutHtml $element }}
 {{end}}
 

@@ -43,13 +43,13 @@
         </div>
       {{end}}
 
-      {{if .data.GridTemplateColumns}}
+      {{if .data.BodyTemplateColumns}}
         <div class="content" style="
         display:grid;
-        grid-template-columns:{{safeCss .data.GridTemplateColumns}};
-        grid-template-rows:{{safeCss .data.GridTemplateRows}};
-        grid-row-gap:{{safeCss .data.GridRowGap}};
-        grid-column-gap:{{safeCss .data.GridColumnGap}};
+        grid-template-columns:{{safeCss .data.BodyTemplateColumns}};
+        grid-template-rows:{{safeCss .data.BodyTemplateRows}};
+        grid-row-gap:{{safeCss .data.BodyRowGap}};
+        grid-column-gap:{{safeCss .data.BodyColumnGap}};
         justify-content:{{safeCss .data.JustifyContent}};
         align-content:{{safeCss .data.AlignContent}}">
           {{.LayoutContent}}

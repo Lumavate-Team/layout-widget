@@ -4,7 +4,6 @@ import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common"
   "encoding/json"
   "widget/models"
-	"fmt"
 	"strings"
   _"github.com/bitly/go-simplejson"
 )
@@ -21,10 +20,8 @@ func (this *MainController) Get() {
     this.Abort("500")
   }
 
-  fmt.Println(luma_response.Payload.Data.DirectIncludes)
 
   this.Data["data"] = luma_response.Payload.Data
-  fmt.Println(this.Data["data"])
 
 	this.Layout = "layout/layout.tpl"
 
