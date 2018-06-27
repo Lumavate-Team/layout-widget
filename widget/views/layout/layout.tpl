@@ -31,6 +31,7 @@
     <style>
 	    {{ safeCss .data.InlineCss}}
     </style>
+		{{.HtmlHead}}
   </head>
   <body>
     <div class="container">
