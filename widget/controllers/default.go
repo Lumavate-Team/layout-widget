@@ -22,26 +22,19 @@ func (this *MainController) Get() {
     this.Abort("500")
   }
 
-  luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
-
   fmt.Println(luma_response.Payload.Data.DirectIncludes)
 
   this.Data["data"] = luma_response.Payload.Data
   fmt.Println(this.Data["data"])
-	this.Data["dnsInfo"] = fmt.Sprintf("%s%s", os.Getenv("PROTO"), this.Ctx.Input.Host())
-
-  this.Data["ShowHeader"]=true
 
 	this.Layout = "layout/layout.tpl"
+
 	mode := this.GetString("mode")
+
 	if strings.ToLower(mode) != "degraded" {
 		this.TplName = "index.tpl"
 	} else {
 		this.TplName = "degraded.tpl"
 	}
-
-  //this.LayoutSections["HtmlHead"] = "html_head.tpl"
-  this.LayoutSections["Scripts"] = "script.tpl"
-  //this.LayoutSections["FooterContent"] = "home_footer.tpl"
 
 }
