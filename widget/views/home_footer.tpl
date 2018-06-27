@@ -1,1 +1,0 @@
-{{ componentHtml .data.NavBar}}
