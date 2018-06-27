@@ -28,9 +28,11 @@ func (this *MainController) Get() {
 	mode := this.GetString("mode")
 
 	if strings.ToLower(mode) != "degraded" {
-		this.TplName = "index.tpl"
+	  this.TplName = "index.tpl"
+    this.Data["degraded"] = false
 	} else {
-		this.TplName = "degraded.tpl"
+    this.Data["degraded"] = true
+	  this.TplName = "degraded.tpl"
 	}
 
 }

@@ -43,22 +43,28 @@
         </div>
       {{end}}
 
-      {{if .data.BodyTemplateColumns}}
-        <div class="content" style="
-        display:grid;
-        grid-template-columns:{{safeCss .data.BodyTemplateColumns}};
-        grid-template-rows:{{safeCss .data.BodyTemplateRows}};
-        grid-row-gap:{{safeCss .data.BodyRowGap}};
-        grid-column-gap:{{safeCss .data.BodyColumnGap}};
-        justify-content:{{safeCss .data.JustifyContent}};
-        align-content:{{safeCss .data.AlignContent}}">
-          {{.LayoutContent}}
-        </div>
+      {{ if not .degraded }}
+        {{ if .data.BodyTemplateColumns }}
+          <div class="content" style="
+          display:grid;
+          grid-template-columns:{{safeCss .data.BodyTemplateColumns}};
+          grid-template-rows:{{safeCss .data.BodyTemplateRows}};
+          grid-row-gap:{{safeCss .data.BodyRowGap}};
+          grid-column-gap:{{safeCss .data.BodyColumnGap}};
+          justify-content:{{safeCss .data.JustifyContent}};
+          align-content:{{safeCss .data.AlignContent}}">
+            {{.LayoutContent}}
+          </div>
+        {{ else }}
+          <div class="content">
+            {{.LayoutContent}}
+          </div>
+        {{end}}
       {{ else }}
         <div class="content">
           {{.LayoutContent}}
         </div>
-      {{end}}
+      {{ end }}
       {{if .data.Footer.ComponentHtml }}
         <div class="footer">
           {{safeHtml .data.Footer.ComponentHtml}}
