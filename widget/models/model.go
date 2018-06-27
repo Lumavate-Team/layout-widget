@@ -23,7 +23,6 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
-      FormAction string `json:"formAction"`
 			InlineCss string
 			DisplayBackgroundImage bool
 			BackgroundImage component_data.ImageStruct
@@ -35,7 +34,6 @@ type LumavateRequest struct {
       JustifyContent string
       AlignContent string
 			GridItems []LayoutContainer
-			component_data.FormStruct
       Footer Footer
       DirectIncludes []string `json:"__directIncludes"`
     }
@@ -84,7 +82,7 @@ func (this LayoutContainer) GetHtml() string {
     this.Component.GetHtml())
 }
 
-func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
+func (lc *LayoutContainer) UnmarshalJSONFOO(data []byte) error {
 	//Extract LayoutProperties from underlying Component
 	var tmp tmpLayoutStruct
 	if err := json.Unmarshal(data, &tmp); err != nil {
@@ -93,15 +91,15 @@ func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
 	// Instantiate proper Component
 	component, err := UnmarshalCustomValue(data, "componentType", "componentData",
 		map[string]reflect.Type{
-			"app": reflect.TypeOf(components.AppStruct{}),
-			"navigation": reflect.TypeOf(components.NavigationStruct{}),
-			"video": reflect.TypeOf(components.VideoStruct{}),
 			"text": reflect.TypeOf(components.TextStruct{}),
-			"form": reflect.TypeOf(component_data.FormStruct{}),
 		})
 	if err != nil {
 		return err
 	}
+
+  fmt.Println("---------------------")
+  fmt.Println(tmp.ComponentData.DisplayMode)
+  fmt.Println("---------------------")
 
 	lc.CssClass = tmp.ComponentData.CssClass
 	lc.DisplayMode = tmp.ComponentData.DisplayMode

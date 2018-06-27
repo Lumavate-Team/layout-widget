@@ -67,7 +67,5 @@
 
       </div>
     </div>
-    {{.Scripts}}
-    {{.FormScript}}
   </body>
 </html>

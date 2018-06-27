@@ -55,6 +55,20 @@ func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyCompone
   }
 }
 
+func (self *LumavateProperties) Foobar() *properties.PropertyComponents {
+  components := self.GetComponentsWithTag("grid")
+
+
+  if len(components) == 0 {
+    return nil
+  }
+
+  return &properties.PropertyComponents{
+    &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"grid"}, components },
+  }
+}
+
 func (lp *LumavateProperties) GetTextComponent() *properties.Component {
   props := [] properties.PropertyType {}
   props = append(props, &properties.PropertyTranslatedText{
@@ -135,7 +149,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 		  &properties.PropertyBase{"justifyContent", "Grid", "Grid Layout", "Grid Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
 	  &properties.PropertyDropdown{
 		  &properties.PropertyBase{"alignContent", "Grid", "Grid Layout", "Grid Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
-    lp.GetGridItemsProperty(),
+    lp.Foobar(),
   }
 }
 
