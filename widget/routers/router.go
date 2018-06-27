@@ -13,7 +13,6 @@ func init() {
     beego.Router("/:ic/:url_ref/discover/health", &controllers.HealthController{})
     beego.Router("/:ic/:url_ref/discover/properties", &controllers.PropertyController{})
     beego.Router("/:ic/:url_ref/discover/components", &controllers.ComponentController{})
-    beego.Router("/:ic/:url_ref/:wid/form", &controllers.FormController{})
     beego.InsertFilter("/:ic/:url_ref/" + os.Getenv("PUBLIC_KEY") + "/static/*", beego.BeforeStatic, cors.Allow(&cors.Options{
     AllowOrigins:     []string{"*"},
     AllowMethods:     []string{"GET", "OPTIONS"},
