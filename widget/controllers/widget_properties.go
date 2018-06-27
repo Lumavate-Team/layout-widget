@@ -52,7 +52,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent(), lp.GetGridFormComponent()} },
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetTextComponent(), lp.GetGridFormComponent()} },
   }
 }
 
@@ -100,22 +100,6 @@ func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
 	props = append(props, lp.GetLayoutProperties()...)
 	image := fmt.Sprintf("%v%v/static/images/navigation.svg", os.Getenv("WIDGET_URL_PREFIX"), os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"navigation", "", "navigation", "Navigation", image, "Navigation", props}
-}
-
-func (lp *LumavateProperties) GetVideoComponent() *properties.Component {
-	var videoHelp = `This should be the URL to the desired YouTube video, using the "embed" URL provided by YouTube & containing any relevant querystring parameters
-
-### Example
-
-https://www.youtube.com/embed/[VIDEOID]`
-  props := [] properties.PropertyType {}
-  props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
-  props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"video", "", "", "Video URL", videoHelp}, "https://www.youtube.com/embed/VIDEO_ID", properties.PropertyOptionsText{}})
-	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v/static/images/video.svg", os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
-  return &properties.Component{"video", "", "video", "Video", image, "Video", props}
 }
 
 func (lp *LumavateProperties) GetTextComponent() *properties.Component {
@@ -227,7 +211,6 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
     components.GetNavBarComponent(),
     components.GetNavBarItemComponent(),
     lp.GetNavigationComponent(),
-    lp.GetVideoComponent(),
 		lp.GetTextComponent(),
     lp.GetGridFormComponent(),
 		components.GetTextFormComponent(),
