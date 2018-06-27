@@ -52,66 +52,8 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent(), lp.GetAppComponent(), lp.GetGridFormComponent()} },
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetVideoComponent(), lp.GetTextComponent(), lp.GetGridFormComponent()} },
   }
-}
-
-func (lp *LumavateProperties) GetAppComponent() *properties.Component {
-  props := [] properties.PropertyType {}
-
-  props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
-
-  props = append(props, &properties.PropertyToggle{
-    &properties.PropertyBase{"openNewWindow", "", "", "Open in New Window", ""}, false})
-
-  props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"appLink", "", "", "App Link", "Defines the **_deep link_** into the application"}, "", properties.PropertyOptionsText{}})
-
-  props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"apple", "", "", "iTunes Store", "Link to the application in iTunes"}, "", properties.PropertyOptionsText{}})
-
-  props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"google", "", "", "Google Play", "Link to the application in Google Play"}, "", properties.PropertyOptionsText{}})
-
-  props = append(props, &properties.PropertyText{
-		&properties.PropertyBase{"microsoft", "", "", "Windows Store", "Link to the application in the Windows Store"}, "", properties.PropertyOptionsText{}})
-
-  props = append(props, &properties.PropertyToggle{
-    &properties.PropertyBase{"useBackgroundImage", "", "", "Use Background Image", ""}, false})
-
-  props = append(props, &properties.PropertyImage{
-    &properties.PropertyBase{"image", "", "", "Background Image", ""}})
-
-	// Background Image Scaling Options
-	options := make(map[string]string)
-	options["fill"] = "Fill"
-	options["fit"] = "Fit"
-	options["stretch"] = "Stretch"
-	options["repeat"] = "Repeat"
-
-	var scaleHelp string = `Denotes how the image will appear as the grid item scales.
-
-* Fill: Sets _background-size_ to "cover" & will fill the entire width/height even if the image cannot be fully displayed
-
-* Fit: Sets _background-size_ to "contain" & will fit the image inside the item maintaining aspect ratio so the entire image may be displayed
-
-* Stretch: Sets _background-size_ to "100% 100%", stretching the image to the exact size of the item disregarding aspect ratios
-
-* Repeat: Sets _background-repeat_ to repeat the image starting from the center of the item`
-
-  props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"imageScaling", "", "", "Background Image Scaling", scaleHelp}, "fill",options})
-
-  props = append(props, &properties.PropertyToggle{
-    &properties.PropertyBase{"useBackgroundColor", "", "", "Use Background Color", ""}, false})
-
-  props = append(props, &properties.PropertyColor{
-    &properties.PropertyBase{"backgroundColor", "", "", "Background Color", ""}, "#ffffff"})
-
-	props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v/static/images/application.svg", os.Getenv("WIDGET_URL_PREFIX"), os.Getenv("PUBLIC_KEY"))
-  return &properties.Component{"app", "", "app", "App", image, "App", props}
 }
 
 func (lp *LumavateProperties) GetNavigationComponent() *properties.Component {
@@ -284,7 +226,6 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
     components.GetNavBarComponent(),
     components.GetNavBarItemComponent(),
-    lp.GetAppComponent(),
     lp.GetNavigationComponent(),
     lp.GetVideoComponent(),
 		lp.GetTextComponent(),
