@@ -2,14 +2,12 @@ package controllers
 
 import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common"
-	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
   "encoding/json"
   "widget/models"
 	"os"
 	"fmt"
 	"strings"
   _"github.com/bitly/go-simplejson"
-  "reflect"
 )
 
 type MainController struct {
@@ -27,16 +25,6 @@ func (this *MainController) Get() {
   luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
 
   fmt.Println(luma_response.Payload.Data.DirectIncludes)
-  this.LayoutSections["FormScript"] = ""
-
-  for i, element := range luma_response.Payload.Data.GridItems {
-      if reflect.TypeOf(element.Component).Elem().Name() == "FormStruct" {
-				var tmpForm component_data.FormStruct
-				tmpForm.FormItems = luma_response.Payload.Data.FormItems
-				luma_response.Payload.Data.GridItems[i].Component = tmpForm
-        this.LayoutSections["FormScript"] = "register_script.tpl"
-      }
-    }
 
   this.Data["data"] = luma_response.Payload.Data
   fmt.Println(this.Data["data"])
