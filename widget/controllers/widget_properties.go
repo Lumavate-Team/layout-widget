@@ -52,7 +52,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 func (lp *LumavateProperties) GetGridItemsProperty() *properties.PropertyComponents {
   return &properties.PropertyComponents {
     &properties.PropertyBase{"gridItems", "Grid", "Grid Items", "Grid Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetTextComponent(), lp.GetGridFormComponent()} },
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"navigation", "video", "text", "app", "form"}, [] *properties.Component {lp.GetNavigationComponent(), lp.GetTextComponent()} },
   }
 }
 
@@ -111,15 +111,6 @@ func (lp *LumavateProperties) GetTextComponent() *properties.Component {
 	props = append(props, lp.GetLayoutProperties()...)
 	image := fmt.Sprintf("%v%v/static/images/text.svg", os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
   return &properties.Component{"text", "", "text", "Text", image, "Text", props}
-}
-
-func (lp *LumavateProperties) GetGridFormComponent() *properties.Component {
-  props := [] properties.PropertyType {}
-  props = append(props, &properties.PropertyTranslatedText{
-    &properties.PropertyBase{"title", "", "", "Title", ""}, "", properties.PropertyOptionsText{}})
-  props = append(props, lp.GetLayoutProperties()...)
-	image := fmt.Sprintf("%v%v/static/images/form.svg", os.Getenv("WIDGET_URL_PREFIX"),os.Getenv("PUBLIC_KEY"))
-  return &properties.Component{"form", "", "form", "Form", image, "Form", props}
 }
 
 /*
@@ -212,7 +203,6 @@ func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
     components.GetNavBarItemComponent(),
     lp.GetNavigationComponent(),
 		lp.GetTextComponent(),
-    lp.GetGridFormComponent(),
 		components.GetTextFormComponent(),
 		components.GetDateFormComponent(),
 		components.GetDropDownFormComponent(),
