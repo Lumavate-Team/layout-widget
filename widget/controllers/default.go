@@ -4,7 +4,6 @@ import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common"
   "encoding/json"
   "widget/models"
-	"os"
 	"fmt"
 	"strings"
   _"github.com/bitly/go-simplejson"
