@@ -4,7 +4,6 @@ import (
 	common "github.com/Lumavate-Team/lumavate-go-common"
 	widget "github.com/Lumavate-Team/lumavate-go-common/models"
 	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
-	components "widget/models/components"
 	"fmt"
 	"encoding/json"
 	"reflect"
@@ -62,7 +61,7 @@ type LayoutContainer struct {
 	DisplayMode string
   JustifySelf string
   AlignSelf string
-	Component component_data.ComponentData
+	ComponentHtml string
 }
 
 func (this LayoutContainer) GetHtml() string {
@@ -79,7 +78,7 @@ func (this LayoutContainer) GetHtml() string {
     this.TemplateColumnStart,
     this.TemplateRowEnd,
     this.TemplateColumnEnd,
-    this.Component.GetHtml())
+		this.ComponentHtml)
 }
 
 func (lc *LayoutContainer) UnmarshalJSONFOO(data []byte) error {
@@ -89,13 +88,13 @@ func (lc *LayoutContainer) UnmarshalJSONFOO(data []byte) error {
 		return err
 	}
 	// Instantiate proper Component
-	component, err := UnmarshalCustomValue(data, "componentType", "componentData",
-		map[string]reflect.Type{
-			"text": reflect.TypeOf(components.TextStruct{}),
-		})
-	if err != nil {
-		return err
-	}
+	//component, err := UnmarshalCustomValue(data, "componentType", "componentData",
+	//	map[string]reflect.Type{
+	//		"text": reflect.TypeOf(components.TextStruct{}),
+	//	})
+	//if err != nil {
+	//	return err
+	//}
 
   fmt.Println("---------------------")
   fmt.Println(tmp.ComponentData.DisplayMode)
@@ -109,7 +108,7 @@ func (lc *LayoutContainer) UnmarshalJSONFOO(data []byte) error {
 	lc.TemplateColumnEnd = tmp.ComponentData.TemplateColumnEnd
 	lc.JustifySelf = tmp.ComponentData.JustifySelf
 	lc.AlignSelf = tmp.ComponentData.AlignSelf
-	lc.Component = component
+	//lc.Component = component
 
 	return nil
 }
