@@ -4,6 +4,7 @@ import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   "github.com/Lumavate-Team/lumavate-go-common/api_core"
 	"encoding/json"
+  "fmt"
 )
 
 func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
@@ -22,8 +23,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	justifyOptions["stretch"] = "Stretch"
 
 
-	var displayHelp string = `Denotes when this item should be displayed:
-* Both: Display during _optimal_ & _degraded_ rendering (default)
+	var displayHelp string = `Denotes when this item should be displayed: * Both: Display during _optimal_ & _degraded_ rendering (default)
 * Optimal: Display during _optimal_ rendering on newer browsers supporting CSS Grid
 * Degraded: Display only during _degraded_ rendering (browsers that do **not** support CSS Grid)`
 
@@ -44,21 +44,6 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props = append(props, &properties.PropertyDropdown{
 		&properties.PropertyBase{"alignSelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
 	return props
-}
-
-func (self *LumavateProperties) GetBodyItems() *properties.PropertyComponents {
-  components := self.GetComponentsWithTag("grid")
-
-  if len(components) == 0 {
-    return nil
-  }
-  for _, component := range components {
-    component.Properties = append(component.Properties,self.GetLayoutProperties()...)
-  }
-  return &properties.PropertyComponents{
-    &properties.PropertyBase{"bodyItems", "Body", "Body Items", "Body Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"body"}, components },
-  }
 }
 
 /*
@@ -195,11 +180,35 @@ func (self *LumavateProperties) GetComponentsWithTag(tag string) []*properties.C
   return components
 }
 
+func (self *LumavateProperties) GetBodyItems() *properties.PropertyComponents {
+
+  components := self.GetComponentsWithTag("body")
+
+  if len(components) == 0 {
+    return &properties.PropertyComponents{
+    &properties.PropertyBase{"bodyItems", "Body", "Body Items", "Body Items", ""},
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
+  }
+  }
+
+  for _, component := range components {
+    component.Properties = append(component.Properties,self.GetLayoutProperties()...)
+  }
+  return &properties.PropertyComponents{
+    &properties.PropertyBase{"bodyItems", "Body", "Body Items", "Body Items", ""},
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"body"}, components },
+  }
+}
+
+
 func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponent {
   components := self.GetComponentsWithTag("footer")
 
   if len(components) == 0 {
-    return nil
+    return &properties.PropertyComponent{
+      &properties.PropertyBase{"footer", "Footer", "Footer Settings", "Footer Data", ""},
+      components[0], &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
+    }
   }
 
   return &properties.PropertyComponent{
