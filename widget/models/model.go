@@ -1,10 +1,10 @@
 package models
 
 import (
-	common "github.com/Lumavate-Team/lumavate-go-common"
-	widget "github.com/Lumavate-Team/lumavate-go-common/models"
-	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
-	"fmt"
+  common "github.com/Lumavate-Team/lumavate-go-common"
+  widget "github.com/Lumavate-Team/lumavate-go-common/models"
+  component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
+  "fmt"
 )
 
 type MainController struct {
@@ -20,17 +20,17 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
-			InlineCss string
-			DisplayBackgroundImage bool
-			BackgroundImage component_data.ImageStruct
-			BackgroundColor string
-			BodyTemplateColumns string
-			BodyTemplateRows string
+      InlineCss string
+      DisplayBackgroundImage bool
+      BackgroundImage component_data.ImageStruct
+      BackgroundColor string
+      BodyTemplateColumns string
+      BodyTemplateRows string
       BodyRowGap string
       BodyColumnGap string
       JustifyContent string
       AlignContent string
-			BodyItems []LayoutContainer
+      BodyItems []LayoutContainer
       Footer Footer
       DirectIncludes []string `json:"__directIncludes"`
     }
@@ -39,31 +39,31 @@ type LumavateRequest struct {
 
 type LayoutContainer struct {
   ComponentData struct {
-	  TemplateRowStart string
-	  TemplateRowEnd string
-	  TemplateColumnStart string
-	  TemplateColumnEnd string
-	  CssClass string
-	  DisplayMode string
+    TemplateRowStart string
+    TemplateRowEnd string
+    TemplateColumnStart string
+    TemplateColumnEnd string
+    CssClass string
+    DisplayMode string
     JustifySelf string
     AlignSelf string
   }
-	ComponentHtml string
+  ComponentHtml string
 }
 
 func (this LayoutContainer) GetHtml() string {
-	return fmt.Sprintf(`
-    <div class="layout-%v %v"
-    style="justify-self:%v;align-self:%v;grid-area:%v/%v/%v/%v">
-				%v
-		</div>`,
-		this.ComponentData.DisplayMode,
-    this.ComponentData.CssClass,
-    this.ComponentData.JustifySelf,
-    this.ComponentData.AlignSelf,
-    this.ComponentData.TemplateRowStart,
-    this.ComponentData.TemplateColumnStart,
-    this.ComponentData.TemplateRowEnd,
-    this.ComponentData.TemplateColumnEnd,
-		this.ComponentHtml)
+  return fmt.Sprintf(`
+  <div class="layout-%v %v"
+  style="justify-self:%v;align-self:%v;grid-area:%v/%v/%v/%v">
+  %v
+  </div>`,
+  this.ComponentData.DisplayMode,
+  this.ComponentData.CssClass,
+  this.ComponentData.JustifySelf,
+  this.ComponentData.AlignSelf,
+  this.ComponentData.TemplateRowStart,
+  this.ComponentData.TemplateColumnStart,
+  this.ComponentData.TemplateRowEnd,
+  this.ComponentData.TemplateColumnEnd,
+  this.ComponentHtml)
 }

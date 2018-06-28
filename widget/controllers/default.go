@@ -4,7 +4,7 @@ import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common"
   "encoding/json"
   "widget/models"
-	"strings"
+  "strings"
   _"github.com/bitly/go-simplejson"
 )
 
@@ -23,16 +23,16 @@ func (this *MainController) Get() {
 
   this.Data["data"] = luma_response.Payload.Data
 
-	this.Layout = "layout/layout.tpl"
+  this.Layout = "layout/layout.tpl"
 
-	mode := this.GetString("mode")
+  mode := this.GetString("mode")
 
-	if strings.ToLower(mode) != "degraded" {
-	  this.TplName = "index.tpl"
+  if strings.ToLower(mode) != "degraded" {
+    this.TplName = "index.tpl"
     this.Data["degraded"] = false
-	} else {
+  } else {
     this.Data["degraded"] = true
-	  this.TplName = "degraded.tpl"
-	}
+    this.TplName = "degraded.tpl"
+  }
 
 }

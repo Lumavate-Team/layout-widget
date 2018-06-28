@@ -4,7 +4,6 @@ import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   "github.com/Lumavate-Team/lumavate-go-common/api_core"
 	"encoding/json"
-  "fmt"
 )
 
 func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
@@ -23,9 +22,7 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
 	justifyOptions["stretch"] = "Stretch"
 
 
-	var displayHelp string = `Denotes when this item should be displayed: * Both: Display during _optimal_ & _degraded_ rendering (default)
-* Optimal: Display during _optimal_ rendering on newer browsers supporting CSS Grid
-* Degraded: Display only during _degraded_ rendering (browsers that do **not** support CSS Grid)`
+	var displayHelp string = `Denotes when this item should be displayed: * Both: Display during _optimal_ & _degraded_ rendering (default) * Optimal: Display during _optimal_ rendering on newer browsers supporting CSS Grid * Degraded: Display only during _degraded_ rendering (browsers that do **not** support CSS Grid)`
 
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"cssClass", "", "", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
@@ -120,53 +117,54 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 }
 
 /*
- * Returns all components for the widget
- */
+* Returns all components for the widget
+*/
 func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
   return [] *properties.Component {
   }
 }
 
 type LumavateProperties struct {
-	Authorization string
-	Components [] *DynamicComponent
+  Authorization string
+  Components [] *DynamicComponent
 }
 
 type DynamicComponent struct {
-	Icon string
-	Label string
-	Type string
-	Tags [] string
-	Template string
-	Properties [] properties.PropertyType
+  Icon string
+  Label string
+  Type string
+  Tags [] string
+  Template string
+  Properties [] properties.PropertyType
 }
 
 type ComponentSetRequest struct {
-	Payload struct {
-		Data [] struct {
-			CurrentVersion struct {
-				DirectIncludes [] string
-				Distribution string
-				Components [] *DynamicComponent
-			}
-		}
-	}
+  Payload struct {
+    Data [] struct {
+      CurrentVersion struct {
+        DirectIncludes [] string
+        Distribution string
+        Components [] *DynamicComponent
+      }
+    }
+  }
 }
 
 func (self *LumavateProperties) LoadAllComponentSets() {
-	lr := api_core.LumavateRequest{self.Authorization}
-	body, _ := lr.Get("/pwa/v1/component-sets")
-	cs := ComponentSetRequest{}
-	json.Unmarshal(body, &cs)
+  lr := api_core.LumavateRequest{self.Authorization}
+  body, _ := lr.Get("/pwa/v1/component-sets")
+  cs := ComponentSetRequest{}
+  json.Unmarshal(body, &cs)
 
-	for _, set := range cs.Payload.Data {
-		for _, component := range set.CurrentVersion.Components {
-			self.Components = append(self.Components, component)
-		}
-	}
+  for _, set := range cs.Payload.Data {
+    for _, component := range set.CurrentVersion.Components {
+      self.Components = append(self.Components, component)
+    }
+  }
 }
 
 func (self *LumavateProperties) GetComponentsWithTag(tag string) []*properties.Component {
+
   components := [] *properties.Component {}
 
   for _, component := range self.Components {
@@ -186,22 +184,23 @@ func (self *LumavateProperties) GetBodyItems() *properties.PropertyComponents {
 
   if len(components) == 0 {
     return &properties.PropertyComponents{
-    &properties.PropertyBase{"bodyItems", "Body", "Body Items", "Body Items", ""},
-    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
-  }
+      &properties.PropertyBase{"bodyItems", "Body", "Body Items", "Body Items", ""},
+      [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
+    }
   }
 
   for _, component := range components {
     component.Properties = append(component.Properties,self.GetLayoutProperties()...)
   }
+
   return &properties.PropertyComponents{
     &properties.PropertyBase{"bodyItems", "Body", "Body Items", "Body Items", ""},
     [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"body"}, components },
   }
 }
 
-
 func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponent {
+
   components := self.GetComponentsWithTag("footer")
 
   if len(components) == 0 {
