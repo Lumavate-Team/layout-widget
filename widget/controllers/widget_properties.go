@@ -37,9 +37,9 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props = append(props, &properties.PropertyText{
 		&properties.PropertyBase{"templateColumnEnd", "", "", "Body Column End", "This is the Column at which the grid item will end"}, "", properties.PropertyOptionsText{Rows: 3}})
   props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"justifySelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
+		&properties.PropertyBase{"alignSelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
   props = append(props, &properties.PropertyDropdown{
-		&properties.PropertyBase{"alignSelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
+		&properties.PropertyBase{"justifySelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
 	return props
 }
 

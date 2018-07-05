@@ -5,7 +5,6 @@ import (
   "encoding/json"
   "widget/models"
   "strings"
-  _"github.com/bitly/go-simplejson"
 )
 
 type MainController struct {
