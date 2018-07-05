@@ -27,11 +27,7 @@ RUN go get github.com/astaxie/beego && \
   go get github.com/Lumavate-Team/lumavate-go-common && \
   go get github.com/bitly/go-simplejson && \
   cd / && \
-  sh /git.sh -i /root/.ssh/lumavate-components-rsa clone git@github.com:Lumavate-Team/lumavate-components.git && \
-  cd lumavate-components && \
-  npm install && \
-  npm run build && \
-  cd / && \
+  npm install @lumavate/components --save && \
   rm /root/.ssh/*
 
 CMD ["bee", "run"]
