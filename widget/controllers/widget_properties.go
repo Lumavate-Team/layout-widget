@@ -93,6 +93,8 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 
 
   return [] properties.PropertyType {
+		&properties.PropertyToggle{
+			&properties.PropertyBase{"displayFooter", "Footer", "Settings", "Display Footer", ""}, false},
     lp.GetFooterProperty(),
     &properties.PropertyColor{
       &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
@@ -112,7 +114,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 		  &properties.PropertyBase{"justifyContent", "Body", "Body Layout", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
 	  &properties.PropertyDropdown{
 		  &properties.PropertyBase{"alignContent", "Body", "Body Layout", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
-    lp.GetBodyItems(),
+   lp.GetBodyItems(),
   }
 }
 
@@ -206,7 +208,7 @@ func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponen
   if len(components) == 0 {
     return &properties.PropertyComponent{
       &properties.PropertyBase{"footer", "Footer", "Footer Settings", "Footer Data", ""},
-      components[0], &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
+      &properties.Component{}, &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
     }
   }
 

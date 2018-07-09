@@ -28,6 +28,7 @@ type LumavateRequest struct {
       BodyTemplateRows string
       BodyRowGap string
       BodyColumnGap string
+      DisplayFooter bool
       JustifyContent string
       AlignContent string
       BodyItems []LayoutContainer

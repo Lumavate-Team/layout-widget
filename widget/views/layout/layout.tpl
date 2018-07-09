@@ -65,7 +65,7 @@
           {{.LayoutContent}}
         </div>
       {{ end }}
-      {{if .data.Footer.ComponentHtml }}
+      {{if .data.DisplayFooter }}
         <div class="footer">
           {{safeHtml .data.Footer.ComponentHtml}}
         </div>

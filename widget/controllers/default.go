@@ -21,7 +21,6 @@ func (this *MainController) Get() {
 
 
   this.Data["data"] = luma_response.Payload.Data
-
   this.Layout = "layout/layout.tpl"
 
   mode := this.GetString("mode")
