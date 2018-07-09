@@ -6,6 +6,7 @@ import (
   "widget/models"
   "strings"
   _"github.com/bitly/go-simplejson"
+	"fmt"
 )
 
 type MainController struct {
@@ -22,6 +23,7 @@ func (this *MainController) Get() {
 
 
   this.Data["data"] = luma_response.Payload.Data
+	fmt.Println(this.XSRFToken())
 
   this.Layout = "layout/layout.tpl"
 
