@@ -37,9 +37,9 @@
     <div class="container">
       <div class="wrapper">
 
-      {{if .HeaderContent }}
+      {{if .data.DisplayHeader }}
         <div class="header">
-          {{ .HeaderContent }}
+          {{safeHtml .data.Header.ComponentHtml}}
         </div>
       {{end}}
 

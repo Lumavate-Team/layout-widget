@@ -16,6 +16,11 @@ type Footer struct {
   ComponentType string
 }
 
+type Header struct {
+  ComponentHtml string
+  ComponentType string
+}
+
 type LumavateRequest struct {
   Payload struct {
     Data struct {
@@ -28,11 +33,13 @@ type LumavateRequest struct {
       BodyTemplateRows string
       BodyRowGap string
       BodyColumnGap string
+      DisplayHeader bool
       DisplayFooter bool
       JustifyContent string
       AlignContent string
       BodyItems []LayoutContainer
       Footer Footer
+      Header Header
       DirectIncludes []string `json:"__directIncludes"`
     }
   }

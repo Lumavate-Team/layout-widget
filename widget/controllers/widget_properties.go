@@ -4,6 +4,7 @@ import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   "github.com/Lumavate-Team/lumavate-go-common/api_core"
 	"encoding/json"
+  "fmt"
 )
 
 func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
@@ -93,6 +94,9 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 
 
   return [] properties.PropertyType {
+    &properties.PropertyToggle{
+			&properties.PropertyBase{"displayHeader", "Header", "Settings", "Display Header", ""}, false},
+      lp.GetHeaderProperty(),
 		&properties.PropertyToggle{
 			&properties.PropertyBase{"displayFooter", "Footer", "Settings", "Display Footer", ""}, false},
     lp.GetFooterProperty(),
@@ -215,5 +219,22 @@ func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponen
   return &properties.PropertyComponent{
     &properties.PropertyBase{"footer", "Footer", "Footer Settings", "Footer Data", ""},
     components[0], &properties.PropertyOptionsComponent{[] string {"footer"}, components },
+  }
+}
+
+func (self *LumavateProperties) GetHeaderProperty() *properties.PropertyComponent {
+
+  components := self.GetComponentsWithTag("header")
+  fmt.Println(len(components))
+  if len(components) == 0 {
+    return &properties.PropertyComponent{
+      &properties.PropertyBase{"header", "Header", "Header Settings", "Header Data", ""},
+      &properties.Component{}, &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
+    }
+  }
+
+  return &properties.PropertyComponent{
+    &properties.PropertyBase{"header", "Header", "Header Settings", "Header Data", ""},
+    components[0], &properties.PropertyOptionsComponent{[] string {"header"}, components },
   }
 }
