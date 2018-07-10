@@ -70,7 +70,11 @@
           {{safeHtml .data.Footer.ComponentHtml}}
         </div>
       {{end}}
-
+      <div class="modals">
+        {{range $index, $element := .data.ModalItems}}
+          {{ modalHtml $element }}
+        {{end}}
+      </div>
       </div>
     </div>
   </body>

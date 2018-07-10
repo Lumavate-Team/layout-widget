@@ -24,6 +24,11 @@ func ComponentHtml(in component_data.ComponentData) (out template.HTML) {
 	return
 }
 
+func ModalHtml(in models.Modal) (out template.HTML) {
+	out = template.HTML(in.GetHtml())
+	return
+}
+
 func LayoutHtml(in models.LayoutContainer) (out template.HTML) {
 	out = template.HTML(in.GetHtml())
 	return
@@ -34,6 +39,7 @@ func main() {
 	beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX")+"lc", "/node_modules/@lumavate/components/dist")
 	beego.AddFuncMap("componentHtml", ComponentHtml)
 	beego.AddFuncMap("layoutHtml", LayoutHtml)
+	beego.AddFuncMap("modalHtml", ModalHtml)
 	beego.AddFuncMap("safeCss", SafeCss)
 	beego.AddFuncMap("safeHtml", SafeHtml)
 	beego.Run()

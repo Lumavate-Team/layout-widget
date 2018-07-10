@@ -16,6 +16,11 @@ type Footer struct {
   ComponentType string
 }
 
+type Modal struct {
+  ComponentHtml string
+  ComponentType string
+}
+
 type Header struct {
   ComponentHtml string
   ComponentType string
@@ -40,9 +45,17 @@ type LumavateRequest struct {
       BodyItems []LayoutContainer
       Footer Footer
       Header Header
+      ModalItems []Modal
       DirectIncludes []string `json:"__directIncludes"`
     }
   }
+}
+
+func (this Modal) GetHtml() string {
+  return fmt.Sprintf(`
+  <div>%v</div>
+  `,
+  this.ComponentHtml)
 }
 
 type LayoutContainer struct {

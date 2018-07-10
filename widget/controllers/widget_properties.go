@@ -119,6 +119,7 @@ Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.
 	  &properties.PropertyDropdown{
 		  &properties.PropertyBase{"alignContent", "Body", "Body Layout", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
    lp.GetBodyItems(),
+   lp.GetModalItems(),
   }
 }
 
@@ -183,6 +184,24 @@ func (self *LumavateProperties) GetComponentsWithTag(tag string) []*properties.C
 
   return components
 }
+
+func (self *LumavateProperties) GetModalItems() *properties.PropertyComponents {
+
+  components := self.GetComponentsWithTag("modal")
+
+  if len(components) == 0 {
+    return &properties.PropertyComponents{
+      &properties.PropertyBase{"modalItems", "Modal", "Modal Items", "Modal Items", ""},
+      [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {}, [] *properties.Component {} },
+    }
+  }
+
+  return &properties.PropertyComponents{
+    &properties.PropertyBase{"modalItems", "Modal", "Modal Items", "Modal Items", ""},
+    [] *properties.Component{}, &properties.PropertyOptionsComponent{[] string {"modal"}, components },
+  }
+}
+
 
 func (self *LumavateProperties) GetBodyItems() *properties.PropertyComponents {
 
