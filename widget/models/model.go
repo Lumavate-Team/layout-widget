@@ -30,7 +30,6 @@ type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
-      InlineCss string
       DisplayBackgroundImage bool
       BackgroundImage component_data.ImageStruct
       BackgroundColor string
@@ -47,6 +46,7 @@ type LumavateRequest struct {
       Header Header
       ModalItems []Modal
       DirectIncludes []string `json:"__directIncludes"`
+      DirectCssIncludes []string `json:"__directCssIncludes"`
     }
   }
 }

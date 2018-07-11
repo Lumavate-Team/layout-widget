@@ -19,19 +19,24 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta property="og:image" content="{{.dnsInfo}}/iot/android-chrome-512x512.png" />
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Teko:400,500" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
+    {{range $i, $href := .data.DirectCssIncludes }}
+      <link href="{{$href}}" rel="stylesheet">
+    {{end}}
+
     {{range $i, $src := .data.DirectIncludes }}
       <script src="{{$src}}" type="text/javascript"></script>
     {{end}}
     <style>
-	    {{ safeCss .data.InlineCss}}
+	    body {
+		    {{ if .data.DisplayBackgroundImage }}
+		      background-image: url({{.data.BackgroundImage.Preview}});
+		      background-repeat:repeat;
+		    {{ else if .data.BackgroundColor }}
+		      background-color: {{.data.BackgroundColor}};
+		    {{ end }}
+	    }
     </style>
-		{{.HtmlHead}}
   </head>
   <body>
     <div class="container">
