@@ -4,7 +4,6 @@ import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
   "github.com/Lumavate-Team/lumavate-go-common/api_core"
 	"encoding/json"
-  "fmt"
 )
 
 func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
@@ -150,6 +149,7 @@ type ComponentSetRequest struct {
     Data [] struct {
       CurrentVersion struct {
         DirectIncludes [] string
+        DirectCssIncludes [] string
         Distribution string
         Components [] *DynamicComponent
       }
@@ -162,6 +162,9 @@ func (self *LumavateProperties) LoadAllComponentSets() {
   body, _ := lr.Get("/pwa/v1/component-sets")
   cs := ComponentSetRequest{}
   json.Unmarshal(body, &cs)
+
+  //foo := string(body[:])
+  //fmt.Println(foo)
 
   for _, set := range cs.Payload.Data {
     for _, component := range set.CurrentVersion.Components {
@@ -244,7 +247,7 @@ func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponen
 func (self *LumavateProperties) GetHeaderProperty() *properties.PropertyComponent {
 
   components := self.GetComponentsWithTag("header")
-  fmt.Println(len(components))
+
   if len(components) == 0 {
     return &properties.PropertyComponent{
       &properties.PropertyBase{"header", "Header", "Header Settings", "Header Data", ""},
