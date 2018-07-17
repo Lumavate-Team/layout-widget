@@ -19,7 +19,6 @@ func (this *MainController) Get() {
     this.Abort("500")
   }
 
-
   this.Data["data"] = luma_response.Payload.Data
   this.Layout = "layout/layout.tpl"
 
