@@ -80,9 +80,9 @@ func (self *lumavateProperties) GetAllProperties() [] properties.PropertyType {
     &properties.PropertyText{
       &properties.PropertyBase{"bodyTemplateColumns", "Body", "Body Layout", "Body Column Template", help_column_template}, "", properties.PropertyOptionsText{Rows: 3}},
     &properties.PropertyText{
-      &properties.PropertyBase{"bodyRowGap", "Body", "Body Layout", "Body Row Gap", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+      &properties.PropertyBase{"bodyRowGap", "Body", "Body Layout", "Body Row Gap", "This sets the size of the gap (gutter) between the grid rows"}, "", properties.PropertyOptionsText{Rows: 3}},
     &properties.PropertyText{
-      &properties.PropertyBase{"bodyColumnGap", "Body", "Body Layout", "Body Column Gap", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+      &properties.PropertyBase{"bodyColumnGap", "Body", "Body Layout", "Body Column Gap", "This sets the size of the gap (gutter) between the grid columns"}, "", properties.PropertyOptionsText{Rows: 3}},
     &properties.PropertyDropdown{
       &properties.PropertyBase{"justifyContent", "Body", "Body Layout", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
     &properties.PropertyDropdown{
@@ -103,7 +103,6 @@ func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
 /*
 * Help Text Globals
 */
-
 var help_row_template string = `Denotes the number of Rows in the grid.  This can be denoted by the following:
 - Pixels(px): Defines the row in static pixel amount
 - Percentage(%): Defines the row in terms of percentage of screen height
