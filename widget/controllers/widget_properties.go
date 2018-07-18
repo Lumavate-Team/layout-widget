@@ -5,7 +5,18 @@ import (
   "github.com/Lumavate-Team/lumavate-go-common"
 )
 
-func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
+func NewLumavateProperties(auth string) *lumavateProperties {
+  lp := &lumavateProperties {auth, common.DynamicComponents{}}
+  lp.DynamicComponents.LoadAllComponentSets(lp.Authorization)
+  return lp
+}
+
+type lumavateProperties struct {
+  Authorization string
+  DynamicComponents common.DynamicComponents
+}
+
+func (self *lumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   props := [] properties.PropertyType {}
 
   // Background Image Scaling Options
@@ -41,11 +52,59 @@ func (lp *LumavateProperties) GetLayoutProperties() [] properties.PropertyType {
   return props
 }
 
+func (self *lumavateProperties) GetAllProperties() [] properties.PropertyType {
+  justifyOptions := make(map[string]string)
+  justifyOptions["start"] = "Start"
+  justifyOptions["end"] = "End"
+  justifyOptions["center"] = "Center"
+  justifyOptions["stretch"] = "Stretch"
+  justifyOptions["space-around"] = "Space Around"
+  justifyOptions["space-between"] = "Space Between"
+  justifyOptions["space-evenly"] = "Space Evenly"
+
+  return [] properties.PropertyType {
+    &properties.PropertyToggle{
+      &properties.PropertyBase{"displayHeader", "Header", "Settings", "Display Header", ""}, false},
+    self.DynamicComponents.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
+    &properties.PropertyToggle{
+      &properties.PropertyBase{"displayFooter", "Footer", "Settings", "Display Footer", ""}, false},
+    self.DynamicComponents.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
+    &properties.PropertyColor{
+      &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
+    &properties.PropertyToggle{
+      &properties.PropertyBase{"displayBackgroundImage", "General", "Settings", "Display Background Image", ""}, false},
+    &properties.PropertyImage{
+      &properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
+    &properties.PropertyText{
+      &properties.PropertyBase{"bodyTemplateRows", "Body", "Body Layout", "Body Row Template", help_row_template}, "", properties.PropertyOptionsText{Rows: 3}},
+    &properties.PropertyText{
+      &properties.PropertyBase{"bodyTemplateColumns", "Body", "Body Layout", "Body Column Template", help_column_template}, "", properties.PropertyOptionsText{Rows: 3}},
+    &properties.PropertyText{
+      &properties.PropertyBase{"bodyRowGap", "Body", "Body Layout", "Body Row Gap", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+    &properties.PropertyText{
+      &properties.PropertyBase{"bodyColumnGap", "Body", "Body Layout", "Body Column Gap", ""}, "", properties.PropertyOptionsText{Rows: 3}},
+    &properties.PropertyDropdown{
+      &properties.PropertyBase{"justifyContent", "Body", "Body Layout", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
+    &properties.PropertyDropdown{
+      &properties.PropertyBase{"alignContent", "Body", "Body Layout", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
+    self.GetBodyItems(),
+    self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "Modal Items", ""),
+  }
+}
+
+func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
+  p := self.DynamicComponents.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "Body Items", "")
+  for _, component := range p.Options.Components {
+    component.Properties = append(component.Properties,self.GetLayoutProperties()...)
+  }
+  return p
+}
+
 /*
- * Returns all properties for the widget
- */
-func (lp *LumavateProperties) GetAllProperties() [] properties.PropertyType {
-  var rowhelp string = `Denotes the number of Rows in the grid.  This can be denoted by the following:
+* Help Text Globals
+*/
+
+var help_row_template string = `Denotes the number of Rows in the grid.  This can be denoted by the following:
 - Pixels(px): Defines the row in static pixel amount
 - Percentage(%): Defines the row in terms of percentage of screen height
 - Fractional Units(fr): Defines the row in terms of fractional units of the screen height
@@ -62,7 +121,7 @@ The first is 25px tall, row 2 is 10% of the total screen height, and rows 3 & 4 
 #### Layout is based on CSS Grid.
 Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.asp" target="_blank">W3Schools</a> <a href="https://cssgridgarden.com/" target="_blank">CSS Grid Garden</a>`
 
-  var colhelp string = `Denotes the number of Columns in the grid.  This can be denoted by the following:
+var help_column_template string = `Denotes the number of Columns in the grid.  This can be denoted by the following:
 * Pixels(px): Defines the column in static pixel amount
 * Percentage(%): Defines the column in terms of percentage of screen height
 * Fractional Units(fr): Defines the column in terms of fractional units of the screen width
@@ -78,84 +137,3 @@ The first & fifth columns are 25px wide, columns 2,3, & 4 use the remaining widt
 
 ### Layout is based on CSS Grid.
 Learn more about CSS Grid here: <a href="https://www.w3schools.com/css/css_grid.asp" target="_blank">W3Schools</a> <a href="https://cssgridgarden.com/" target="_blank">CSS Grid Garden</a>`
-
-  // Background Image Scaling Options
-  justifyOptions := make(map[string]string)
-  justifyOptions["start"] = "Start"
-  justifyOptions["end"] = "End"
-  justifyOptions["center"] = "Center"
-  justifyOptions["stretch"] = "Stretch"
-  justifyOptions["space-around"] = "Space Around"
-  justifyOptions["space-between"] = "Space Between"
-  justifyOptions["space-evenly"] = "Space Evenly"
-
-
-  return [] properties.PropertyType {
-    &properties.PropertyToggle{
-      &properties.PropertyBase{"displayHeader", "Header", "Settings", "Display Header", ""}, false},
-      lp.GetHeaderProperty(),
-    &properties.PropertyToggle{
-      &properties.PropertyBase{"displayFooter", "Footer", "Settings", "Display Footer", ""}, false},
-    lp.GetFooterProperty(),
-    &properties.PropertyColor{
-      &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
-    &properties.PropertyToggle{
-      &properties.PropertyBase{"displayBackgroundImage", "General", "Settings", "Display Background Image", ""}, false},
-    &properties.PropertyImage{
-      &properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
-    &properties.PropertyText{
-      &properties.PropertyBase{"bodyTemplateRows", "Body", "Body Layout", "Body Row Template", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
-    &properties.PropertyText{
-      &properties.PropertyBase{"bodyTemplateColumns", "Body", "Body Layout", "Body Column Template", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
-    &properties.PropertyText{
-      &properties.PropertyBase{"bodyRowGap", "Body", "Body Layout", "Body Row Gap", rowhelp}, "", properties.PropertyOptionsText{Rows: 3}},
-    &properties.PropertyText{
-      &properties.PropertyBase{"bodyColumnGap", "Body", "Body Layout", "Body Column Gap", colhelp}, "", properties.PropertyOptionsText{Rows: 3}},
-    &properties.PropertyDropdown{
-      &properties.PropertyBase{"justifyContent", "Body", "Body Layout", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
-    &properties.PropertyDropdown{
-      &properties.PropertyBase{"alignContent", "Body", "Body Layout", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
-   lp.GetBodyItems(),
-   lp.GetModalItems(),
-  }
-}
-
-/*
-* Returns all components for the widget
-*/
-func (lp *LumavateProperties) GetAllComponents() [] *properties.Component {
-  return [] *properties.Component {
-  }
-}
-
-func NewLumavateProperties(auth string) *LumavateProperties {
-  lp := &LumavateProperties {auth, common.DynamicComponents{}}
-  lp.DynamicComponents.LoadAllComponentSets(lp.Authorization)
-  return lp
-}
-
-type LumavateProperties struct {
-  Authorization string
-  DynamicComponents common.DynamicComponents
-}
-
-func (self *LumavateProperties) GetModalItems() *properties.PropertyComponents {
-  return self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "Modal Items", "")
-}
-
-
-func (self *LumavateProperties) GetBodyItems() *properties.PropertyComponents {
-  p := self.DynamicComponents.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "Body Items", "")
-  for _, component := range p.Options.Components {
-    component.Properties = append(component.Properties,self.GetLayoutProperties()...)
-  }
-  return p
-}
-
-func (self *LumavateProperties) GetFooterProperty() *properties.PropertyComponent {
-  return self.DynamicComponents.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", "")
-}
-
-func (self *LumavateProperties) GetHeaderProperty() *properties.PropertyComponent {
-  return self.DynamicComponents.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", "")
-}
