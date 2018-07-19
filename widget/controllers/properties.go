@@ -10,7 +10,7 @@ type PropertyController struct {
 }
 
 func (this *PropertyController) Get() {
-	lp := WidgetProperties{properties.NewLumavateProperties(this.Ctx.Request.Header.Get("Authorization"))}
+	lp := lumavateProperties{properties.NewLumavateProperties(this.Ctx.Request.Header.Get("Authorization"))}
 	this.Data["json"] = lp.GetAllProperties()
 	this.ServeJSON()
 }
