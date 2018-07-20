@@ -43,14 +43,6 @@ func (self *lumavateProperties) GetLayoutProperties() []properties.PropertyType 
 }
 
 func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
-	justifyOptions := make(map[string]string)
-	justifyOptions["start"] = "Start"
-	justifyOptions["end"] = "End"
-	justifyOptions["center"] = "Center"
-	justifyOptions["stretch"] = "Stretch"
-	justifyOptions["space-around"] = "Space Around"
-	justifyOptions["space-between"] = "Space Between"
-	justifyOptions["space-evenly"] = "Space Evenly"
 
 	return []properties.PropertyType{
 		&properties.PropertyToggle{
@@ -65,18 +57,7 @@ func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
 			&properties.PropertyBase{"displayBackgroundImage", "General", "Settings", "Display Background Image", ""}, false},
 		&properties.PropertyImage{
 			&properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
-		&properties.PropertyText{
-			&properties.PropertyBase{"bodyTemplateRows", "Body", "Body Layout", "Body Row Template", help_row_template}, "1fr 1fr", properties.PropertyOptionsText{}},
-		&properties.PropertyText{
-			&properties.PropertyBase{"bodyTemplateColumns", "Body", "Body Layout", "Body Column Template", help_column_template}, "1fr 1fr", properties.PropertyOptionsText{}},
-		&properties.PropertyText{
-			&properties.PropertyBase{"bodyRowGap", "Body", "Body Layout", "Body Row Gap", "This sets the size of the gap (gutter) between the grid rows"}, "", properties.PropertyOptionsText{}},
-		&properties.PropertyText{
-			&properties.PropertyBase{"bodyColumnGap", "Body", "Body Layout", "Body Column Gap", "This sets the size of the gap (gutter) between the grid columns"}, "", properties.PropertyOptionsText{}},
-		&properties.PropertyDropdown{
-			&properties.PropertyBase{"justifyContent", "Body", "Body Layout", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions},
-		&properties.PropertyDropdown{
-			&properties.PropertyBase{"alignContent", "Body", "Body Layout", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions},
+		self.GetBodyProperties(),
 		self.GetBodyItems(),
 		self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "Modal Items", ""),
 	}
@@ -87,6 +68,43 @@ func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
 	for _, component := range p.Options.Components {
 		component.Properties = append(component.Properties, self.GetLayoutProperties()...)
 	}
+	return p
+}
+
+func (self *lumavateProperties) GetBodyProperties() *properties.PropertyComponent {
+	justifyOptions := make(map[string]string)
+	justifyOptions["start"] = "Start"
+	justifyOptions["end"] = "End"
+	justifyOptions["center"] = "Center"
+	justifyOptions["stretch"] = "Stretch"
+	justifyOptions["space-around"] = "Space Around"
+	justifyOptions["space-between"] = "Space Between"
+	justifyOptions["space-evenly"] = "Space Evenly"
+
+	props := [] properties.PropertyType {}
+
+	props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyNumRows", "", "Body Properties (Basic)", "Number Of Rows", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
+	props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyNumColumns", "", "Body Properties (Basic)", "Number Of Columns", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
+	props = append(props, &properties.PropertyText{&properties.PropertyBase{"bodyMaxWidth", "", "Body Properties (Basic)", "Max Width (pixels)", ""}, "", properties.PropertyOptionsText{}})
+
+	c := &properties.Component{"body-items", "", "body-items-basic", "Basic", "a", "Basic", props}
+
+	props2 := [] properties.PropertyType {}
+
+	props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyTemplateRows", "", "Body Properties (Advanced)", "Body Row Template", help_row_template}, "", properties.PropertyOptionsText{}})
+	props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyTemplateColumns", "", "Body Properties (Advanced)", "Body Column Template", help_column_template}, "", properties.PropertyOptionsText{}})
+	props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyRowGap", "", "Body Properties (Advanced)", "Body Row Gap", "This sets the size of the gap (gutter) between the grid rows"}, "", properties.PropertyOptionsText{}})
+	props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyColumnGap", "", "Body Properties (Advanced)", "Body Column Gap", "This sets the size of the gap (gutter) between the grid columns"}, "", properties.PropertyOptionsText{}})
+	props2 = append(props2, &properties.PropertyDropdown{&properties.PropertyBase{"justifyContent", "", "Body Properties (Advanced)", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions})
+	props2 = append(props2, &properties.PropertyDropdown{&properties.PropertyBase{"alignContent", "", "Body Properties (Advanced)", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions})
+
+	c2 := &properties.Component{"body-items", "", "body-items-advanced", "Advanced", "a", "Advanced", props2}
+
+	p := &properties.PropertyComponent{
+		&properties.PropertyBase{"bodyProperties", "Body", "", "Body Style", ""},
+		c, &properties.PropertyOptionsComponent{[] string {"body-items"}, [] *properties.Component {c, c2} },
+	}
+
 	return p
 }
 
