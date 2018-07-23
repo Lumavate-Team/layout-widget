@@ -49,22 +49,22 @@
       {{end}}
 
       {{ if not .degraded }}
-        {{ if .data.BodyTemplateColumns }}
-          <div class="content" style="
-          display:grid;
-          grid-template-columns:{{safeCss .data.BodyTemplateColumns}};
-          grid-template-rows:{{safeCss .data.BodyTemplateRows}};
-          grid-row-gap:{{safeCss .data.BodyRowGap}};
-          grid-column-gap:{{safeCss .data.BodyColumnGap}};
-          justify-content:{{safeCss .data.JustifyContent}};
-          align-content:{{safeCss .data.AlignContent}}">
-            {{.LayoutContent}}
-          </div>
-        {{ else }}
-          <div class="content">
-            {{.LayoutContent}}
-          </div>
-        {{end}}
+				{{ if eq .data.BodyProperties.ComponentType "body-items-advanced" }}
+					<div class="content" style="display:grid;
+						grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+						grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+						grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
+						grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
+						justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
+						align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
+				{{ else }}
+					<div class="content" style="display:grid;
+						grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+						grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+						max-width: {{safeCss .data.BodyProperties.ComponentData.BodyMaxWidthStr}}">
+				{{ end }}
+					{{.LayoutContent}}
+				</div>
       {{ else }}
         <div class="content">
           {{.LayoutContent}}

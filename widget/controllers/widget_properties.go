@@ -85,7 +85,7 @@ func (self *lumavateProperties) GetBodyProperties() *properties.PropertyComponen
 
 	props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyNumRows", "", "Body Properties (Basic)", "Number Of Rows", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
 	props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyNumColumns", "", "Body Properties (Basic)", "Number Of Columns", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
-	props = append(props, &properties.PropertyText{&properties.PropertyBase{"bodyMaxWidth", "", "Body Properties (Basic)", "Max Width (pixels)", ""}, "", properties.PropertyOptionsText{}})
+	props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyMaxWidth", "", "Body Properties (Basic)", "Max Width (pixels)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 10000}})
 
 	c := &properties.Component{"body-items", "", "body-items-basic", "Basic", "a", "Basic", props}
 

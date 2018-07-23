@@ -1,81 +1,93 @@
 package models
 
 import (
-	"fmt"
-	common "github.com/Lumavate-Team/lumavate-go-common"
-	widget "github.com/Lumavate-Team/lumavate-go-common/models"
-	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
+  "fmt"
+  common "github.com/Lumavate-Team/lumavate-go-common"
+  widget "github.com/Lumavate-Team/lumavate-go-common/models"
+  component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
 )
 
 type MainController struct {
-	common.LumavateController
+  common.LumavateController
 }
 
 type Footer struct {
-	ComponentHtml string
-	ComponentType string
+  ComponentHtml string
+  ComponentType string
 }
 
 type Modal struct {
-	ComponentHtml string
-	ComponentType string
+  ComponentHtml string
+  ComponentType string
 }
 
 type Header struct {
-	ComponentHtml string
-	ComponentType string
+  ComponentHtml string
+  ComponentType string
+}
+
+type BodyOptions struct {
+  ComponentHtml string
+  ComponentType string
+  ComponentData struct {
+    BodyTemplateColumns string
+    BodyTemplateRows    string
+    BodyRowGap          string
+    BodyColumnGap       string
+    JustifyContent      string
+    AlignContent        string
+    BodyNumRows         int
+    BodyNumColumns      int
+    BodyMaxWidth        int
+    BodyMaxWidthStr     string
+  }
 }
 
 type LumavateRequest struct {
-	Payload struct {
-		Data struct {
-			widget.CommonWidgetStruct
-			DisplayBackgroundImage bool
-			BackgroundImage        component_data.ImageStruct
-			BackgroundColor        string
-			BodyTemplateColumns    string
-			BodyTemplateRows       string
-			BodyRowGap             string
-			BodyColumnGap          string
-			DisplayHeader          bool
-			DisplayFooter          bool
-			JustifyContent         string
-			AlignContent           string
-			BodyItems              []LayoutContainer
-			Footer                 widget.Component
-			Header                 widget.Component
-			ModalItems             []widget.Component
-		}
-	}
+  Payload struct {
+    Data struct {
+      widget.CommonWidgetStruct
+      DisplayBackgroundImage bool
+      BackgroundImage        component_data.ImageStruct
+      BackgroundColor        string
+      DisplayHeader          bool
+      DisplayFooter          bool
+      BodyProperties         BodyOptions
+      BodyItems              []LayoutContainer
+      Footer                 widget.Component
+      Header                 widget.Component
+      ModalItems             []widget.Component
+    }
+  }
 }
 
 type LayoutContainer struct {
-	ComponentData struct {
-		TemplateRowStart    string
-		TemplateRowEnd      string
-		TemplateColumnStart string
-		TemplateColumnEnd   string
-		CssClass            string
-		DisplayMode         string
-		JustifySelf         string
-		AlignSelf           string
-	}
-	ComponentHtml string
+  ComponentData struct {
+    TemplateRowStart    string
+    TemplateRowEnd      string
+    TemplateColumnStart string
+    TemplateColumnEnd   string
+    CssClass            string
+    DisplayMode         string
+    JustifySelf         string
+    AlignSelf           string
+  }
+  ComponentHtml string
 }
 
 func (this LayoutContainer) GetHtml() string {
-	return fmt.Sprintf(`
+  return fmt.Sprintf(`
   <div class="layout-%v %v"
   style="justify-self:%v;align-self:%v;grid-area:%v/%v/%v/%v">
   %v
   </div>`,
-		this.ComponentData.DisplayMode,
-		this.ComponentData.CssClass,
-		this.ComponentData.JustifySelf,
-		this.ComponentData.AlignSelf,
-		this.ComponentData.TemplateRowStart,
-		this.ComponentData.TemplateColumnStart,
-		this.ComponentData.TemplateRowEnd,
-		this.ComponentData.TemplateColumnEnd,
-		this.ComponentHtml)
+    this.ComponentData.DisplayMode,
+    this.ComponentData.CssClass,
+    this.ComponentData.JustifySelf,
+    this.ComponentData.AlignSelf,
+    this.ComponentData.TemplateRowStart,
+    this.ComponentData.TemplateColumnStart,
+    this.ComponentData.TemplateRowEnd,
+    this.ComponentData.TemplateColumnEnd,
+    this.ComponentHtml)
 }
