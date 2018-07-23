@@ -11,10 +11,12 @@
   left: 0;
   right: 0;
   bottom: 0;
+  align-items:center;
 }
 
 .header {
   min-height:48px;
+  width:100%;
 }
 
 .content {
@@ -26,6 +28,7 @@
 
 .footer {
   min-height:48px;
+  width:100%;
 }
 
 .modals {
