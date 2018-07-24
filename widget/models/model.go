@@ -63,10 +63,10 @@ type LumavateRequest struct {
 
 type LayoutContainer struct {
   ComponentData struct {
-    TemplateRowStart    string
-    TemplateRowEnd      string
-    TemplateColumnStart string
-    TemplateColumnEnd   string
+    TemplateRowStart    int
+    TemplateRowSpan     int
+    TemplateColumnStart int
+    TemplateColumnSpan  int
     CssClass            string
     DisplayMode         string
     JustifySelf         string
@@ -78,7 +78,7 @@ type LayoutContainer struct {
 func (this LayoutContainer) GetHtml() string {
   return fmt.Sprintf(`
   <div class="layout-%v %v"
-  style="justify-self:%v;align-self:%v;grid-area:%v/%v/%v/%v">
+  style="justify-self:%v;align-self:%v;grid-area:%v/%v/ span %v/ span %v">
   %v
   </div>`,
     this.ComponentData.DisplayMode,
@@ -87,7 +87,7 @@ func (this LayoutContainer) GetHtml() string {
     this.ComponentData.AlignSelf,
     this.ComponentData.TemplateRowStart,
     this.ComponentData.TemplateColumnStart,
-    this.ComponentData.TemplateRowEnd,
-    this.ComponentData.TemplateColumnEnd,
+    this.ComponentData.TemplateRowSpan,
+    this.ComponentData.TemplateColumnSpan,
     this.ComponentHtml)
 }
