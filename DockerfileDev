@@ -19,14 +19,4 @@ RUN go get github.com/astaxie/beego && \
   go get github.com/Lumavate-Team/lumavate-go-common && \
   go get github.com/bitly/go-simplejson
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
-
-FROM scratch
-
-ADD ca-certificates.crt /etc/ssl/certs/
-
-COPY --from=builder /go/src/widget /app/
-
-WORKDIR /app
-
-CMD ["./main"]
+CMD ["bee", "run"]
