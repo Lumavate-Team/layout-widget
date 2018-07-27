@@ -19,58 +19,67 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta property="og:image" content="{{.dnsInfo}}/iot/android-chrome-512x512.png" />
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Teko:400,500" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
+    {{range $i, $href := .data.DirectCssIncludes }}
+      <link href="{{$href}}" rel="stylesheet">
+    {{end}}
+
     {{range $i, $src := .data.DirectIncludes }}
       <script src="{{$src}}" type="text/javascript"></script>
     {{end}}
     <style>
-	    {{ safeCss .data.InlineCss}}
+	    body {
+		    {{ if .data.DisplayBackgroundImage }}
+		      background-image: url({{.data.BackgroundImage.Preview}});
+		      background-repeat:repeat;
+		    {{ else if .data.BackgroundColor }}
+		      background-color: {{.data.BackgroundColor}};
+		    {{ end }}
+	    }
     </style>
-		{{.HtmlHead}}
   </head>
   <body>
     <div class="container">
       <div class="wrapper">
 
-      {{if .HeaderContent }}
+      {{if .data.DisplayHeader }}
         <div class="header">
-          {{ .HeaderContent }}
+          {{safeHtml .data.Header.ComponentHtml}}
         </div>
       {{end}}
 
       {{ if not .degraded }}
-        {{ if .data.BodyTemplateColumns }}
-          <div class="content" style="
-          display:grid;
-          grid-template-columns:{{safeCss .data.BodyTemplateColumns}};
-          grid-template-rows:{{safeCss .data.BodyTemplateRows}};
-          grid-row-gap:{{safeCss .data.BodyRowGap}};
-          grid-column-gap:{{safeCss .data.BodyColumnGap}};
-          justify-content:{{safeCss .data.JustifyContent}};
-          align-content:{{safeCss .data.AlignContent}}">
-            {{.LayoutContent}}
-          </div>
-        {{ else }}
-          <div class="content">
-            {{.LayoutContent}}
-          </div>
-        {{end}}
+				{{ if eq .data.BodyProperties.ComponentType "body-items-advanced" }}
+					<div class="content" style="display:grid;
+						grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+						grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+						grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
+						grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
+						justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
+						align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
+				{{ else }}
+					<div class="content" style="display:grid;
+						grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+						grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+						max-width: {{safeCss .data.BodyProperties.ComponentData.BodyMaxWidthStr}}">
+				{{ end }}
+					{{.LayoutContent}}
+				</div>
       {{ else }}
         <div class="content">
           {{.LayoutContent}}
         </div>
       {{ end }}
-      {{if .data.Footer.ComponentHtml }}
+      {{if .data.DisplayFooter }}
         <div class="footer">
           {{safeHtml .data.Footer.ComponentHtml}}
         </div>
       {{end}}
-
+      <div class="modals">
+        {{range $index, $element := .data.ModalItems}}
+          {{ modalHtml $element }}
+        {{end}}
+      </div>
       </div>
     </div>
   </body>
