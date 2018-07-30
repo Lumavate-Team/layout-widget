@@ -19,13 +19,10 @@
 </style>
 <div class="starting">
 	<div id="tiles" class="grid">
-		{{range $index, $element := .data.GridItems}}
-			{{ if ne $element.DisplayMode "optimal" }}
+		{{range $index, $element := .data.BodyItems}}
+			{{ if ne $element.ComponentData.DisplayMode "optimal" }}
 				{{ layoutHtml $element}}
 			{{ end }}
 		{{end}}
 	</div>
 </div>
-<footer>
-{{ componentHtml .data.NavBar}}
-</footer>

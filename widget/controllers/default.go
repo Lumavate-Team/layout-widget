@@ -2,15 +2,11 @@ package controllers
 
 import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common"
-	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
   "encoding/json"
   "widget/models"
-	"os"
-	"fmt"
-	"strings"
+  "strings"
   _"github.com/bitly/go-simplejson"
-  "reflect"
-	"strconv"
+  "fmt"
 )
 
 type MainController struct {
@@ -55,35 +51,34 @@ func (this *MainController) Get() {
   luma_response := models.LumavateRequest {}
   err := json.Unmarshal(this.LumavateGetData(), &luma_response)
 
+  if luma_response.Payload.Data.BodyProperties.ComponentType == "body-items-basic" {
+    body_props := &luma_response.Payload.Data.BodyProperties.ComponentData
+    body_props.BodyTemplateRows = fmt.Sprintf("repeat(%v, 1fr)", body_props.BodyNumRows)
+    body_props.BodyTemplateColumns = fmt.Sprintf("repeat(%v, 1fr)", body_props.BodyNumColumns)
+    if body_props.BodyMaxWidth != 0 {
+      body_props.BodyMaxWidthStr = fmt.Sprintf("%vpx", body_props.BodyMaxWidth)
+    } else {
+      body_props.BodyMaxWidthStr = "100%"
+    }
+  }
+
   if err != nil {
     this.Abort("500")
   }
 
-  luma_response.Payload.Data.NavBar.ComponentData.NavBarItems = luma_response.Payload.Data.NavBarItems
-
-  this.LayoutSections["FormScript"] = ""
-
-  for i, element := range luma_response.Payload.Data.GridItems {
-      if reflect.TypeOf(element.Component).Elem().Name() == "FormStruct" {
-				var tmpForm component_data.FormStruct
-				tmpForm.FormItems = luma_response.Payload.Data.FormItems
-				luma_response.Payload.Data.GridItems[i].Component = tmpForm
-        this.LayoutSections["FormScript"] = "register_script.tpl"
-      }
-    }
-
   this.Data["data"] = luma_response.Payload.Data
-	this.Data["dnsInfo"] = fmt.Sprintf("%s%s", os.Getenv("PROTO"), this.Ctx.Input.Host())
+  fmt.Println(this.XSRFToken())
 
-	this.Layout = "layout/layout.tpl"
-	mode := this.GetString("mode")
-	if strings.ToLower(mode) != "degraded" {
-		this.TplName = "index.tpl"
-	} else {
-		this.TplName = "degraded.tpl"
-	}
+  this.Layout = "layout/layout.tpl"
 
-  this.LayoutSections["HtmlHead"] = "html_head.tpl"
-  this.LayoutSections["Scripts"] = "script.tpl"
-  this.LayoutSections["FooterContent"] = "home_footer.tpl"
+  mode := this.GetString("mode")
+
+  if strings.ToLower(mode) != "degraded" {
+    this.TplName = "index.tpl"
+    this.Data["degraded"] = false
+  } else {
+    this.Data["degraded"] = true
+    this.TplName = "degraded.tpl"
+  }
+
 }

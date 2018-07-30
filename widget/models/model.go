@@ -1,121 +1,93 @@
 package models
 
 import (
-	common "github.com/Lumavate-Team/lumavate-go-common"
-	widget "github.com/Lumavate-Team/lumavate-go-common/models"
-	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
-	components "widget/models/components"
-	"fmt"
-	"encoding/json"
-	"reflect"
+  "fmt"
+  common "github.com/Lumavate-Team/lumavate-go-common"
+  widget "github.com/Lumavate-Team/lumavate-go-common/models"
+  component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
 )
 
 type MainController struct {
   common.LumavateController
 }
 
+type Footer struct {
+  ComponentHtml string
+  ComponentType string
+}
+
+type Modal struct {
+  ComponentHtml string
+  ComponentType string
+}
+
+type Header struct {
+  ComponentHtml string
+  ComponentType string
+}
+
+type BodyOptions struct {
+  ComponentHtml string
+  ComponentType string
+  ComponentData struct {
+    BodyTemplateColumns string
+    BodyTemplateRows    string
+    BodyRowGap          string
+    BodyColumnGap       string
+    JustifyContent      string
+    AlignContent        string
+    BodyNumRows         int
+    BodyNumColumns      int
+    BodyMaxWidth        int
+    BodyMaxWidthStr     string
+  }
+}
+
 type LumavateRequest struct {
   Payload struct {
     Data struct {
       widget.CommonWidgetStruct
-      		FormAction string `json:"formAction"`
-			InlineCss string
-			Padding int
-			DisplayBackgroundImage bool
-			BackgroundImage component_data.ImageStruct
-			BackgroundColor string
-			GridTemplateColumns string
-			GridTemplateRows string
-			GridItems []LayoutContainer
-			component_data.FormStruct
+      DisplayBackgroundImage bool
+      BackgroundImage        component_data.ImageStruct
+      BackgroundColor        string
+      DisplayHeader          bool
+      DisplayFooter          bool
+      BodyProperties         BodyOptions
+      BodyItems              []LayoutContainer
+      Footer                 widget.Component
+      Header                 widget.Component
+      ModalItems             []widget.Component
     }
   }
 }
 
-type tmpLayoutStruct struct {
-	ComponentData struct {
-		TemplateRowStart string
-		TemplateRowEnd string
-		TemplateColumnStart string
-		TemplateColumnEnd string
-		CssClass string
-		DisplayMode string
-	}
-}
-
 type LayoutContainer struct {
-	TemplateRowStart string
-	TemplateRowEnd string
-	TemplateColumnStart string
-	TemplateColumnEnd string
-	CssClass string
-	DisplayMode string
-	Component component_data.ComponentData
+  ComponentData struct {
+    TemplateRowStart    int
+    TemplateRowSpan     int
+    TemplateColumnStart int
+    TemplateColumnSpan  int
+    CssClass            string
+    DisplayMode         string
+    JustifySelf         string
+    AlignSelf           string
+  }
+  ComponentHtml string
 }
 
 func (this LayoutContainer) GetHtml() string {
-	return fmt.Sprintf(`
-    <div class="layout-%v %v"
-		style="position:relative;text-align:center;grid-area:%v/%v/%v/%v">
-				%v
-		</div>`,
-		this.DisplayMode,
-    this.CssClass,
-    this.TemplateRowStart,
-    this.TemplateColumnStart,
-    this.TemplateRowEnd,
-    this.TemplateColumnEnd,
-    this.Component.GetHtml())
-}
-
-func (lc *LayoutContainer) UnmarshalJSON(data []byte) error {
-	//Extract LayoutProperties from underlying Component
-	var tmp tmpLayoutStruct
-	if err := json.Unmarshal(data, &tmp); err != nil {
-		return err
-	}
-	// Instantiate proper Component
-	component, err := UnmarshalCustomValue(data, "componentType", "componentData",
-		map[string]reflect.Type{
-			"app": reflect.TypeOf(components.AppStruct{}),
-			"navigation": reflect.TypeOf(components.NavigationStruct{}),
-			"video": reflect.TypeOf(components.VideoStruct{}),
-			"text": reflect.TypeOf(components.TextStruct{}),
-			"form": reflect.TypeOf(component_data.FormStruct{}),
-		})
-	if err != nil {
-		return err
-	}
-
-	lc.CssClass = tmp.ComponentData.CssClass
-	lc.DisplayMode = tmp.ComponentData.DisplayMode
-	lc.TemplateRowStart = tmp.ComponentData.TemplateRowStart
-	lc.TemplateRowEnd = tmp.ComponentData.TemplateRowEnd
-	lc.TemplateColumnStart = tmp.ComponentData.TemplateColumnStart
-	lc.TemplateColumnEnd = tmp.ComponentData.TemplateColumnEnd
-	lc.Component = component
-
-	return nil
-}
-
-func UnmarshalCustomValue(data []byte, typeField, resultField string, customTypes map[string]reflect.Type) (component_data.ComponentData, error) {
-	m := map[string]interface{}{}
-	if err := json.Unmarshal(data, &m); err != nil {
-		return nil, err
-	}
-	//fmt.Println(m)
-	valueBytes, err := json.Marshal(m)
-	if err != nil {
-		return nil, err
-	}
-
-	typeName := m[typeField].(string)
-	var newObj component_data.ComponentData
-	if ty, found := customTypes[typeName]; found {
-		newObj = reflect.New(ty).Interface().(component_data.ComponentData)
-		if err = json.Unmarshal(valueBytes, &newObj); err != nil {
-			return nil, err
-		}
-	}
-	return newObj, nil
+  return fmt.Sprintf(`
+  <div class="layout-%v %v"
+  style="justify-self:%v;align-self:%v;grid-area:%v/%v/ span %v/ span %v">
+  %v
+  </div>`,
+    this.ComponentData.DisplayMode,
+    this.ComponentData.CssClass,
+    this.ComponentData.JustifySelf,
+    this.ComponentData.AlignSelf,
+    this.ComponentData.TemplateRowStart,
+    this.ComponentData.TemplateColumnStart,
+    this.ComponentData.TemplateRowSpan,
+    this.ComponentData.TemplateColumnSpan,
+    this.ComponentHtml)
 }

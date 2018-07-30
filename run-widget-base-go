@@ -2,7 +2,7 @@ DOCKER_IP=`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`
 
 docker run -d --rm \
 --volume "$(pwd)"/widget:/go/src/widget:rw \
---mount type=bind,src=/Users/ericseidel/Dev/lumavate-go-common,dst=/go/src/github.com/Lumavate-Team/lumavate-go-common \
+--mount type=bind,src=/Users/ericseidel/dev/lumavate-go-common,dst=/go/src/github.com/Lumavate-Team/lumavate-go-common \
 -e "PUBLIC_KEY=VJX65E11HOvZN6a6C8dD" \
 -e "PRIVATE_KEY=k19DUvXLczz1XLuepLawkIimOBXLw2g619D34dh3bjLmmfPD1LdWtkRKErUhKoa2lZvdQ0I0I8RlGZTy0nfcAsxCDUmCTtEA9poN" \
 -e "BASE_URL=http://$DOCKER_IP" \
