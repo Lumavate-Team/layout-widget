@@ -2,6 +2,7 @@ package controllers
 
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
+	"fmt"
 )
 
 type lumavateProperties struct {
@@ -24,21 +25,21 @@ func (self *lumavateProperties) GetLayoutProperties() []properties.PropertyType 
   justifyOptions["stretch"] = "Stretch"
 
   props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"cssClass", "", "", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
+    &properties.PropertyBase{"cssClass", "", "Placement Settings", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
   props = append(props, &properties.PropertyDropdown{
-    &properties.PropertyBase{"displayMode", "", "", "Display Mode", help_mode}, "both", displayOptions})
+    &properties.PropertyBase{"displayMode", "", "Placement Settings", "Display Mode", help_mode}, "both", displayOptions})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateRowStart", "", "", "Body Row Start", "This is Row at which this grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+    &properties.PropertyBase{"templateRowStart", "", "Placement Settings", "Body Row Start", "This is Row at which this grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateRowSpan", "", "", "Number of Rows to Span", "This is the Row at which this grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+    &properties.PropertyBase{"templateRowSpan", "", "Placement Settings", "Number of Rows to Span", "This is the Row at which this grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateColumnStart", "", "", "Body Column Start", "This is the Column at which the grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+    &properties.PropertyBase{"templateColumnStart", "", "Placement Settings", "Body Column Start", "This is the Column at which the grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateColumnSpan", "", "", "Number of Columns to Span", "This is the Column at which the grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
-  props = append(props, &properties.PropertyDropdown{
-    &properties.PropertyBase{"alignSelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
-  props = append(props, &properties.PropertyDropdown{
-    &properties.PropertyBase{"justifySelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
+    &properties.PropertyBase{"templateColumnSpan", "", "Placement Settings", "Number of Columns to Span", "This is the Column at which the grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+  //props = append(props, &properties.PropertyDropdown{
+  //  &properties.PropertyBase{"alignSelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
+  //props = append(props, &properties.PropertyDropdown{
+  //  &properties.PropertyBase{"justifySelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
   return props
 }
 
@@ -66,6 +67,16 @@ func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
 func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
   p := self.DynamicComponents.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "Body Items", "")
   for _, component := range p.Options.Components {
+		for _, property := range component.Properties {
+			p := property.(map[string]interface{})
+			for k,v := range(p) {
+				fmt.Println(k)
+				fmt.Println(v)
+			}
+			if p["section"] ==  nil || p["section"] == ""  {
+				p["section"] = component.Label + " Settings"
+			}
+		}
     component.Properties = append(component.Properties, self.GetLayoutProperties()...)
   }
   return p
