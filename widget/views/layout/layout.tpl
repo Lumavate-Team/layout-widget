@@ -20,6 +20,8 @@
     <meta property="og:image" content="{{.dnsInfo}}/iot/android-chrome-512x512.png" />
 
     <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="{{.CacheKey}}/static/css/addtohomescreen.css">
+		<script type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
     {{range $i, $href := .data.DirectCssIncludes }}
       <link href="{{$href}}" rel="stylesheet">
     {{end}}
@@ -120,5 +122,20 @@
       </div>
       </div>
     </div>
+			<script type="text/javascript">
+				var userAgent = navigator.userAgent.toLowerCase();
+					var isAndroid = userAgent.indexOf('android') > -1;
+
+				if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
+					var HomeScreenConfig = {
+						skipFirstVisit: {{.data.SkipFirst}},
+						startDelay: {{.data.StartDelay}},
+						lifespan: {{.data.Lifespan}},
+						maxDisplayCount: {{.data.DisplayCount}},
+						message: {{.data.Message}}
+					};
+					addToHomescreen(HomeScreenConfig);
+				};
+			</script>
   </body>
 </html>

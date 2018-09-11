@@ -2,6 +2,7 @@ package controllers
 
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
+	components "github.com/Lumavate-Team/lumavate-go-common/components"
 )
 
 type lumavateProperties struct {
@@ -44,7 +45,7 @@ func (self *lumavateProperties) GetLayoutProperties() []properties.PropertyType 
 
 func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
 
-  return []properties.PropertyType{
+  props := []properties.PropertyType{
     &properties.PropertyToggle{
       &properties.PropertyBase{"displayHeader", "Header", "Settings", "Display Header", ""}, false},
     self.DynamicComponents.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
@@ -61,6 +62,12 @@ func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
     self.GetBodyItems(),
     self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "Modal Items", ""),
   }
+
+	for _, element := range components.GetAddToHomeProperties() {
+		props = append(props, element)
+	}
+
+	return props
 }
 
 func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {

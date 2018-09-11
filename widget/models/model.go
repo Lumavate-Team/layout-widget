@@ -43,6 +43,15 @@ type BodyOptions struct {
   }
 }
 
+type AddToHomeStruct struct {
+  ShowAddToHome bool `json:"showAddToHome"`
+  SkipFirst bool `json:"skipFirst"`
+  StartDelay int `json:"startDelay"`
+  Lifespan int `json:"lifespan"`
+  DisplayCount int `json:"displayCount"`
+  Message string `json:"message"`
+}
+
 type LumavateRequest struct {
   Payload struct {
     Data struct {
@@ -57,6 +66,7 @@ type LumavateRequest struct {
       Footer                 widget.Component
       Header                 widget.Component
       ModalItems             []widget.Component
+      HomeScreen             AddToHomeStruct
     }
   }
 }
