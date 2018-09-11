@@ -15,7 +15,11 @@ type MainController struct {
 
 func (this *MainController) Get() {
   luma_response := models.LumavateRequest {}
+  luma_domain := models.LumavateDomain {}
+
   err := json.Unmarshal(this.LumavateGetData(), &luma_response)
+  domain, _ := this.LumavateGet("/pwa/v1/domain")
+  json.Unmarshal(domain, &luma_domain)
 
   if luma_response.Payload.Data.BodyProperties.ComponentType == "body-items-basic" {
     body_props := &luma_response.Payload.Data.BodyProperties.ComponentData
@@ -33,6 +37,8 @@ func (this *MainController) Get() {
   }
 
   this.Data["data"] = luma_response.Payload.Data
+  this.Data["gtm"] = luma_domain.Payload.Data.RuntimeData["gtm"]
+
   fmt.Println(this.XSRFToken())
 
   this.Layout = "layout/layout.tpl"

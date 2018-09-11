@@ -43,6 +43,15 @@ type BodyOptions struct {
   }
 }
 
+type LumavateDomain struct {
+  Payload struct {
+    Data struct {
+      Domain string
+      RuntimeData map[string]interface{}
+    }
+  }
+}
+
 type LumavateRequest struct {
   Payload struct {
     Data struct {
