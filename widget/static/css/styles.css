@@ -17,6 +17,7 @@
 .header {
   min-height:48px;
   width:100%;
+	z-index: -1;
 }
 
 .content {
@@ -30,6 +31,7 @@
 .footer {
   min-height:48px;
   width:100%;
+	z-index: -1;
 }
 
 .modals {
