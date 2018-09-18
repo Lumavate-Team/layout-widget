@@ -2,7 +2,6 @@ package controllers
 
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
-	"fmt"
 )
 
 type lumavateProperties struct {
@@ -98,10 +97,6 @@ func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
   for _, component := range p.Options.Components {
 		for _, property := range component.Properties {
 			p := property.(map[string]interface{})
-			for k,v := range(p) {
-				fmt.Println(k)
-				fmt.Println(v)
-			}
 			if p["section"] ==  nil || p["section"] == ""  {
 				p["section"] = component.Label + " Settings"
 			}
