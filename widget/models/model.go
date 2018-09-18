@@ -66,9 +66,18 @@ type LumavateRequest struct {
       Footer                 widget.Component
       Header                 widget.Component
       ModalItems             []widget.Component
+			LogicItems						 []LogicContainer
     }
   }
 }
+
+type LogicContainer struct {
+	ComponentData struct {
+		Placement string	
+	}
+	ComponentHtml string
+}
+
 
 type LayoutContainer struct {
   ComponentData struct {
@@ -82,6 +91,13 @@ type LayoutContainer struct {
     AlignSelf           string
   }
   ComponentHtml string
+}
+
+func (this LogicContainer) GetHtml() string {
+	return fmt.Sprintf(`
+	%v
+	`,
+		this.ComponentHtml)
 }
 
 func (this LayoutContainer) GetHtml() string {

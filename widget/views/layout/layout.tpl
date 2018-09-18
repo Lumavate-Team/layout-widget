@@ -55,6 +55,11 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 {{ end }}
+{{range $index, $element := .data.LogicItems}}
+	{{if eq $element.ComponentData.Placement "top"}}
+		{{ logicHtml $element }}
+	{{end}}
+{{end}}
     <div class="container">
       <div class="wrapper">
       <script>
@@ -136,5 +141,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       </div>
     </div>
+	{{range $index, $element := .data.LogicItems}}
+		{{if eq $element.ComponentData.Placement "bottom"}}
+			{{ logicHtml $element }}
+		{{end}}
+	{{end}}
   </body>
 </html>

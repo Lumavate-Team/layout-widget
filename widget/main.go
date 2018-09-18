@@ -14,6 +14,11 @@ func LayoutHtml(in models.LayoutContainer) (out template.HTML) {
   return
 }
 
+func LogicHtml(in models.LogicContainer) (out template.HTML){
+	out = template.HTML(in.GetHtml())
+	return
+}
+
 func main() {
   beego.BConfig.WebConfig.EnableXSRF = true
   beego.BConfig.WebConfig.XSRFKey = os.Getenv("PRIVATE_KEY")
@@ -25,5 +30,6 @@ func main() {
   beego.AddFuncMap("safeCss", common.SafeCss)
   beego.AddFuncMap("safeHtml", common.SafeHtml)
   beego.AddFuncMap("layoutHtml", LayoutHtml)
+	beego.AddFuncMap("logicHtml", LogicHtml)
   beego.Run()
 }

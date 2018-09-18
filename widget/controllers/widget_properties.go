@@ -9,6 +9,19 @@ type lumavateProperties struct {
   *properties.LumavateProperties
 }
 
+func (self *lumavateProperties) GetLogicProperties() []properties.PropertyType {
+	placementOptions := make(map[string]string)
+	placementOptions["top"] = "Top"
+	placementOptions["bottom"] = "Bottom"
+
+  props := []properties.PropertyType{}
+
+  props = append(props, &properties.PropertyDropdown{
+    &properties.PropertyBase{"placement", "", "Placement Settings", "Component Placement", help_component_placement}, "top", placementOptions})
+
+	return props
+}
+
 func (self *lumavateProperties) GetLayoutProperties() []properties.PropertyType {
   props := []properties.PropertyType{}
 
@@ -60,12 +73,28 @@ func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
       &properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
     self.GetBodyProperties(),
     self.GetBodyItems(),
-    self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "Modal Items", ""),
+		self.GetLogicItems(),
+    self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "", "")}
+}
+
+
+func (self *lumavateProperties) GetLogicItems() *properties.PropertyComponents {
+  p := self.DynamicComponents.GetDynamicComponentsProperty("logic", "logicItems", "Logic", "Logic Components", "", "")
+
+  for _, component := range p.Options.Components {
+		for _, property := range component.Properties {
+			p := property.(map[string]interface{})
+			if p["section"] ==  nil || p["section"] == ""  {
+				p["section"] = component.Label + " Settings"
+			}
+		}
+    component.Properties = append(component.Properties, self.GetLogicProperties()...)
   }
+  return p
 }
 
 func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
-  p := self.DynamicComponents.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "Body Items", "")
+  p := self.DynamicComponents.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "", "")
   for _, component := range p.Options.Components {
 		for _, property := range component.Properties {
 			p := property.(map[string]interface{})
@@ -122,6 +151,9 @@ func (self *lumavateProperties) GetBodyProperties() *properties.PropertyComponen
 /*
 * Help Text Globals
  */
+
+var help_component_placement string = `Indicates whether this logic component should be placed above or below the layout grid`
+
 var help_mode string = `Denotes when this item should be displayed: * Both:
 Display during _optimal_ & _degraded_ rendering (default) * Optimal: Display
 during _optimal_ rendering on newer browsers supporting CSS Grid * Degraded:
