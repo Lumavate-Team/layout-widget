@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
+	<script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
   {{if .gtm }}
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
