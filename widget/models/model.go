@@ -26,6 +26,15 @@ type Header struct {
   ComponentType string
 }
 
+type SecurityOptions struct {
+  ComponentHtml string
+  ComponentType string
+  ComponentData struct {  
+    NoAuthRedirect      component_data.PageLinkStruct
+    SpecificGroup       []string  `json:"specificGroup"`
+  }
+}
+
 type BodyOptions struct {
   ComponentHtml string
   ComponentType string
@@ -61,6 +70,7 @@ type LumavateRequest struct {
       BackgroundColor        string
       DisplayHeader          bool
       DisplayFooter          bool
+      SecurityProperties     SecurityOptions
       BodyProperties         BodyOptions
       BodyItems              []LayoutContainer
       Footer                 widget.Component
@@ -91,6 +101,27 @@ type LayoutContainer struct {
     AlignSelf           string
   }
   ComponentHtml string
+}
+
+// structs used for getting designer defined user groups
+type AuthGroupRequest struct {
+  Payload struct {
+    Data []GroupStruct
+  }
+}
+type GroupStruct struct {
+  Group string `json:"name"`
+}
+
+// struct used to get auth-url for making api calls
+type AuthRequest struct {
+  AuthUrl     string        `json:"authUrl"`
+}
+
+// struct used to get login status of user
+type GroupRequest struct {
+  Roles       []string `json:"roles"`
+  Status      string `json:"status"`
 }
 
 func (this LogicContainer) GetHtml() string {

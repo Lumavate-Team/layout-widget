@@ -68,6 +68,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           return b ? b.pop() : '';
         }
 
+        function getAuthUrl() {
+          var token = getCookieValue("pwa_jwt")
+          token = token.split(".")[1];
+          var decodedToken = JSON.parse(atob(token));
+
+          return decodedToken["authUrl"]
+        }
+
         function getSingleUseToken(onSuccess, onNoAuth, onError) {
           var xsrf, xsrflist;
           xsrf = getCookieValue("_xsrf");
