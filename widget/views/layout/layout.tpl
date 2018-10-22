@@ -108,6 +108,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           xhr.send('_xsrf=' + atob(xsrflist[0]));
         }
 
+        if(/\?mode=degraded/.test(window.location.search) === false){
+          if(window.CSS === undefined || window.CSS.supports === undefined){
+            window.location.href = window.location.href + '?mode=degraded'
+          }
+
+          if(window.CSS.supports('display', 'grid') === false){
+            window.location.href = window.location.href + '?mode=degraded'
+          }
+        }
       </script>
       {{if .data.DisplayHeader }}
         <div class="header">
