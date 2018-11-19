@@ -77,10 +77,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         function getSingleUseToken(onSuccess, onNoAuth, onError) {
-          var xsrf, xsrflist;
+          let xsrf, xsrflist;
           xsrf = getCookieValue("_xsrf");
           xsrflist = xsrf.split("|");
-          xhr = new XMLHttpRequest();
+          let xhr = new XMLHttpRequest();
           xhr.responseType = 'json';
 
           xhr.open('POST', window.location.href.split('?')[0] + '/single-use-token');
