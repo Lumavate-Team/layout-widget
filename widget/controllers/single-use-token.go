@@ -18,7 +18,7 @@ func (this *SingleUseTokenController) Post() {
 
   if code == 200 {
     this.Ctx.Output.SetStatus(200)
-    result := SingleUseTokenStruct{ token_obj.Payload.Data.Token }
+    result := SingleUseTokenStruct{ "LUMA-SUT1 " + token_obj.Payload.Data.Token + " UrlRef=" + this.Ctx.Input.Param(":url_ref") }
     this.Data["json"] = &result
     this.ServeJSON()
   } else if code == 401 {
