@@ -119,9 +119,13 @@ type AuthRequest struct {
 }
 
 // struct used to get login status of user
-type GroupRequest struct {
-  Roles       []string `json:"roles"`
-  Status      string `json:"status"`
+type GroupRequest struct {  
+  Payload struct {
+    Data struct{
+      Roles       []string `json:"roles"`
+      Status      string `json:"status"`
+    }
+  }
 }
 
 func (this LogicContainer) GetHtml() string {

@@ -55,7 +55,7 @@ func (this *MainController) Get() {
     // check if user is allowed to access specific page
     // if not redirect them somewhere
     if luma_response.Payload.Data.SecurityProperties.ComponentType == "securitySpecific" {
-      if (this.checkRole(user_roles.Roles, luma_response.Payload.Data.SecurityProperties.ComponentData.SpecificGroup) != true) {
+      if (this.checkRole(user_roles.Payload.Data.Roles, luma_response.Payload.Data.SecurityProperties.ComponentData.SpecificGroup) != true) {
         this.Ctx.Redirect(302, luma_response.Payload.Data.SecurityProperties.ComponentData.NoAuthRedirect.Url)
       } 
     }
