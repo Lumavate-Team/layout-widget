@@ -83,12 +83,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           let xhr = new XMLHttpRequest();
           xhr.responseType = 'json';
 
-          xhr.open('POST', window.location.href.split('?')[0] + '/single-use-token');
+          xhr.open('POST', window.location.href.split('?')[0] + '/sut');
           xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           xhr.onload = function() {
             if (xhr.status === 200) {
               if (onSuccess) {
-                onSuccess(xhr.response.token);
+                let token = xhr.response.alg + " " + xhr.response.token + " UrlRef=" + xhr.response.urlRef
+                onSuccess(token);
               }
             }
             else if (xhr.status === 500) {
