@@ -1,7 +1,7 @@
 package controllers
 
 import (
-  common_controller "github.com/Lumavate-Team/lumavate-go-common"
+  common_controller "github.com/Lumavate-Team/lumavate-go-common/controllers"
 )
 
 type SingleUseTokenStruct struct {

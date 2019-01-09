@@ -2,13 +2,13 @@ package models
 
 import (
   "fmt"
-  common "github.com/Lumavate-Team/lumavate-go-common"
+  common_controllers "github.com/Lumavate-Team/lumavate-go-common/controllers"
   widget "github.com/Lumavate-Team/lumavate-go-common/models"
   component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
 )
 
 type MainController struct {
-  common.LumavateController
+  common_controllers.LumavateController
 }
 
 type Footer struct {

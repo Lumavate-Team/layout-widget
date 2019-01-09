@@ -1,7 +1,7 @@
 package controllers
 
 import (
-  common_controller "github.com/Lumavate-Team/lumavate-go-common"
+  common_controller "github.com/Lumavate-Team/lumavate-go-common/controllers"
   _"github.com/bitly/go-simplejson"
   b64 "encoding/base64"
   "encoding/json"
