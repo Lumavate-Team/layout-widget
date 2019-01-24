@@ -3,10 +3,29 @@ package controllers
 import (
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
 	components "github.com/Lumavate-Team/lumavate-go-common/components"
+  "github.com/Lumavate-Team/lumavate-go-common/api_core"
+  b64 "encoding/base64"
+  "encoding/json"
+  "widget/models"
+  "strings"
+  "fmt"
 )
 
 type lumavateProperties struct {
   *properties.LumavateProperties
+}
+
+func (self *lumavateProperties) GetLogicProperties() []properties.PropertyType {
+	placementOptions := make(map[string]string)
+	placementOptions["top"] = "Top"
+	placementOptions["bottom"] = "Bottom"
+
+  props := []properties.PropertyType{}
+
+  props = append(props, &properties.PropertyDropdown{
+    &properties.PropertyBase{"placement", "", "Placement Settings", "Component Placement", help_component_placement}, "top", placementOptions})
+
+	return props
 }
 
 func (self *lumavateProperties) GetLayoutProperties() []properties.PropertyType {
@@ -25,21 +44,21 @@ func (self *lumavateProperties) GetLayoutProperties() []properties.PropertyType 
   justifyOptions["stretch"] = "Stretch"
 
   props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"cssClass", "", "", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
+    &properties.PropertyBase{"cssClass", "", "Placement Settings", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
   props = append(props, &properties.PropertyDropdown{
-    &properties.PropertyBase{"displayMode", "", "", "Display Mode", help_mode}, "both", displayOptions})
+    &properties.PropertyBase{"displayMode", "", "Placement Settings", "Display Mode", help_mode}, "both", displayOptions})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateRowStart", "", "", "Body Row Start", "This is Row at which this grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+    &properties.PropertyBase{"templateRowStart", "", "Placement Settings", "Body Row Start", "This is Row at which this grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateRowSpan", "", "", "Number of Rows to Span", "This is the Row at which this grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+    &properties.PropertyBase{"templateRowSpan", "", "Placement Settings", "Number of Rows to Span", "This is the Row at which this grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateColumnStart", "", "", "Body Column Start", "This is the Column at which the grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+    &properties.PropertyBase{"templateColumnStart", "", "Placement Settings", "Body Column Start", "This is the Column at which the grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
   props = append(props, &properties.PropertyNumeric{
-    &properties.PropertyBase{"templateColumnSpan", "", "", "Number of Columns to Span", "This is the Column at which the grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
-  props = append(props, &properties.PropertyDropdown{
-    &properties.PropertyBase{"alignSelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
-  props = append(props, &properties.PropertyDropdown{
-    &properties.PropertyBase{"justifySelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
+    &properties.PropertyBase{"templateColumnSpan", "", "Placement Settings", "Number of Columns to Span", "This is the Column at which the grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+  //props = append(props, &properties.PropertyDropdown{
+  //  &properties.PropertyBase{"alignSelf", "", "", "Row justification", "Position of Component in Grid row axis"}, "stretch", justifyOptions})
+  //props = append(props, &properties.PropertyDropdown{
+  //  &properties.PropertyBase{"justifySelf", "", "", "Column Justification", "Position of Component in Grid Along column axis"}, "stretch", justifyOptions})
   return props
 }
 
@@ -47,32 +66,114 @@ func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
 
   props := []properties.PropertyType{
     &properties.PropertyToggle{
-      &properties.PropertyBase{"displayHeader", "Header", "Settings", "Display Header", ""}, false},
+      &properties.PropertyBase{"displayHeader", "Header", "Header Settings", "Display Header", ""}, false},
     self.DynamicComponents.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
     &properties.PropertyToggle{
-      &properties.PropertyBase{"displayFooter", "Footer", "Settings", "Display Footer", ""}, false},
+      &properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
     self.DynamicComponents.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
     &properties.PropertyColor{
-      &properties.PropertyBase{"backgroundColor", "General", "Settings", "Background Color", ""}, "#ffffff"},
+      &properties.PropertyBase{"backgroundColor", "Body", "Body Settings", "Background Color", ""}, "#ffffff"},
     &properties.PropertyToggle{
-      &properties.PropertyBase{"displayBackgroundImage", "General", "Settings", "Display Background Image", ""}, false},
+      &properties.PropertyBase{"displayBackgroundImage", "Body", "Body Settings", "Display Background Image", ""}, false},
     &properties.PropertyImage{
-      &properties.PropertyBase{"backgroundImage", "General", "Settings", "Background Image", ""}},
+      &properties.PropertyBase{"backgroundImage", "Body", "Body Settings", "Background Image", ""}},
+    self.GetSecurityProperties(),
     self.GetBodyProperties(),
     self.GetBodyItems(),
-    self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "Modal Items", ""),
+		self.GetLogicItems(),
+    self.GetAddtoHomeItems(),
+    self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "", "")}
+}
+
+func (self *lumavateProperties) GetAddtoHomeItems() *properties.PropertyComponent {
+  for _, element := range components.GetAddToHomeProperties() {
+    props = append(props, element)
   }
 
-	for _, element := range components.GetAddToHomeProperties() {
-		props = append(props, element)
-	}
+  return props
+}
 
-	return props
+func (self *lumavateProperties) GetSecurityProperties() *properties.PropertyComponent {
+  token_response := models.AuthRequest {}
+
+  // get token and split for middle portion
+  token := self.Authorization
+  fmt.Println(token)
+  token = strings.Split(token, " ")[1]
+  token = strings.Split(token, ".")[1]
+  if i := len(token) % 4; i != 0 {
+    token += strings.Repeat("=", 4-i)
+  }
+
+  // decode token to get authUrl 
+  decodedToken, _ := b64.StdEncoding.DecodeString(token)
+  if err := json.Unmarshal(decodedToken, &token_response); err != nil {
+    panic(err)
+  }
+
+  // make request to auth-groups for defined groups
+  lr := api_core.LumavateRequest{self.Authorization, ""}
+  q := fmt.Sprintf("%vdiscover/auth-groups",token_response.AuthUrl)
+  fmt.Println(q)
+  body, _ := lr.Get(q, true)
+  propertyGroups := models.AuthGroupRequest {}
+  json.Unmarshal(body, &propertyGroups)
+
+  // defaults for auth group multiselect
+  defaults := make([]string, 1)
+  defaults = append(defaults, "")
+
+  // loop through groups from auth-groups call and append them to multiselect property
+  groups := [] properties.MultiselectOption {}
+  for _, element := range propertyGroups.Payload.Data {
+    groups = append(groups, properties.MultiselectOption{element.Group, element.Group})
+  }
+
+  props := [] properties.PropertyType {}
+  c := &properties.Component{"securityType", "", "securityNone", "<None>", "a", "<None>", props}
+
+  props1 := [] properties.PropertyType {}
+  c1 := &properties.Component{"securityType", "", "securityAll", "All logged in users", "a", "All logged in users", props1}
+
+  props2 := [] properties.PropertyType {}
+  props2 = append(props2, &properties.PropertyPageLink{ &properties.PropertyBase{"noAuthRedirect", "", "Security Properties (Specific)", "No Auth Redirect", ""}})
+  props2 = append(props2, &properties.PropertyMultiselect{ &properties.PropertyBase{"specificGroup", "", "Security Properties (Specific)", "Specific Group(s)", ""}, defaults, groups})
+  c2 := &properties.Component{"securityType", "", "securitySpecific", "Specific user group(s)", "a", "Specific user group(s)", props2}
+
+  p := &properties.PropertyComponent{
+    &properties.PropertyBase{"securityProperties", "Widget", "Security Settings", "Authentication", ""},
+    c, &properties.PropertyOptionsComponent{[] string {"securityType"}, [] *properties.Component {c, c1, c2} },
+  }
+
+  return p
+}
+
+
+func (self *lumavateProperties) GetLogicItems() *properties.PropertyComponents {
+  p := self.DynamicComponents.GetDynamicComponentsProperty("logic", "logicItems", "Logic", "Logic Components", "", "")
+
+  for _, component := range p.Options.Components {
+		for _, property := range component.Properties {
+			p := property.(map[string]interface{})
+			if p["section"] ==  nil || p["section"] == ""  {
+				p["section"] = component.Label + " Settings"
+			}
+		}
+    component.Properties = append(component.Properties, self.GetLogicProperties()...)
+  }
+  return p
+>>>>>>> master
 }
 
 func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
-  p := self.DynamicComponents.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "Body Items", "")
+  p := self.DynamicComponents.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "", "")
   for _, component := range p.Options.Components {
+		for _, property := range component.Properties {
+			p := property.(map[string]interface{})
+			if p["section"] ==  nil || p["section"] == ""  {
+				p["section"] = component.Label + " Settings"
+			}
+		}
     component.Properties = append(component.Properties, self.GetLayoutProperties()...)
   }
   return p
@@ -108,7 +209,7 @@ func (self *lumavateProperties) GetBodyProperties() *properties.PropertyComponen
   c2 := &properties.Component{"body-items", "", "body-items-advanced", "Advanced", "a", "Advanced", props2}
 
   p := &properties.PropertyComponent{
-    &properties.PropertyBase{"bodyProperties", "Body", "", "Body Style", ""},
+    &properties.PropertyBase{"bodyProperties", "Body", "Body Settings", "Body Style", ""},
     c, &properties.PropertyOptionsComponent{[] string {"body-items"}, [] *properties.Component {c, c2} },
   }
 
@@ -118,6 +219,9 @@ func (self *lumavateProperties) GetBodyProperties() *properties.PropertyComponen
 /*
 * Help Text Globals
  */
+
+var help_component_placement string = `Indicates whether this logic component should be placed above or below the layout grid`
+
 var help_mode string = `Denotes when this item should be displayed: * Both:
 Display during _optimal_ & _degraded_ rendering (default) * Optimal: Display
 during _optimal_ rendering on newer browsers supporting CSS Grid * Degraded:

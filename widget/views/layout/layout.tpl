@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+	<script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
+  {{if .gtm }}
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','{{.gtm}}');</script>
+  <!-- End Google Tag Manager -->
+  {{ end }}
     <title>{{.data.InstanceName}}</title>
     <meta charset="utf-8">
     <base href="{{.WidgetUrlPrefix}}">
@@ -41,6 +51,17 @@
     </style>
   </head>
   <body>
+{{ if .gtm }}
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{.gtm}}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+{{ end }}
+{{range $index, $element := .data.LogicItems}}
+	{{if eq $element.ComponentData.Placement "top"}}
+		{{ logicHtml $element }}
+	{{end}}
+{{end}}
     <div class="container">
       <div class="wrapper">
       <script>
@@ -49,19 +70,28 @@
           return b ? b.pop() : '';
         }
 
+        function getAuthUrl() {
+          var token = getCookieValue("pwa_jwt")
+          token = token.split(".")[1];
+          var decodedToken = JSON.parse(atob(token));
+
+          return decodedToken["authUrl"]
+        }
+
         function getSingleUseToken(onSuccess, onNoAuth, onError) {
-          var xsrf, xsrflist;
+          let xsrf, xsrflist;
           xsrf = getCookieValue("_xsrf");
           xsrflist = xsrf.split("|");
-          xhr = new XMLHttpRequest();
+          let xhr = new XMLHttpRequest();
           xhr.responseType = 'json';
 
-          xhr.open('POST', window.location.href.split('?')[0] + '/single-use-token');
+          xhr.open('POST', window.location.href.split('?')[0] + '/sut');
           xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           xhr.onload = function() {
             if (xhr.status === 200) {
               if (onSuccess) {
-                onSuccess(xhr.response.token);
+                let token = xhr.response.alg + " " + xhr.response.token + " UrlRef=" + xhr.response.urlRef
+                onSuccess(token);
               }
             }
             else if (xhr.status === 500) {
@@ -81,6 +111,29 @@
           xhr.send('_xsrf=' + atob(xsrflist[0]));
         }
 
+        if(/\?mode=degraded/.test(window.location.search) === false){
+          if(window.CSS === undefined || window.CSS.supports === undefined){
+            window.location.href = window.location.href + '?mode=degraded'
+          }
+
+          if(window.CSS.supports('display', 'grid') === false){
+            window.location.href = window.location.href + '?mode=degraded'
+          }
+        }
+
+        var userAgent = navigator.userAgent.toLowerCase();
+          var isAndroid = userAgent.indexOf('android') > -1;
+
+        if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
+          var HomeScreenConfig = {
+            skipFirstVisit: {{.data.SkipFirst}},
+            startDelay: {{.data.StartDelay}},
+            lifespan: {{.data.Lifespan}},
+            maxDisplayCount: {{.data.DisplayCount}},
+            message: {{.data.Message}}
+          };
+          addToHomescreen(HomeScreenConfig);
+        };
       </script>
       {{if .data.DisplayHeader }}
         <div class="header">
@@ -122,20 +175,26 @@
       </div>
       </div>
     </div>
-			<script type="text/javascript">
-				var userAgent = navigator.userAgent.toLowerCase();
-					var isAndroid = userAgent.indexOf('android') > -1;
+	{{range $index, $element := .data.LogicItems}}
+		{{if eq $element.ComponentData.Placement "bottom"}}
+			{{ logicHtml $element }}
+		{{end}}
+	{{end}}
+  <script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+      var isAndroid = userAgent.indexOf('android') > -1;
 
-				if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
-					var HomeScreenConfig = {
-						skipFirstVisit: {{.data.SkipFirst}},
-						startDelay: {{.data.StartDelay}},
-						lifespan: {{.data.Lifespan}},
-						maxDisplayCount: {{.data.DisplayCount}},
-						message: {{.data.Message}}
-					};
-					addToHomescreen(HomeScreenConfig);
-				};
-			</script>
+    if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
+      var HomeScreenConfig = {
+        skipFirstVisit: {{.data.SkipFirst}},
+        startDelay: {{.data.StartDelay}},
+        lifespan: {{.data.Lifespan}},
+        maxDisplayCount: {{.data.DisplayCount}},
+        message: {{.data.Message}}
+      };
+      addToHomescreen(HomeScreenConfig);
+    };
+  </script>
+  <script type="text/javascript" src="/iot/sw-register.min.js"></script>
   </body>
 </html>

@@ -2,13 +2,13 @@ package models
 
 import (
   "fmt"
-  common "github.com/Lumavate-Team/lumavate-go-common"
+  common_controllers "github.com/Lumavate-Team/lumavate-go-common/controllers"
   widget "github.com/Lumavate-Team/lumavate-go-common/models"
   component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
 )
 
 type MainController struct {
-  common.LumavateController
+  common_controllers.LumavateController
 }
 
 type Footer struct {
@@ -24,6 +24,15 @@ type Modal struct {
 type Header struct {
   ComponentHtml string
   ComponentType string
+}
+
+type SecurityOptions struct {
+  ComponentHtml string
+  ComponentType string
+  ComponentData struct {  
+    NoAuthRedirect      component_data.PageLinkStruct
+    SpecificGroup       []string  `json:"specificGroup"`
+  }
 }
 
 type BodyOptions struct {
@@ -52,6 +61,15 @@ type AddToHomeStruct struct {
   Message string `json:"message"`
 }
 
+type LumavateDomain struct {
+  Payload struct {
+    Data struct {
+      Domain string
+      RuntimeData map[string]interface{}
+    }
+  }
+}
+
 type LumavateRequest struct {
   Payload struct {
     Data struct {
@@ -61,15 +79,25 @@ type LumavateRequest struct {
       BackgroundColor        string
       DisplayHeader          bool
       DisplayFooter          bool
+      SecurityProperties     SecurityOptions
       BodyProperties         BodyOptions
       BodyItems              []LayoutContainer
       Footer                 widget.Component
       Header                 widget.Component
       ModalItems             []widget.Component
       HomeScreen             AddToHomeStruct
+			LogicItems						 []LogicContainer
     }
   }
 }
+
+type LogicContainer struct {
+	ComponentData struct {
+		Placement string	
+	}
+	ComponentHtml string
+}
+
 
 type LayoutContainer struct {
   ComponentData struct {
@@ -83,6 +111,38 @@ type LayoutContainer struct {
     AlignSelf           string
   }
   ComponentHtml string
+}
+
+// structs used for getting designer defined user groups
+type AuthGroupRequest struct {
+  Payload struct {
+    Data []GroupStruct
+  }
+}
+type GroupStruct struct {
+  Group string `json:"name"`
+}
+
+// struct used to get auth-url for making api calls
+type AuthRequest struct {
+  AuthUrl     string        `json:"authUrl"`
+}
+
+// struct used to get login status of user
+type GroupRequest struct {  
+  Payload struct {
+    Data struct{
+      Roles       []string `json:"roles"`
+      Status      string `json:"status"`
+    }
+  }
+}
+
+func (this LogicContainer) GetHtml() string {
+	return fmt.Sprintf(`
+	%v
+	`,
+		this.ComponentHtml)
 }
 
 func (this LayoutContainer) GetHtml() string {
