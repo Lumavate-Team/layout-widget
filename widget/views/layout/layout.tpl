@@ -164,5 +164,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			{{ logicHtml $element }}
 		{{end}}
 	{{end}}
+  <script type="text/javascript" src="/iot/sw-register.min.js"></script>
   </body>
 </html>
