@@ -120,20 +120,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             window.location.href = window.location.href + '?mode=degraded'
           }
         }
-
-        var userAgent = navigator.userAgent.toLowerCase();
-          var isAndroid = userAgent.indexOf('android') > -1;
-
-        if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
-          var HomeScreenConfig = {
-            skipFirstVisit: {{.data.SkipFirst}},
-            startDelay: {{.data.StartDelay}},
-            lifespan: {{.data.Lifespan}},
-            maxDisplayCount: {{.data.DisplayCount}},
-            message: {{.data.Message}}
-          };
-          addToHomescreen(HomeScreenConfig);
-        };
       </script>
       {{if .data.DisplayHeader }}
         <div class="header">

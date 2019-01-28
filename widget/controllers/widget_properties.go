@@ -81,14 +81,11 @@ func (self *lumavateProperties) GetAllProperties() []properties.PropertyType {
     self.GetBodyProperties(),
     self.GetBodyItems(),
 		self.GetLogicItems(),
-    self.GetAddtoHomeItems(),
     self.DynamicComponents.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "", "")}
-}
 
-func (self *lumavateProperties) GetAddtoHomeItems() *properties.PropertyComponent {
-  for _, element := range components.GetAddToHomeProperties() {
-    props = append(props, element)
-  }
+    for _, element := range components.GetAddToHomeProperties() {
+      props = append(props, element)
+    }
 
   return props
 }
@@ -162,7 +159,6 @@ func (self *lumavateProperties) GetLogicItems() *properties.PropertyComponents {
     component.Properties = append(component.Properties, self.GetLogicProperties()...)
   }
   return p
->>>>>>> master
 }
 
 func (self *lumavateProperties) GetBodyItems() *properties.PropertyComponents {
