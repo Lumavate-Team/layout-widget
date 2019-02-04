@@ -1,5 +1,19 @@
 version: '3'
 
+volumes:
+  thor-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/tbutler/Dev/thor-data
+  components:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/tbutler/Dev/components
+
 services:
   pagebuilder:
     container_name: "pagebuilder"
@@ -24,10 +38,10 @@ services:
       - 80:4201
       - 443:4202
     volumes:
-      - /Users/tbutler/Dev/thor-data:/data:rw
+      - thor-data:/data:rw
+      - components:/custom/components
     environment:
       - PUBLIC_KEY=mIhuoMJh0jbA5W4pUUNK
       - PRIVATE_KEY=LXycaMpw5BzgfhsS4ydNxGzJ36qMnPrQHI8u2x3wQCZCZyGtZ4sOQbkEWnHmVchZEa79a0Y3xK7IKCymSLkugyabbJUGuXfyuoKL
       - HOST_IP=$DOCKER_IP
     network_mode: bridge
-
