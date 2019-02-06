@@ -39,6 +39,13 @@
     {{range $i, $src := .data.DirectIncludes }}
       <script src="{{$src}}" type="text/javascript"></script>
     {{end}}
+
+    <style>
+      {{range $prop := .data.StyleData }}
+        --{{$prop.Name}}: {{$prop.Value}};
+      {{end}}
+    </style>
+    
     <style>
       body {
         {{ if .data.DisplayBackgroundImage }}
