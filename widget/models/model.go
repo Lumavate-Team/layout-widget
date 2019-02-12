@@ -105,7 +105,6 @@ type LayoutContainer struct {
     TemplateRowSpan     int
     TemplateColumnStart int
     TemplateColumnSpan  int
-    CssClass            string
     DisplayMode         string
     JustifySelf         string
     AlignSelf           string
@@ -147,12 +146,11 @@ func (this LogicContainer) GetHtml() string {
 
 func (this LayoutContainer) GetHtml() string {
   return fmt.Sprintf(`
-  <div class="layout-%v %v"
+  <div class="layout-%v"
   style="justify-self:%v;align-self:%v;grid-area:%v/%v/ span %v/ span %v">
   %v
   </div>`,
     this.ComponentData.DisplayMode,
-    this.ComponentData.CssClass,
     this.ComponentData.JustifySelf,
     this.ComponentData.AlignSelf,
     this.ComponentData.TemplateRowStart,

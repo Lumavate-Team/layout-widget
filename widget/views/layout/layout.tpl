@@ -31,7 +31,7 @@
 
     <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="{{.CacheKey}}/static/css/addtohomescreen.css">
-		<script type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
+		<script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
     {{range $i, $href := .data.DirectCssIncludes }}
       <link href="{{$href}}" rel="stylesheet">
     {{end}}
@@ -78,11 +78,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         function getAuthUrl() {
-          var token = getCookieValue("pwa_jwt")
+          let token = getCookieValue("pwa_jwt")
           token = token.split(".")[1];
-          var decodedToken = JSON.parse(atob(token));
+          let decodedToken = JSON.parse(atob(token));
 
           return decodedToken["authUrl"]
+        }
+
+        function getActivationId(){
+          let token = getCookieValue("pwa_jwt")
+          token = token.split(".")[1];
+          let decodedToken = JSON.parse(atob(token));
+
+          return decodedToken["activationId"]
         }
 
         function getSingleUseToken(onSuccess, onNoAuth, onError) {
@@ -174,19 +182,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		{{end}}
 	{{end}}
   <script type="text/javascript">
-    var userAgent = navigator.userAgent.toLowerCase();
+    var athsScript = document.querySelector('#aths');
+    athsScript.addEventListener('load', function() {
+      var userAgent = navigator.userAgent.toLowerCase();
       var isAndroid = userAgent.indexOf('android') > -1;
 
-    if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
-      var HomeScreenConfig = {
-        skipFirstVisit: {{.data.SkipFirst}},
-        startDelay: {{.data.StartDelay}},
-        lifespan: {{.data.Lifespan}},
-        maxDisplayCount: {{.data.DisplayCount}},
-        message: {{.data.Message}}
+      if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
+        var HomeScreenConfig = {
+          appID: 'lumavate.addtohomescreen.' + getActivationId(),
+          skipFirstVisit: {{.data.SkipFirst}},
+          startDelay: {{.data.StartDelay}},
+          lifespan: {{.data.Lifespan}},
+          maxDisplayCount: {{.data.DisplayCount}},
+          message: {{.data.Message}}
+        };
+        addToHomescreen(HomeScreenConfig);
       };
-      addToHomescreen(HomeScreenConfig);
-    };
+    });
   </script>
   <script type="text/javascript" src="/iot/sw-register.min.js"></script>
   </body>

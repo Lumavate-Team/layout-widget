@@ -43,8 +43,8 @@ func (self *lumavateProperties) GetLayoutProperties() []properties.PropertyType 
   justifyOptions["center"] = "Center"
   justifyOptions["stretch"] = "Stretch"
 
-  props = append(props, &properties.PropertyText{
-    &properties.PropertyBase{"cssClass", "", "Placement Settings", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
+  //props = append(props, &properties.PropertyText{
+  //  &properties.PropertyBase{"cssClass", "", "Placement Settings", "CSS Class", "Denotes the class (as defined in the Layout CSS) that will be added to the styling of this item."}, "", properties.PropertyOptionsText{}})
   props = append(props, &properties.PropertyDropdown{
     &properties.PropertyBase{"displayMode", "", "Placement Settings", "Display Mode", help_mode}, "both", displayOptions})
   props = append(props, &properties.PropertyNumeric{
