@@ -20,7 +20,7 @@ RUN go get github.com/astaxie/beego && \
   mkdir /go/src/github.com/Lumavate-Team && \
   cd /go/src/github.com/Lumavate-Team && \
   git clone https://github.com/Lumavate-Team/lumavate-go-common.git && \
-  cd lumavate-go-common
+  cd lumavate-go-common && \
   git checkout master
 
 CMD ["bee", "run"]
