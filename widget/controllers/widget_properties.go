@@ -96,6 +96,9 @@ func (self *lumavateProperties) GetSecurityProperties() *properties.PropertyComp
   // get token and split for middle portion
   token := self.Authorization
   fmt.Println(token)
+	if token == "" {
+		return nil
+	}
   token = strings.Split(token, " ")[1]
   token = strings.Split(token, ".")[1]
   if i := len(token) % 4; i != 0 {
