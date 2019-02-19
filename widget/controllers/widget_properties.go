@@ -102,7 +102,8 @@ func (self *lumavateProperties) GetSecurityProperties() *properties.PropertyComp
   }
 
   // make request to auth-groups for defined groups
-  lr := api_core.LumavateRequest{self.Authorization, ""}
+	fmt.Sprintf(self.BaseUrl)
+  lr := api_core.LumavateRequest{self.Authorization, self.BaseUrl}
   q := fmt.Sprintf("%vdiscover/auth-groups",token_response.AuthUrl)
   fmt.Println(q)
   body, _ := lr.Get(q, true)
