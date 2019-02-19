@@ -37,8 +37,7 @@ func (this *MainController) Get() {
     }
 
     // call out to get login status of user
-    q := fmt.Sprintf("%vstatus",token_response.AuthUrl)
-    fmt.Println(q)
+    q := fmt.Sprintf("%v/status",token_response.AuthUrl)
     user_roles := models.GroupRequest {}
     groups, status := this.LumavateGet(q, true)
     if err := json.Unmarshal(groups, &user_roles); err != nil {
@@ -49,6 +48,7 @@ func (this *MainController) Get() {
     if luma_response.Payload.Data.SecurityProperties.ComponentType != "securityNone"  {
       if (status == "401") {
         this.Ctx.Redirect(302, token_response.AuthUrl + "login")
+				return
       }
     }
 
