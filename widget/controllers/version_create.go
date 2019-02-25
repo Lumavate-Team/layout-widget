@@ -6,6 +6,7 @@ import (
   "github.com/bitly/go-simplejson"
   "encoding/json"
   "strings"
+	"regexp"
 )
 
 type VersionCreateController struct {
@@ -36,9 +37,13 @@ func (this *VersionCreateController) Post() {
 
   body, _ := simplejson.NewJson(this.Ctx.Input.RequestBody)
   body_items, _ := body.Get("bodyItems").Array()
+
+	reg, _ := regexp.Compile("[^a-zA-Z0-9]+")
+
   for index, _ := range body_items {
 		if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("Id"); ok {
 			id_val, _ := id.String()
+			id_val = reg.ReplaceAllString(id_val, "_")
 			components = append(components, ComponentStruct{id_val})
 		}
   }
@@ -88,10 +93,10 @@ func (this *VersionCreateController) Post() {
     promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", comp.Id)
   }
   for _, page := range resources.Payload.Data.Pages {
-    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", page.Id)
+    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", reg.ReplaceAllString(page.Id, "_"))
   }
   for _, microservice := range resources.Payload.Data.Microservices {
-    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", microservice.Id)
+    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", reg.ReplaceAllString(microservice.Id, "_"))
   }
 
   assignment := ""
@@ -99,10 +104,10 @@ func (this *VersionCreateController) Post() {
     assignment += fmt.Sprintf("        c_%-10s = values.shift(); \n", comp.Id)
   }
   for _, page := range resources.Payload.Data.Pages {
-    assignment += fmt.Sprintf("        p_%-10s = values.shift(); /* %-20s */\n", page.Id, page.Url)
+    assignment += fmt.Sprintf("        p_%-10s = values.shift(); /* %-20s */\n", reg.ReplaceAllString(page.Id, "_"), page.Url)
   }
   for _, microservice := range resources.Payload.Data.Microservices {
-    assignment += fmt.Sprintf("        m_%-10s = values.shift(); /* %-20s */\n", microservice.Id, microservice.Url)
+    assignment += fmt.Sprintf("        m_%-10s = values.shift(); /* %-20s */\n", reg.ReplaceAllString(microservice.Id, "_"), microservice.Url)
   }
 
   script = fmt.Sprintf(pre_script, promises_push, assignment, begin_delim, script, end_delim)
