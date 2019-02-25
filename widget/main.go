@@ -9,22 +9,23 @@ import (
   _ "widget/routers"
 )
 
-func LayoutHtml(in models.LayoutContainer) (out template.HTML) {
-  out = template.HTML(in.GetHtml())
-  return
+func LayoutHtml(in models.LayoutContainerStruct) (out template.HTML) {
+	out = template.HTML(in.GetHtml())
+	return
 }
 
-func LogicHtml(in models.LogicContainer) (out template.HTML){
+func LogicHtml(in models.LogicContainerStruct) (out template.HTML){
 	out = template.HTML(in.GetHtml())
 	return
 }
 
 func main() {
-  beego.BConfig.WebConfig.EnableXSRF = true
+  beego.BConfig.WebConfig.EnableXSRF = false
   beego.BConfig.WebConfig.XSRFKey = os.Getenv("PRIVATE_KEY")
   beego.BConfig.WebConfig.XSRFExpire = 3600
 
   beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX")+os.Getenv("PUBLIC_KEY")+"/static", "static")
+  beego.SetStaticPath(os.Getenv("WIDGET_URL_PREFIX")+os.Getenv("PUBLIC_KEY")+"/core", "/lumavate-core-components")
   beego.AddFuncMap("componentHtml", common.ComponentHtml)
   beego.AddFuncMap("modalHtml", common.ModalHtml)
   beego.AddFuncMap("safeCss", common.SafeCss)

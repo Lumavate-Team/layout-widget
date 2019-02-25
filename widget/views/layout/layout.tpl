@@ -31,6 +31,7 @@
 
     <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="{{.CacheKey}}/static/css/addtohomescreen.css">
+    <link href="{{.CacheKey}}/core/luma-core.js">
 		<script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
     {{range $i, $href := .data.DirectCssIncludes }}
       <link href="{{$href}}" rel="stylesheet">
@@ -39,6 +40,7 @@
     {{range $i, $src := .data.DirectIncludes }}
       <script src="{{$src}}" type="text/javascript"></script>
     {{end}}
+		<script id="aths" async type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
 
     <style>
       {{range $prop := .data.StyleData }}
@@ -181,6 +183,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			{{ logicHtml $element }}
 		{{end}}
 	{{end}}
+
+	{{range $index, $element := .resources.Pages}}
+			<luma-core-page id='{{$element.Id}}' url='{{$element.Url}}'></luma-core-page>
+	{{end}}
+
+	{{range $index, $element := .resources.Microservices}}
+			<luma-core-microservice id='{{$element.Id}}' uri='{{$element.Url}}'></luma-core-microservice>
+	{{end}}
+
+	<luma-core-context></luma-core-context>
+	<script>
+		{{ .data.Script }}
+	</script>
   <script type="text/javascript">
     var athsScript = document.querySelector('#aths');
     athsScript.addEventListener('load', function() {

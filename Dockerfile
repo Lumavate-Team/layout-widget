@@ -21,7 +21,10 @@ RUN go get github.com/astaxie/beego && \
   cd /go/src/github.com/Lumavate-Team && \
   git clone https://github.com/Lumavate-Team/lumavate-go-common.git && \
   cd lumavate-go-common && \
-  git checkout v1.0.1
+  git checkout performance && \
+	mkdir /lumavate-core-components-install && \
+	cd /lumavate-core-components-install && \
+	npm install @lumavate/lumavate-core-components
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
 
@@ -30,6 +33,7 @@ FROM scratch
 ADD ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=builder /go/src/widget /app/
+COPY --from=builder /lumavate-core-components-install/node_modules/@lumavate/lumavate-core-components/dist /lumavate-core-components
 
 WORKDIR /app
 
