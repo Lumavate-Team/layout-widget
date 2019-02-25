@@ -42,12 +42,20 @@
     {{end}}
 		<script id="aths" async type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
 
+      {{range $prop := .data.StyleData }}
+				{{if hasSuffix $prop.Name "Font"}}
+				<link href="https://fonts.googleapis.com/css?family={{ $prop.Value }}" rel="stylesheet">
+				{{end}}
+      {{end}}
+
     <style>
+    :root {
       {{range $prop := .data.StyleData }}
         --{{$prop.Name}}: {{$prop.Value}};
       {{end}}
+		}
     </style>
-    
+
     <style>
       body {
         {{ if .data.DisplayBackgroundImage }}
@@ -60,6 +68,7 @@
     </style>
   </head>
   <body>
+
 {{ if .gtm }}
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{.gtm}}"
