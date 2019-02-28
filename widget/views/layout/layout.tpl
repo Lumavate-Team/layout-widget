@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
+  <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
   {{if .gtm }}
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -30,9 +30,13 @@
     <meta property="og:image" content="{{.dnsInfo}}/iot/android-chrome-512x512.png" />
 
     <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="{{.CacheKey}}/static/css/addtohomescreen.css">
-    <link href="{{.CacheKey}}/core/luma-core.js">
-		<script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{.CacheKey}}/static/css/addtohomescreen.css">
+    {{range $prop := .data.StyleData }}
+      {{if hasSuffix $prop.Name "Font"}}
+        <link href="https://fonts.googleapis.com/css?family={{ $prop.Value }}" rel="stylesheet">
+      {{end}}
+    {{end}}
+
     {{range $i, $href := .data.DirectCssIncludes }}
       <link href="{{$href}}" rel="stylesheet">
     {{end}}
@@ -40,21 +44,35 @@
     {{range $i, $src := .data.DirectIncludes }}
       <script src="{{$src}}" type="text/javascript"></script>
     {{end}}
-		<script id="aths" async type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
 
-      {{range $prop := .data.StyleData }}
-				{{if hasSuffix $prop.Name "Font"}}
-				<link href="https://fonts.googleapis.com/css?family={{ $prop.Value }}" rel="stylesheet">
-				{{end}}
-      {{end}}
+    <script id="luma-core" async type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
+    <script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
 
-    <style>
-    :root {
-      {{range $prop := .data.StyleData }}
-        --{{$prop.Name}}: {{$prop.Value}};
-      {{end}}
-		}
-    </style>
+    <script>
+      function hexToRgb(hex) {
+          var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return result ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16)
+          } : null;
+      }
+      document.addEventListener("DOMContentLoaded", function(event) {
+        body = document.querySelector('body');
+        {{range $prop := .data.StyleData }}
+          {{if hasSuffix $prop.Name "ColorFamily"}}
+            rgb = hexToRgb('{{ $prop.Value }}');
+            a = 100;
+            while (a > 0) {
+              body.style.setProperty('--{{ $prop.Name }}-' + a, 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + a/100);
+              console.log('--{{ $prop.Name }}-' + (a));
+              a = a - 10;
+            }
+          {{end}}
+          body.style.setProperty('--{{ $prop.Name }}', '{{ $prop.Value }}');
+        {{end}}
+      });
+    </script>
 
     <style>
       body {
@@ -75,11 +93,13 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 {{ end }}
-{{range $index, $element := .data.LogicItems}}
-	{{if eq $element.ComponentData.Placement "top"}}
-		{{ logicHtml $element }}
-	{{end}}
-{{end}}
+
+    {{range $index, $element := .data.LogicItems}}
+      {{if eq $element.ComponentData.Placement "top"}}
+        {{ logicHtml $element }}
+      {{end}}
+    {{end}}
+
     <div class="container">
       <div class="wrapper">
       <script>
@@ -187,24 +207,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       </div>
     </div>
-	{{range $index, $element := .data.LogicItems}}
-		{{if eq $element.ComponentData.Placement "bottom"}}
-			{{ logicHtml $element }}
-		{{end}}
-	{{end}}
+  {{range $index, $element := .data.LogicItems}}
+    {{if eq $element.ComponentData.Placement "bottom"}}
+      {{ logicHtml $element }}
+    {{end}}
+  {{end}}
 
-	{{range $index, $element := .resources.Pages}}
-			<luma-core-page id='{{$element.Id}}' url='{{$element.Url}}'></luma-core-page>
-	{{end}}
+  {{range $index, $element := .resources.Pages}}
+      <luma-core-page id='{{$element.Id}}' url='{{$element.Url}}'></luma-core-page>
+  {{end}}
 
-	{{range $index, $element := .resources.Microservices}}
-			<luma-core-microservice id='{{$element.Id}}' uri='{{$element.Url}}'></luma-core-microservice>
-	{{end}}
+  {{range $index, $element := .resources.Microservices}}
+      <luma-core-microservice id='{{$element.Id}}' uri='{{$element.Url}}'></luma-core-microservice>
+  {{end}}
 
-	<luma-core-context></luma-core-context>
-	<script>
-		{{ .data.Script }}
-	</script>
+  <luma-core-context></luma-core-context>
+  <script>
+    {{ .data.Script }}
+  </script>
   <script type="text/javascript">
     var athsScript = document.querySelector('#aths');
     athsScript.addEventListener('load', function() {
