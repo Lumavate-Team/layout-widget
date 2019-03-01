@@ -6,7 +6,7 @@ import (
   "github.com/bitly/go-simplejson"
   "encoding/json"
   "strings"
-	"regexp"
+  "regexp"
 )
 
 type VersionCreateController struct {
@@ -18,18 +18,18 @@ type ComponentStruct struct {
 }
 
 type ResourcesStruct struct {
-	Payload struct {
-		Data struct {
-			Pages [] struct {
-				Id string
-				Url string
-			}
-			Microservices [] struct {
-				Id string
-				Url string
-			}
-		}
-	}
+  Payload struct {
+    Data struct {
+      Pages [] struct {
+        Id string
+        Url string
+      }
+      Microservices [] struct {
+        Id string
+        Url string
+      }
+    }
+  }
 }
 
 func (this *VersionCreateController) Post() {
@@ -38,20 +38,20 @@ func (this *VersionCreateController) Post() {
   body, _ := simplejson.NewJson(this.Ctx.Input.RequestBody)
   body_items, _ := body.Get("bodyItems").Array()
 
-	reg, _ := regexp.Compile("[^a-zA-Z0-9]+")
+  reg, _ := regexp.Compile("[^a-zA-Z0-9]+")
 
   for index, _ := range body_items {
-		if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("Id"); ok {
-			id_val, _ := id.String()
-			id_val = reg.ReplaceAllString(id_val, "_")
-			components = append(components, ComponentStruct{id_val})
-		}
+    if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("Id"); ok {
+      id_val, _ := id.String()
+      id_val = reg.ReplaceAllString(id_val, "_")
+      components = append(components, ComponentStruct{id_val})
+    }
   }
 
-	resource_body, _ := this.LumavateGet("/pwa/v1/resources")
-	resources := ResourcesStruct{}
+  resource_body, _ := this.LumavateGet("/pwa/v1/resources")
+  resources := ResourcesStruct{}
   json.Unmarshal(resource_body, &resources)
-	fmt.Println(resources)
+  fmt.Println(resources)
 
   pre_script := `
     var lp = document.querySelector('luma-core-context');
@@ -59,7 +59,6 @@ func (this *VersionCreateController) Post() {
       promises = [];
       promises.push(lp.getToken());
 %s
-      console.log(promises);
       Promise.all(promises).then( (values) => {
         token        = values.shift();
 %s%s%s%s
