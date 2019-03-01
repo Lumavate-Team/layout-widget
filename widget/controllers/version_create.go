@@ -46,6 +46,12 @@ func (this *VersionCreateController) Post() {
 			id_val = reg.ReplaceAllString(id_val, "_")
 			components = append(components, ComponentStruct{id_val})
 		}
+
+		if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("id"); ok {
+			id_val, _ := id.String()
+			id_val = reg.ReplaceAllString(id_val, "_")
+			components = append(components, ComponentStruct{id_val})
+		}
   }
 
 	resource_body, _ := this.LumavateGet("/pwa/v1/resources")
@@ -78,7 +84,7 @@ func (this *VersionCreateController) Post() {
         Please place your code above this comment
         */`
 
-  this.Data["json"] =body 
+  this.Data["json"] =body
   script, _ := body.Get("script").String()
 
   parts := strings.Split(script, begin_delim)
@@ -115,4 +121,3 @@ func (this *VersionCreateController) Post() {
   body.Set("script", script)
   this.ServeJSON()
 }
-
