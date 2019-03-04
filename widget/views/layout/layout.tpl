@@ -49,7 +49,7 @@
     <script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
 
     <script>
-      var LightenColor = function(color, percent) {
+      var lightenColor = function(color, percent) {
           color = color.replace('#', '');
           var num = parseInt(color,16),
           amt = Math.round(2.55 * percent),
@@ -65,7 +65,7 @@
           {{if hasSuffix $prop.Name "ColorFamily"}}
             a = 100;
             while (a > 0) {
-              body.style.setProperty('--{{ $prop.Name }}-' + a, lightenColor('{{ $prop.Value }}');
+              body.style.setProperty('--{{ $prop.Name }}-' + a, lightenColor('{{ $prop.Value }}', 100-a));
               a = a - 10;
             }
           {{end}}
