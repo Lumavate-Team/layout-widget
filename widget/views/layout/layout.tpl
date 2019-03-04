@@ -45,8 +45,8 @@
       <script src="{{$src}}" type="text/javascript"></script>
     {{end}}
 
-    <script id="luma-core" async type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
     <script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
+    <script id="luma-core" async type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
 
     <script>
       var lightenColor = function(color, percent) {
