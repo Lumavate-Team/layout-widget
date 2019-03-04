@@ -6,6 +6,7 @@ import (
   "widget/models"
   "strings"
   "fmt"
+  "html/template"
 )
 
 type MainController struct {
@@ -47,6 +48,12 @@ func (this *MainController) Get() {
   this.Data["data"] = luma_response
   this.Data["resources"] = response.Payload.Data.Resources
   this.Data["gtm"] = response.Payload.Data.DomainData.RuntimeData["gtm"]
+  auth_json, _ := json.Marshal(response.Payload.Data.AuthData)
+  this.Data["auth_json"] = template.JS(string(auth_json))
+  activation_json, _ := json.Marshal(response.Payload.Data.ActivationData)
+  this.Data["activation_json"] = template.JS(string(activation_json))
+  domain_json, _ := json.Marshal(response.Payload.Data.DomainData)
+  this.Data["domain_json"] = template.JS(string(domain_json))
 
   this.Layout = "layout/layout.tpl"
 

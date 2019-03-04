@@ -223,6 +223,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <luma-core-context></luma-core-context>
   <script>
+    var lc = document.querySelector('luma-core-context');
+    lc.componentOnReady().then(function() {
+      lc.authData = {{ .auth_json }};
+      lc.activationData = {{ .activation_json }};
+      lc.domainData = {{ .domain_json }};
+    });
     {{ .data.Script }}
   </script>
   <script type="text/javascript">
@@ -231,14 +237,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var userAgent = navigator.userAgent.toLowerCase();
       var isAndroid = userAgent.indexOf('android') > -1;
 
-      if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
+      if((!isAndroid) && {{.data.HomeScreen.ShowAddToHome}} == true) {
         var HomeScreenConfig = {
           appID: 'lumavate.addtohomescreen.' + getActivationId(),
-          skipFirstVisit: {{.data.SkipFirst}},
-          startDelay: {{.data.StartDelay}},
-          lifespan: {{.data.Lifespan}},
-          maxDisplayCount: {{.data.DisplayCount}},
-          message: {{.data.Message}}
+          skipFirstVisit: {{.data.HomeScreen.SkipFirst}},
+          startDelay: {{.data.HomeScreen.StartDelay}},
+          lifespan: {{.data.HomeScreen.Lifespan}},
+          maxDisplayCount: {{.data.HomeScreen.DisplayCount}},
+          message: {{.data.HomeScreen.Message}}
         };
         addToHomescreen(HomeScreenConfig);
       };
