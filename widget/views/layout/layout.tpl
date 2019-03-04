@@ -46,7 +46,8 @@
     {{end}}
 
     <script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
-    <script id="luma-core" async type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
+  	<script id="luma-core" type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
+
 
     <script>
       var lightenColor = function(color, percent) {
@@ -250,6 +251,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       };
     });
   </script>
-  <script type="text/javascript" src="/iot/sw-register.min.js"></script>
+	<script type="text/javascript" src="/iot/sw-register.min.js"></script>
   </body>
 </html>
