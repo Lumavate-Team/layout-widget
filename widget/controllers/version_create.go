@@ -41,17 +41,17 @@ func (this *VersionCreateController) Post() {
   reg, _ := regexp.Compile("[^a-zA-Z0-9]+")
 
   for index, _ := range body_items {
-		if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("Id"); ok {
-			id_val, _ := id.String()
-			id_val = reg.ReplaceAllString(id_val, "_")
-			components = append(components, ComponentStruct{id_val})
-		}
+    if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("Id"); ok {
+      id_val, _ := id.String()
+      id_val = reg.ReplaceAllString(id_val, "_")
+      components = append(components, ComponentStruct{id_val})
+    }
 
-		if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("id"); ok {
-			id_val, _ := id.String()
-			id_val = reg.ReplaceAllString(id_val, "_")
-			components = append(components, ComponentStruct{id_val})
-		}
+    if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("id"); ok {
+      id_val, _ := id.String()
+      id_val = reg.ReplaceAllString(id_val, "_")
+      components = append(components, ComponentStruct{id_val})
+    }
   }
 
   resource_body, _ := this.LumavateGet("/pwa/v1/resources")
@@ -66,7 +66,10 @@ func (this *VersionCreateController) Post() {
       promises.push(lp.getToken());
 %s
       Promise.all(promises).then( (values) => {
-        token        = values.shift();
+        token           = values.shift();
+        auth_data       = lp.authData;
+        activation_data = lp.activationData;
+        domain_data     = lp.domainData;
 %s%s%s%s
 
       });
@@ -98,21 +101,21 @@ func (this *VersionCreateController) Post() {
     promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", comp.Id)
   }
   for _, page := range resources.Payload.Data.Pages {
-    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", reg.ReplaceAllString(page.Id, "_"))
+    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", page.Id)
   }
   for _, microservice := range resources.Payload.Data.Microservices {
-    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", reg.ReplaceAllString(microservice.Id, "_"))
+    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", microservice.Id)
   }
 
   assignment := ""
   for _, comp := range components {
-    assignment += fmt.Sprintf("        c_%-10s = values.shift(); \n", comp.Id)
+    assignment += fmt.Sprintf("        c_%-13s = values.shift(); \n", comp.Id)
   }
   for _, page := range resources.Payload.Data.Pages {
-    assignment += fmt.Sprintf("        p_%-10s = values.shift(); /* %-20s */\n", reg.ReplaceAllString(page.Id, "_"), page.Url)
+    assignment += fmt.Sprintf("        p_%-13s = values.shift(); /* %-20s */\n", reg.ReplaceAllString(page.Id, "_"), page.Url)
   }
   for _, microservice := range resources.Payload.Data.Microservices {
-    assignment += fmt.Sprintf("        m_%-10s = values.shift(); /* %-20s */\n", reg.ReplaceAllString(microservice.Id, "_"), microservice.Url)
+    assignment += fmt.Sprintf("        m_%-13s = values.shift(); /* %-20s */\n", reg.ReplaceAllString(microservice.Id, "_"), microservice.Url)
   }
 
   script = fmt.Sprintf(pre_script, promises_push, assignment, begin_delim, script, end_delim)

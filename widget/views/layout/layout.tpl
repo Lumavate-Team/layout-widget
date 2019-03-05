@@ -46,7 +46,7 @@
     {{end}}
 
     <script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
-  	<script id="luma-core" type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
+    <script id="luma-core" type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
 
 
     <script>
@@ -63,14 +63,15 @@
       document.addEventListener("DOMContentLoaded", function(event) {
         body = document.querySelector('body');
         {{range $prop := .data.StyleData }}
+          var prop_name = '--{{ $prop.Name }}-'.replace(/\.?([A-Z])/g, function (x,y){return "-" + y.toLowerCase()}).replace(/^_/, "");
           {{if hasSuffix $prop.Name "ColorFamily"}}
             a = 100;
             while (a > 0) {
-              body.style.setProperty('--{{ $prop.Name }}-' + a, lightenColor('{{ $prop.Value }}', 100-a));
+              body.style.setProperty(prop_name + a, lightenColor('{{ $prop.Value }}', 100-a));
               a = a - 10;
             }
           {{end}}
-          body.style.setProperty('--{{ $prop.Name }}', '{{ $prop.Value }}');
+          body.style.setProperty(prop_name, '{{ $prop.Value }}');
         {{end}}
       });
     </script>
@@ -226,6 +227,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script>
     var lc = document.querySelector('luma-core-context');
     lc.componentOnReady().then(function() {
+			console.log('A');
       lc.authData = {{ .auth_json }};
       lc.activationData = {{ .activation_json }};
       lc.domainData = {{ .domain_json }};
@@ -251,6 +253,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       };
     });
   </script>
-	<script type="text/javascript" src="/iot/sw-register.min.js"></script>
+  <script type="text/javascript" src="/iot/sw-register.min.js"></script>
   </body>
 </html>
