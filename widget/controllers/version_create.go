@@ -60,16 +60,16 @@ func (this *VersionCreateController) Post() {
   fmt.Println(resources)
 
   pre_script := `
-    var lp = document.querySelector('luma-core-context');
-    lp.componentOnReady().then(function() {
+    var context = document.querySelector('luma-core-context');
+    context.componentOnReady().then(function() {
       promises = [];
-      promises.push(lp.getToken());
+      promises.push(context.getToken());
 %s
       Promise.all(promises).then( (values) => {
         token           = values.shift();
-        auth_data       = lp.authData;
-        activation_data = lp.activationData;
-        domain_data     = lp.domainData;
+        auth_data       = context.authData;
+        activation_data = context.activationData;
+        domain_data     = context.domainData;
 %s%s%s%s
 
       });
@@ -98,13 +98,13 @@ func (this *VersionCreateController) Post() {
 
   promises_push := ""
   for _, comp := range components {
-    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", comp.Id)
+    promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", comp.Id)
   }
   for _, page := range resources.Payload.Data.Pages {
-    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", page.Id)
+    promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", page.Id)
   }
   for _, microservice := range resources.Payload.Data.Microservices {
-    promises_push += fmt.Sprintf("      promises.push(lp.getComponent('%s'));\n", microservice.Id)
+    promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", microservice.Id)
   }
 
   assignment := ""
