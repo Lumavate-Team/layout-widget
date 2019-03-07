@@ -92,9 +92,11 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
 
 func (this *PropertyController) GetSecurityProperties() *properties.PropertyComponent {
 	token_data := this.ParseToken()
-  body, _ := this.LumavateGet(fmt.Sprintf("%vdiscover/auth-groups",token_data.AuthUrl))
   propertyGroups := models.AuthGroupRequest {}
-  json.Unmarshal(body, &propertyGroups)
+	if  token_data.AuthUrl != "" {
+		body, _ := this.LumavateGet(fmt.Sprintf("%vdiscover/auth-groups",token_data.AuthUrl))
+		json.Unmarshal(body, &propertyGroups)
+	}
 
   // defaults for auth group multiselect
   defaults := make([]string, 1)
