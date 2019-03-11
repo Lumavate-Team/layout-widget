@@ -93,7 +93,7 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
 func (this *PropertyController) GetSecurityProperties() *properties.PropertyComponent {
 	token_data := this.ParseToken()
   propertyGroups := models.AuthGroupRequest {}
-	if  token_data.AuthUrl != "" {
+	if token_data.AuthUrl != "" {
 		body, _ := this.LumavateGet(fmt.Sprintf("%vdiscover/auth-groups",token_data.AuthUrl))
 		json.Unmarshal(body, &propertyGroups)
 	}

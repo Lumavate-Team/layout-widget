@@ -63,11 +63,11 @@
       document.addEventListener("DOMContentLoaded", function(event) {
         body = document.querySelector('body');
         {{range $prop := .data.StyleData }}
-          var prop_name = '--{{ $prop.Name }}-'.replace(/\.?([A-Z])/g, function (x,y){return "-" + y.toLowerCase()}).replace(/^_/, "");
+          var prop_name = '--{{ $prop.Name }}'.replace(/\.?([A-Z])/g, function (x,y){return "-" + y.toLowerCase()}).replace(/^_/, "");
           {{if hasSuffix $prop.Name "ColorFamily"}}
             a = 100;
             while (a > 0) {
-              body.style.setProperty(prop_name + a, lightenColor('{{ $prop.Value }}', 100-a));
+              body.style.setProperty(prop_name + '-' + a, lightenColor('{{ $prop.Value }}', 100-a));
               a = a - 10;
             }
           {{end}}
