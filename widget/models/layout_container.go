@@ -21,12 +21,10 @@ type LayoutContainerStruct struct {
 func (this LayoutContainerStruct) GetHtml() string {
   return fmt.Sprintf(`
   <div class="layout-%v"
-  style="justify-self:%v;align-self:%v;grid-area:%v/%v/ span %v/ span %v">
+  style="justify-self:center;align-self:center;grid-area:%v/%v/ span %v/ span %v">
   %v
   </div>`,
     this.ComponentData.DisplayMode,
-    this.ComponentData.JustifySelf,
-    this.ComponentData.AlignSelf,
     this.ComponentData.TemplateRowStart,
     this.ComponentData.TemplateColumnStart,
     this.ComponentData.TemplateRowSpan,
