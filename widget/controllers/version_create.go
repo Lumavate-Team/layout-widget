@@ -37,6 +37,8 @@ func (this *VersionCreateController) Post() {
 
   body, _ := simplejson.NewJson(this.Ctx.Input.RequestBody)
   body_items, _ := body.Get("bodyItems").Array()
+  modal_items, _ := body.Get("modalItems").Array()
+  logic_items, _ := body.Get("logicItems").Array()
 
   reg, _ := regexp.Compile("[^a-zA-Z0-9]+")
 
@@ -48,6 +50,34 @@ func (this *VersionCreateController) Post() {
     }
 
     if id, ok := body.Get("bodyItems").GetIndex(index).Get("componentData").CheckGet("id"); ok {
+      id_val, _ := id.String()
+      id_val = reg.ReplaceAllString(id_val, "_")
+      components = append(components, ComponentStruct{id_val})
+    }
+  }
+
+  for index, _ := range modal_items {
+    if id, ok := body.Get("modalItems").GetIndex(index).Get("componentData").CheckGet("Id"); ok {
+      id_val, _ := id.String()
+      id_val = reg.ReplaceAllString(id_val, "_")
+      components = append(components, ComponentStruct{id_val})
+    }
+
+    if id, ok := body.Get("modalItems").GetIndex(index).Get("componentData").CheckGet("id"); ok {
+      id_val, _ := id.String()
+      id_val = reg.ReplaceAllString(id_val, "_")
+      components = append(components, ComponentStruct{id_val})
+    }
+  }
+
+  for index, _ := range logic_items {
+    if id, ok := body.Get("logicItems").GetIndex(index).Get("componentData").CheckGet("Id"); ok {
+      id_val, _ := id.String()
+      id_val = reg.ReplaceAllString(id_val, "_")
+      components = append(components, ComponentStruct{id_val})
+    }
+
+    if id, ok := body.Get("logicItems").GetIndex(index).Get("componentData").CheckGet("id"); ok {
       id_val, _ := id.String()
       id_val = reg.ReplaceAllString(id_val, "_")
       components = append(components, ComponentStruct{id_val})
@@ -98,7 +128,9 @@ func (this *VersionCreateController) Post() {
 
   promises_push := ""
   for _, comp := range components {
-    promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", comp.Id)
+    if comp.Id != "" {
+      promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", comp.Id)
+    }
   }
   for _, page := range resources.Payload.Data.Pages {
     promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", page.Id)
@@ -109,7 +141,9 @@ func (this *VersionCreateController) Post() {
 
   assignment := ""
   for _, comp := range components {
-    assignment += fmt.Sprintf("        c_%-13s = values.shift(); \n", comp.Id)
+    if comp.Id != "" {
+      assignment += fmt.Sprintf("        c_%-13s = values.shift(); \n", comp.Id)
+    }
   }
   for _, page := range resources.Payload.Data.Pages {
     assignment += fmt.Sprintf("        p_%-13s = values.shift(); /* %-20s */\n", reg.ReplaceAllString(page.Id, "_"), page.Url)
