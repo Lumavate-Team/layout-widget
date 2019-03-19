@@ -77,6 +77,10 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
       &properties.PropertyBase{"backgroundImage", "Body", "Body Settings", "Background Image", ""}},
     &properties.PropertyCodeEditor{
 			&properties.PropertyBase{"script", "Script", "Javascript", "On Pageload", ""}, ""},
+    &properties.PropertyCodeEditor{
+			&properties.PropertyBase{"viewTemplate", "Knockout", "Settings", "Template", ""}, ""},
+    &properties.PropertyCodeEditor{
+			&properties.PropertyBase{"viewModel", "Knockout", "Settings", "View Model", ""}, ""},
     this.GetSecurityProperties(),
     this.GetBodyProperties(),
     this.GetBodyItems(),
