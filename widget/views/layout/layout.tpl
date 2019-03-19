@@ -34,7 +34,7 @@
     <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{.CacheKey}}/static/css/addtohomescreen.css">
     {{range $prop := .data.StyleData }}
-      {{if hasSuffix $prop.Name "Font"}}
+      {{if hasSuffix $prop.Name "FontFamily"}}
         <link href="https://fonts.googleapis.com/css?family={{ $prop.Value }}" rel="stylesheet">
       {{end}}
     {{end}}

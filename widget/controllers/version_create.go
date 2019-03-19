@@ -133,10 +133,10 @@ func (this *VersionCreateController) Post() {
     }
   }
   for _, page := range resources.Payload.Data.Pages {
-    promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", page.Id)
+    promises_push += fmt.Sprintf("      promises.push(context.getPage('%s'));\n", page.Id)
   }
   for _, microservice := range resources.Payload.Data.Microservices {
-    promises_push += fmt.Sprintf("      promises.push(context.getComponent('%s'));\n", microservice.Id)
+    promises_push += fmt.Sprintf("      promises.push(context.getMicroservice('%s'));\n", microservice.Id)
   }
 
   assignment := ""
