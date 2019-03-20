@@ -27,6 +27,8 @@ type LumavateRequest struct {
     }
   }
   Script template.JS
+  ViewModel template.JS
+  ViewTemplate template.HTML
   BodyProperties         struct {
   common_models.ComponentStruct
   ComponentData struct {

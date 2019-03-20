@@ -7,6 +7,7 @@ import (
   "strings"
   "fmt"
   "html/template"
+  "os"
 )
 
 type MainController struct {
@@ -46,6 +47,7 @@ func (this *MainController) Get() {
   }
 
   this.Data["data"] = luma_response
+  this.Data["mode"] = os.Getenv("MODE")
   this.Data["resources"] = response.Payload.Data.Resources
   this.Data["gtm"] = response.Payload.Data.DomainData.RuntimeData["gtm"]
   auth_json, _ := json.Marshal(response.Payload.Data.AuthData)

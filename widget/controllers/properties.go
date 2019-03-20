@@ -3,10 +3,11 @@ package controllers
 import (
   common_controller "github.com/Lumavate-Team/lumavate-go-common/controllers"
   properties "github.com/Lumavate-Team/lumavate-go-common/properties"
-	components "github.com/Lumavate-Team/lumavate-go-common/components"
+  components "github.com/Lumavate-Team/lumavate-go-common/components"
   "encoding/json"
   "widget/models"
   "fmt"
+  "os"
 )
 
 type PropertyController struct {
@@ -14,22 +15,22 @@ type PropertyController struct {
 }
 
 func (this *PropertyController) Get() {
-	this.LoadAllComponentSets()
-	this.Data["json"] = this.GetAllProperties()
-	this.ServeJSON()
+  this.LoadAllComponentSets()
+  this.Data["json"] = this.GetAllProperties()
+  this.ServeJSON()
 }
 
 func (this *PropertyController) GetLogicProperties() []properties.PropertyType {
-	placementOptions := make(map[string]string)
-	placementOptions["top"] = "Top"
-	placementOptions["bottom"] = "Bottom"
+  placementOptions := make(map[string]string)
+  placementOptions["top"] = "Top"
+  placementOptions["bottom"] = "Bottom"
 
   props := []properties.PropertyType{}
 
   props = append(props, &properties.PropertyDropdown{
     &properties.PropertyBase{"placement", "", "Placement Settings", "Component Placement", help_component_placement}, "top", placementOptions})
 
-	return props
+  return props
 }
 
 func (this *PropertyController) GetLayoutProperties() []properties.PropertyType {
@@ -69,23 +70,47 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
     &properties.PropertyToggle{
       &properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
     this.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
-    &properties.PropertyColor{
-      &properties.PropertyBase{"backgroundColor", "Body", "Body Settings", "Background Color", ""}, "#ffffff"},
-    &properties.PropertyToggle{
-      &properties.PropertyBase{"displayBackgroundImage", "Body", "Body Settings", "Display Background Image", ""}, false},
-    &properties.PropertyImage{
-      &properties.PropertyBase{"backgroundImage", "Body", "Body Settings", "Background Image", ""}},
-    &properties.PropertyCodeEditor{
-			&properties.PropertyBase{"script", "Script", "Javascript", "On Pageload", ""}, ""},
-    &properties.PropertyCodeEditor{
-			&properties.PropertyBase{"viewTemplate", "Knockout", "Settings", "Template", ""}, ""},
-    &properties.PropertyCodeEditor{
-			&properties.PropertyBase{"viewModel", "Knockout", "Settings", "View Model", ""}, ""},
-    this.GetSecurityProperties(),
-    this.GetBodyProperties(),
-    this.GetBodyItems(),
-		this.GetLogicItems(),
-    this.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "", "")}
+  }
+
+
+    if os.Getenv("MODE") == "CSSGRID" {
+      props = append(props,
+        &properties.PropertyColor{
+          &properties.PropertyBase{"backgroundColor", "Body", "Body Settings", "Background Color", ""}, "#ffffff"})
+
+      props = append(props,
+        &properties.PropertyToggle{
+          &properties.PropertyBase{"displayBackgroundImage", "Body", "Body Settings", "Display Background Image", ""}, false})
+
+      props = append(props,
+        &properties.PropertyImage{
+          &properties.PropertyBase{"backgroundImage", "Body", "Body Settings", "Background Image", ""}})
+
+      props = append(props, this.GetBodyProperties())
+
+      props = append(props, this.GetBodyItems())
+
+      props = append(props,
+        &properties.PropertyCodeEditor{
+          &properties.PropertyBase{"script", "Script", "Javascript", "On Pageload", ""}, ""})
+    }
+
+    if os.Getenv("MODE") == "KNOCKOUT" {
+      props = append(props,
+        &properties.PropertyCodeEditor{
+          &properties.PropertyBase{"viewTemplate", "Knockout Template", "Settings", "Template", ""}, ""})
+
+      props = append(props,
+        &properties.PropertyCodeEditor{
+          &properties.PropertyBase{"viewModel", "Knockout View Model", "Settings", "View Model", ""}, ""})
+    }
+
+    props = append(props, this.GetSecurityProperties())
+
+
+    props = append(props, this.GetLogicItems())
+
+    props = append(props, this.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "", ""))
 
     for _, element := range components.GetAddToHomeProperties() {
       props = append(props, element)
@@ -95,12 +120,12 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
 }
 
 func (this *PropertyController) GetSecurityProperties() *properties.PropertyComponent {
-	token_data := this.ParseToken()
+  token_data := this.ParseToken()
   propertyGroups := models.AuthGroupRequest {}
-	if token_data.AuthUrl != "" {
-		body, _ := this.LumavateGet(fmt.Sprintf("%vdiscover/auth-groups",token_data.AuthUrl))
-		json.Unmarshal(body, &propertyGroups)
-	}
+  if token_data.AuthUrl != "" {
+    body, _ := this.LumavateGet(fmt.Sprintf("%vdiscover/auth-groups",token_data.AuthUrl))
+    json.Unmarshal(body, &propertyGroups)
+  }
 
   // defaults for auth group multiselect
   defaults := make([]string, 1)
@@ -136,12 +161,12 @@ func (this *PropertyController) GetLogicItems() *properties.PropertyComponents {
   p := this.GetDynamicComponentsProperty("logic", "logicItems", "Logic", "Logic Components", "", "")
 
   for _, component := range p.Options.Components {
-		for _, property := range component.Properties {
-			p := property.(map[string]interface{})
-			if p["section"] ==  nil || p["section"] == ""  {
-				p["section"] = component.Label + " Settings"
-			}
-		}
+    for _, property := range component.Properties {
+      p := property.(map[string]interface{})
+      if p["section"] ==  nil || p["section"] == ""  {
+        p["section"] = component.Label + " Settings"
+      }
+    }
     component.Properties = append(component.Properties, this.GetLogicProperties()...)
   }
   return p
@@ -150,12 +175,12 @@ func (this *PropertyController) GetLogicItems() *properties.PropertyComponents {
 func (this *PropertyController) GetBodyItems() *properties.PropertyComponents {
   p := this.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "", "")
   for _, component := range p.Options.Components {
-		for _, property := range component.Properties {
-			p := property.(map[string]interface{})
-			if p["section"] ==  nil || p["section"] == ""  {
-				p["section"] = component.Label + " Settings"
-			}
-		}
+    for _, property := range component.Properties {
+      p := property.(map[string]interface{})
+      if p["section"] ==  nil || p["section"] == ""  {
+        p["section"] = component.Label + " Settings"
+      }
+    }
     component.Properties = append(component.Properties, this.GetLayoutProperties()...)
   }
   return p

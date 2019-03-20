@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
   <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
-	<script type='text/javascript' src='knockout-3.5.0.js'></script>
+  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js'></script>
 
   {{if .gtm }}
   <!-- Google Tag Manager -->
@@ -177,28 +177,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       {{end}}
 
-      {{ if not .degraded }}
-        {{ if eq .data.BodyProperties.ComponentType "body-items-advanced" }}
-          <div class="content" style="display:grid;
-            grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
-            grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
-            grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
-            grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
-            justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
-            align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
+      {{ if eq .mode "CSSGRID"}}
+        {{ if not .degraded }}
+          {{ if eq .data.BodyProperties.ComponentType "body-items-advanced" }}
+            <div class="content" style="display:grid;
+              grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+              grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+              grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
+              grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
+              justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
+              align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
+          {{ else }}
+            <div class="content" style="display:grid;
+              grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+              grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+              max-width: {{safeCss .data.BodyProperties.ComponentData.BodyMaxWidthStr}}">
+          {{ end }}
+            {{.LayoutContent}}
+          </div>
         {{ else }}
-          <div class="content" style="display:grid;
-            grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
-            grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
-            max-width: {{safeCss .data.BodyProperties.ComponentData.BodyMaxWidthStr}}">
+          <div class="content">
+            {{.LayoutContent}}
+          </div>
         {{ end }}
-          {{.LayoutContent}}
-        </div>
-      {{ else }}
-        <div class="content">
-          {{.LayoutContent}}
-        </div>
       {{ end }}
+      {{ if eq .mode "KNOCKOUT" }}
+        {{ .data.ViewTemplate }}
+      {{ end }}
+
       {{if .data.DisplayFooter }}
         <div class="footer">
           {{safeHtml .data.Footer.ComponentHtml}}
@@ -229,12 +235,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script>
     var lc = document.querySelector('luma-core-context');
     lc.componentOnReady().then(function() {
-			console.log('A');
       lc.authData = {{ .auth_json }};
       lc.activationData = {{ .activation_json }};
       lc.domainData = {{ .domain_json }};
     });
     {{ .data.Script }}
+    {{ .data.ViewModel }}
   </script>
   <script type="text/javascript">
     var athsScript = document.querySelector('#aths');

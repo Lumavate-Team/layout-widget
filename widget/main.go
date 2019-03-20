@@ -7,21 +7,21 @@ import (
   "os"
   models "widget/models"
   _ "widget/routers"
-	"strings"
+  "strings"
 )
 
 func LayoutHtml(in models.LayoutContainerStruct) (out template.HTML) {
-	out = template.HTML(in.GetHtml())
-	return
+  out = template.HTML(in.GetHtml())
+  return
 }
 
 func LogicHtml(in models.LogicContainerStruct) (out template.HTML){
-	out = template.HTML(in.GetHtml())
-	return
+  out = template.HTML(in.GetHtml())
+  return
 }
 
 func HasSuffix(in string, test string) (out bool){
-	return strings.HasSuffix(in, test)
+  return strings.HasSuffix(in, test)
 }
 func main() {
   beego.BConfig.WebConfig.EnableXSRF = false
@@ -35,7 +35,7 @@ func main() {
   beego.AddFuncMap("safeCss", common.SafeCss)
   beego.AddFuncMap("safeHtml", common.SafeHtml)
   beego.AddFuncMap("layoutHtml", LayoutHtml)
-	beego.AddFuncMap("logicHtml", LogicHtml)
-	beego.AddFuncMap("hasSuffix", HasSuffix)
+  beego.AddFuncMap("logicHtml", LogicHtml)
+  beego.AddFuncMap("hasSuffix", HasSuffix)
   beego.Run()
 }
