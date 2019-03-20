@@ -7,6 +7,7 @@ import (
   "encoding/json"
   "strings"
   "regexp"
+	"os"
 )
 
 type VersionCreateController struct {
@@ -117,7 +118,14 @@ func (this *VersionCreateController) Post() {
         */`
 
   this.Data["json"] =body
-  script, _ := body.Get("script").String()
+	script := ""
+
+	if os.Getenv("MODE") == "CSSGRID" {
+		script, _ = body.Get("script").String()
+	}
+	if os.Getenv("MODE") == "KNOCKOUT" {
+		script, _ = body.Get("viewModel").String()
+	}
 
   parts := strings.Split(script, begin_delim)
   script = parts[len(parts)-1]
@@ -154,6 +162,11 @@ func (this *VersionCreateController) Post() {
 
   script = fmt.Sprintf(pre_script, promises_push, assignment, begin_delim, script, end_delim)
 
-  body.Set("script", script)
+	if os.Getenv("MODE") == "CSSGRID" {
+		body.Set("script", script)
+	}
+	if os.Getenv("MODE") == "KNOCKOUT" {
+		body.Set("viewModel", script)
+	}
   this.ServeJSON()
 }
