@@ -235,39 +235,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <luma-core-context></luma-core-context>
   <script>
-    window.translations = {}
-    {{range $i, $translation := .data.Translations }}
-      window.translations['{{ $translation.ComponentData.StringId }}'] = '{{ $translation.ComponentData.String }}';{{end}}
+    {{ if eq .mode "KNOCKOUT" }}
+      window.strings = {}
+      {{range $i, $string := .data.Translations }}
+        window.strings['{{ $string.ComponentData.StringId }}'] = '{{ $string.ComponentData.String }}';{{end}}
 
-    window.variables = {}
-    {{range $i, $variable := .data.Variables }}
-      window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.Variable }}';{{end}}
+      window.variables = {}
+      {{range $i, $variable := .data.Variables }}
+        window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.Variable }}';{{end}}
 
-    ko.bindingHandlers.lumaString = {
-      update: function(element, valueAccessor, allBindings) {
-        if (typeof valueAccessor() == 'string') {
-          element.innerHTML = window.translations[valueAccessor()];
-        }
-        else if (typeof valueAccessor() == 'object') {
-          for (var k in valueAccessor()) {
-            element.setAttribute(k, window.translations[valueAccessor()[k]]);
-          }
+      import_strings = function(o) {
+        for (k in window.strings) {
+          o[k] = window.strings[k];
         }
       }
-    };
 
-    ko.bindingHandlers.lumaVariable = {
-      update: function(element, valueAccessor, allBindings) {
-        if (typeof valueAccessor() == 'string') {
-          element.innerHTML = window.variables[valueAccessor()];
-        }
-        else if (typeof valueAccessor() == 'object') {
-          for (var k in valueAccessor()) {
-            element.setAttribute(k, window.variables[valueAccessor()[k]]);
-          }
+      import_variables = function(o) {
+        for (k in window.variables) {
+          o[k] = window.variables[k];
         }
       }
-    };
+    {{ end }}
 
     var lc = document.querySelector('luma-core-context');
     lc.componentOnReady().then(function() {
@@ -277,6 +265,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     {{ .data.Script }}
     {{ .data.ViewModel }}
+
+    orig = ko.applyBindings
+    ko.applyBindings = function(arg1) {
+      import_strings(arg1);
+      import_variables(arg1);
+      orig(arg1)
+    }
   </script>
   <script type="text/javascript">
     var athsScript = document.querySelector('#aths');
