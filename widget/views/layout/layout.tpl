@@ -236,6 +236,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <luma-core-context></luma-core-context>
   <script>
     {{ if eq .mode "KNOCKOUT" }}
+		  window.load_epoch = new Date() / 1000;
       window.strings = {}
       {{range $i, $string := .data.Translations }}
         window.strings['{{ $string.ComponentData.StringId }}'] = '{{ $string.ComponentData.String }}';{{end}}
