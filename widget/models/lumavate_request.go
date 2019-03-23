@@ -30,21 +30,32 @@ type LumavateRequest struct {
   ViewModel template.JS
   ViewTemplate template.HTML
   BodyProperties         struct {
-  common_models.ComponentStruct
-  ComponentData struct {
-    BodyTemplateColumns string
-    BodyTemplateRows    string
-    BodyRowGap          string
-    BodyColumnGap       string
-    JustifyContent      string
-    AlignContent        string
-    BodyNumRows         int
-    BodyNumColumns      int
-    BodyMaxWidth        int
-    BodyMaxWidthStr     string
+    common_models.ComponentStruct
+    ComponentData struct {
+      BodyTemplateColumns string
+      BodyTemplateRows    string
+      BodyRowGap          string
+      BodyColumnGap       string
+      JustifyContent      string
+      AlignContent        string
+      BodyNumRows         int
+      BodyNumColumns      int
+      BodyMaxWidth        int
+      BodyMaxWidthStr     string
+    }
   }
-}
-
+  Variables [] struct {
+    ComponentData struct {
+      VariableId          template.HTML
+      Variable            template.HTML
+    }
+  }
+  Translations [] struct {
+    ComponentData struct {
+      StringId            template.HTML
+      String              template.HTML
+    }
+  }
   BodyItems              [] LayoutContainerStruct
   Footer                 common_models.ComponentStruct
   Header                 common_models.ComponentStruct

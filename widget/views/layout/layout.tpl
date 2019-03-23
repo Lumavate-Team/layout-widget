@@ -2,7 +2,9 @@
 <html lang="en">
   <head>
   <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
-  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js'></script>
+  {{ if eq .mode "KNOCKOUT" }}
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js'></script>
+  {{ end }}
 
   {{if .gtm }}
   <!-- Google Tag Manager -->
@@ -233,6 +235,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <luma-core-context></luma-core-context>
   <script>
+    window.translations = {}
+    {{range $i, $translation := .data.Translations }}
+      window.translations['{{ $translation.ComponentData.StringId }}'] = '{{ $translation.ComponentData.String }}';{{end}}
+
+    window.variables = {}
+    {{range $i, $variable := .data.Variables }}
+      window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.Variable }}';{{end}}
+
+    ko.bindingHandlers.lumaString = {
+      update: function(element, valueAccessor, allBindings) {
+        if (typeof valueAccessor() == 'string') {
+          element.innerHTML = window.translations[valueAccessor()];
+        }
+        else if (typeof valueAccessor() == 'object') {
+          for (var k in valueAccessor()) {
+            element.setAttribute(k, window.translations[valueAccessor()[k]]);
+          }
+        }
+      }
+    };
+
+    ko.bindingHandlers.lumaVariable = {
+      update: function(element, valueAccessor, allBindings) {
+        if (typeof valueAccessor() == 'string') {
+          element.innerHTML = window.variables[valueAccessor()];
+        }
+        else if (typeof valueAccessor() == 'object') {
+          for (var k in valueAccessor()) {
+            element.setAttribute(k, window.variables[valueAccessor()[k]]);
+          }
+        }
+      }
+    };
+
     var lc = document.querySelector('luma-core-context');
     lc.componentOnReady().then(function() {
       lc.authData = {{ .auth_json }};

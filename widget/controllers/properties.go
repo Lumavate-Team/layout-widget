@@ -103,10 +103,12 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
       props = append(props,
         &properties.PropertyCodeEditor{
           &properties.PropertyBase{"viewModel", "Knockout View Model", "Settings", "View Model", ""}, ""})
+
+			props = append(props, this.GetTranslationProperties())
+			props = append(props, this.GetVariableProperties())
     }
 
     props = append(props, this.GetSecurityProperties())
-
 
     props = append(props, this.GetLogicItems())
 
@@ -138,15 +140,15 @@ func (this *PropertyController) GetSecurityProperties() *properties.PropertyComp
   }
 
   props := [] properties.PropertyType {}
-  c := &properties.Component{"securityType", "", "securityNone", "<None>", "a", "<None>", props}
+  c := &properties.Component{"securityType", "", "securityNone", "<None>", "a", "<None>", props, ""}
 
   props1 := [] properties.PropertyType {}
-  c1 := &properties.Component{"securityType", "", "securityAll", "All logged in users", "a", "All logged in users", props1}
+  c1 := &properties.Component{"securityType", "", "securityAll", "All logged in users", "a", "All logged in users", props1, ""}
 
   props2 := [] properties.PropertyType {}
   props2 = append(props2, &properties.PropertyPageLink{ &properties.PropertyBase{"noAuthRedirect", "", "Security Properties (Specific)", "No Auth Redirect", ""}})
   props2 = append(props2, &properties.PropertyMultiselect{ &properties.PropertyBase{"specificGroup", "", "Security Properties (Specific)", "Specific Group(s)", ""}, defaults, groups})
-  c2 := &properties.Component{"securityType", "", "securitySpecific", "Specific user group(s)", "a", "Specific user group(s)", props2}
+  c2 := &properties.Component{"securityType", "", "securitySpecific", "Specific user group(s)", "a", "Specific user group(s)", props2, ""}
 
   p := &properties.PropertyComponent{
     &properties.PropertyBase{"securityProperties", "Widget", "Security Settings", "Authentication", ""},
@@ -156,6 +158,33 @@ func (this *PropertyController) GetSecurityProperties() *properties.PropertyComp
   return p
 }
 
+func (this *PropertyController) GetTranslationProperties() *properties.PropertyComponents {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyText{&properties.PropertyBase{"stringId", "", "", "String Id", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyTranslatedText{&properties.PropertyBase{"string", "", "", "String", ""}, "", properties.PropertyOptionsText{}})
+  c := &properties.Component{"translationType", "", "translationType", "Translation", "a", "Translation", props, "{{ componentData.stringId }} - {{ componentData.string['en-us'] | truncate(40) }} "}
+
+  p := &properties.PropertyComponents{
+    &properties.PropertyBase{"translations", "Translations", "Translation Settings", "Translations", ""},
+    []*properties.Component {}, &properties.PropertyOptionsComponent{[] string {"translationProperties"}, [] *properties.Component {c} },
+  }
+
+  return p
+}
+
+func (this *PropertyController) GetVariableProperties() *properties.PropertyComponents {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyText{&properties.PropertyBase{"variable", "", "", "Variable", ""}, "", properties.PropertyOptionsText{}})
+  c := &properties.Component{"variableType", "", "variableType", "Variable", "a", "Variable", props, "{{ componentData.variableId }} - {{ componentData.variable | truncate(40) }} "}
+
+  p := &properties.PropertyComponents{
+    &properties.PropertyBase{"variables", "Variables", "Variable Settings", "Variables", ""},
+    []*properties.Component {}, &properties.PropertyOptionsComponent{[] string {"variableProperties"}, [] *properties.Component {c} },
+  }
+
+  return p
+}
 
 func (this *PropertyController) GetLogicItems() *properties.PropertyComponents {
   p := this.GetDynamicComponentsProperty("logic", "logicItems", "Logic", "Logic Components", "", "")
@@ -201,7 +230,7 @@ func (this *PropertyController) GetBodyProperties() *properties.PropertyComponen
   props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyNumColumns", "", "Body Properties (Basic)", "Number Of Columns", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
   props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyMaxWidth", "", "Body Properties (Basic)", "Max Width (pixels)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 10000}})
 
-  c := &properties.Component{"body-items", "", "body-items-basic", "Basic", "a", "Basic", props}
+  c := &properties.Component{"body-items", "", "body-items-basic", "Basic", "a", "Basic", props, ""}
 
   props2 := [] properties.PropertyType {}
 
@@ -212,7 +241,7 @@ func (this *PropertyController) GetBodyProperties() *properties.PropertyComponen
   props2 = append(props2, &properties.PropertyDropdown{&properties.PropertyBase{"justifyContent", "", "Body Properties (Advanced)", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions})
   props2 = append(props2, &properties.PropertyDropdown{&properties.PropertyBase{"alignContent", "", "Body Properties (Advanced)", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions})
 
-  c2 := &properties.Component{"body-items", "", "body-items-advanced", "Advanced", "a", "Advanced", props2}
+  c2 := &properties.Component{"body-items", "", "body-items-advanced", "Advanced", "a", "Advanced", props2, ""}
 
   p := &properties.PropertyComponent{
     &properties.PropertyBase{"bodyProperties", "Body", "Body Settings", "Body Style", ""},
