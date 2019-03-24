@@ -243,7 +243,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       window.variables = {}
       {{range $i, $variable := .data.Variables }}
-        window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.Variable }}';{{end}}
+				{{ if eq $variable.ComponentType "stringVariableType" }}
+					window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.StringValue}}';
+				{{ end }}
+				{{ if eq $variable.ComponentType "colorVariableType" }}
+					window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.ColorValue}}';
+				{{ end }}
+				{{ if eq $variable.ComponentType "intVariableType" }}
+					window.variables['{{ $variable.ComponentData.VariableId }}'] = {{ $variable.ComponentData.IntValue}};
+				{{ end }}
+				{{ if eq $variable.ComponentType "imageVariableType" }}
+					window.variables['{{ $variable.ComponentData.VariableId }}'] = {};
+					window.variables['{{ $variable.ComponentData.VariableId }}'].preview = '{{ $variable.ComponentData.ImageValue.Preview }}';
+					window.variables['{{ $variable.ComponentData.VariableId }}'].previewSmall = '{{ $variable.ComponentData.ImageValue.PreviewSmall }}';
+					window.variables['{{ $variable.ComponentData.VariableId }}'].previewMedium = '{{ $variable.ComponentData.ImageValue.PreviewMedium }}';
+					window.variables['{{ $variable.ComponentData.VariableId }}'].previewLarge = '{{ $variable.ComponentData.ImageValue.PreviewLarge }}';
+				{{ end }}
+      {{ end }}
 
       import_strings = function(o) {
         for (k in window.strings) {

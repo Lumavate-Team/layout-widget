@@ -63,17 +63,18 @@ func (this *PropertyController) GetLayoutProperties() []properties.PropertyType 
 
 func (this *PropertyController) GetAllProperties() []properties.PropertyType {
 
-  props := []properties.PropertyType{
-    &properties.PropertyToggle{
-      &properties.PropertyBase{"displayHeader", "Header", "Header Settings", "Display Header", ""}, false},
-    this.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
-    &properties.PropertyToggle{
-      &properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
-    this.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
-  }
-
+    props := []properties.PropertyType{}
 
     if os.Getenv("MODE") == "CSSGRID" {
+			props = append(props,
+				&properties.PropertyToggle{
+					&properties.PropertyBase{"displayHeader", "Header", "Header Settings", "Display Header", ""}, false},
+				this.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
+				&properties.PropertyToggle{
+					&properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
+				this.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
+			)
+
       props = append(props,
         &properties.PropertyColor{
           &properties.PropertyBase{"backgroundColor", "Body", "Body Settings", "Background Color", ""}, "#ffffff"})
@@ -173,14 +174,30 @@ func (this *PropertyController) GetTranslationProperties() *properties.PropertyC
 }
 
 func (this *PropertyController) GetVariableProperties() *properties.PropertyComponents {
-  props := [] properties.PropertyType {}
-  props = append(props, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
-  props = append(props, &properties.PropertyText{&properties.PropertyBase{"variable", "", "", "Variable", ""}, "", properties.PropertyOptionsText{}})
-  c := &properties.Component{"variableType", "", "variableType", "Variable", "a", "Variable", props, "{{ componentData.variableId }} - {{ componentData.variable | truncate(40) }} "}
+  textprops := [] properties.PropertyType {}
+  textprops = append(textprops, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
+  textprops = append(textprops, &properties.PropertyText{&properties.PropertyBase{"stringValue", "", "", "Variable", ""}, "", properties.PropertyOptionsText{}})
+  tc := &properties.Component{"variableType", "", "stringVariableType", "String", "a", "String", textprops, "{{ componentData.variableId }} - {{ componentData.stringValue | truncate(40) }} "}
+
+  intprops := [] properties.PropertyType {}
+  intprops = append(intprops, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
+  intprops = append(intprops, &properties.PropertyNumeric{&properties.PropertyBase{"intValue", "", "", "Variable", ""}, 0, properties.PropertyOptionsNumeric{-2147483647, 2147483647}})
+
+  ic := &properties.Component{"variableType", "", "intVariableType", "Integer", "a", "Integer", intprops, "{{ componentData.variableId }} - {{ componentData.intValue }} "}
+
+  colorprops := [] properties.PropertyType {}
+  colorprops = append(colorprops, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
+  colorprops = append(colorprops, &properties.PropertyColor{&properties.PropertyBase{"colorValue", "", "", "Variable", ""}, "#cccccc"})
+  cc := &properties.Component{"variableType", "", "colorVariableType", "Color", "a", "Color", colorprops, "{{ componentData.variableId }} - {{ componentData.colorValue }} "}
+
+  imageprops := [] properties.PropertyType {}
+  imageprops = append(imageprops, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
+  imageprops = append(imageprops, &properties.PropertyImage{&properties.PropertyBase{"imageValue", "", "", "Variable", ""}})
+  uc := &properties.Component{"variableType", "", "imageVariableType", "Image", "a", "Image", imageprops, "{{ componentData.variableId }}"}
 
   p := &properties.PropertyComponents{
     &properties.PropertyBase{"variables", "Variables", "Variable Settings", "Variables", ""},
-    []*properties.Component {}, &properties.PropertyOptionsComponent{[] string {"variableProperties"}, [] *properties.Component {c} },
+    []*properties.Component {}, &properties.PropertyOptionsComponent{[] string {"variableProperties"}, [] *properties.Component {tc, ic, cc, uc} },
   }
 
   return p

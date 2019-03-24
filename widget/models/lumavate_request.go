@@ -45,9 +45,18 @@ type LumavateRequest struct {
     }
   }
   Variables [] struct {
+		ComponentType string
     ComponentData struct {
       VariableId          template.HTML
-      Variable            template.HTML
+			StringValue         template.HTML
+			IntValue            int
+			ColorValue          template.HTML
+		  ImageValue struct {
+				Preview string
+				PreviewSmall string
+				PreviewMedium string
+				PreviewLarge string
+			}
     }
   }
   Translations [] struct {
