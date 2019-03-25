@@ -99,12 +99,13 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
     if os.Getenv("MODE") == "KNOCKOUT" {
       props = append(props,
         &properties.PropertyCodeEditor{
-          &properties.PropertyBase{"viewTemplate", "Knockout Template", "Settings", "Template", ""}, ""})
+          &properties.PropertyBase{"viewTemplate", "View", "Settings", "Template", ""}, ""})
 
       props = append(props,
         &properties.PropertyCodeEditor{
-          &properties.PropertyBase{"viewModel", "Knockout View Model", "Settings", "View Model", ""}, ""})
+          &properties.PropertyBase{"viewModel", "View Model", "Settings", "View Model", ""}, ""})
 
+			props = append(props, this.GetTemplateProperties())
 			props = append(props, this.GetTranslationProperties())
 			props = append(props, this.GetVariableProperties())
     }
@@ -154,6 +155,20 @@ func (this *PropertyController) GetSecurityProperties() *properties.PropertyComp
   p := &properties.PropertyComponent{
     &properties.PropertyBase{"securityProperties", "Widget", "Security Settings", "Authentication", ""},
     c, &properties.PropertyOptionsComponent{[] string {"securityType"}, [] *properties.Component {c, c1, c2} },
+  }
+
+  return p
+}
+
+func (this *PropertyController) GetTemplateProperties() *properties.PropertyComponents {
+  props := [] properties.PropertyType {}
+  props = append(props, &properties.PropertyText{&properties.PropertyBase{"templateId", "", "", "Template Id", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyCodeEditor{&properties.PropertyBase{"template", "", "", "Template", ""}, ""})
+  c := &properties.Component{"templateType", "", "templateType", "Template", "a", "Template", props, "{{ componentData.templateId }} "}
+
+  p := &properties.PropertyComponents{
+    &properties.PropertyBase{"templates", "Templates", "Template Settings", "Templates", ""},
+    []*properties.Component {}, &properties.PropertyOptionsComponent{[] string {"templateProperties"}, [] *properties.Component {c} },
   }
 
   return p

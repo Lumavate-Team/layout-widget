@@ -65,6 +65,12 @@ type LumavateRequest struct {
       String              template.HTML
     }
   }
+  Templates [] struct {
+    ComponentData struct {
+      TemplateId          template.HTML
+      Template            template.HTML
+    }
+  }
   BodyItems              [] LayoutContainerStruct
   Footer                 common_models.ComponentStruct
   Header                 common_models.ComponentStruct
