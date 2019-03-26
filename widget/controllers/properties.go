@@ -66,14 +66,14 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
     props := []properties.PropertyType{}
 
     if os.Getenv("MODE") == "CSSGRID" {
-			props = append(props,
-				&properties.PropertyToggle{
-					&properties.PropertyBase{"displayHeader", "Header", "Header Settings", "Display Header", ""}, false},
-				this.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
-				&properties.PropertyToggle{
-					&properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
-				this.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
-			)
+      props = append(props,
+        &properties.PropertyToggle{
+          &properties.PropertyBase{"displayHeader", "Header", "Header Settings", "Display Header", ""}, false},
+        this.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
+        &properties.PropertyToggle{
+          &properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
+        this.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
+      )
 
       props = append(props,
         &properties.PropertyColor{
@@ -101,13 +101,14 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
         &properties.PropertyCodeEditor{
           &properties.PropertyBase{"viewTemplate", "View", "Settings", "Template", ""}, ""})
 
+      props = append(props, this.GetTemplateProperties())
+
       props = append(props,
         &properties.PropertyCodeEditor{
           &properties.PropertyBase{"viewModel", "View Model", "Settings", "View Model", ""}, ""})
 
-			props = append(props, this.GetTemplateProperties())
-			props = append(props, this.GetTranslationProperties())
-			props = append(props, this.GetVariableProperties())
+      props = append(props, this.GetTranslationProperties())
+      props = append(props, this.GetVariableProperties())
     }
 
     props = append(props, this.GetSecurityProperties())
