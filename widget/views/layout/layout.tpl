@@ -173,13 +173,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           }
         }
       </script>
-      {{if .data.DisplayHeader }}
-        <div class="header">
-          {{safeHtml .data.Header.ComponentHtml}}
-        </div>
-      {{end}}
-
       {{ if eq .mode "CSSGRID"}}
+        {{if .data.DisplayHeader }}
+          <div class="header">
+            {{safeHtml .data.Header.ComponentHtml}}
+          </div>
+        {{end}}
+
         {{ if not .degraded }}
           {{ if eq .data.BodyProperties.ComponentType "body-items-advanced" }}
             <div class="content" style="display:grid;
@@ -204,19 +204,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {{ end }}
       {{ end }}
       {{ if eq .mode "KNOCKOUT" }}
-				{{range $i, $template := .data.Templates }}
-				  <script type="text/html" id="{{ $template.ComponentData.TemplateId }}">
-					  {{ $template.ComponentData.Template }}
-					</script>
-				{{ end }}
+        {{range $i, $template := .data.Templates }}
+          <script type="text/html" id="{{ $template.TemplateId }}">
+            window.strings['{{ $string.ComponentData.StringId }}'] = '{{ $string.ComponentData.String }}';{{end}}
+          </script>
+        {{ end }}
         {{ .data.ViewTemplate }}
       {{ end }}
 
-      {{if .data.DisplayFooter }}
-        <div class="footer">
-          {{safeHtml .data.Footer.ComponentHtml}}
-        </div>
-      {{end}}
+      {{ if eq .mode "CSSGRID"}}
+        {{if .data.DisplayFooter }}
+          <div class="footer">
+            {{safeHtml .data.Footer.ComponentHtml}}
+          </div>
+        {{end}}
+      {{ end }}
       <div class="modals">
         {{range $index, $element := .data.ModalItems}}
           {{ modalHtml $element }}
@@ -231,7 +233,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   {{end}}
 
   {{range $index, $element := .resources.Pages}}
-      <luma-core-page id='{{$element.Id}}' url='{{$element.Url}}'></luma-core-page>
+      <luma-core-widget id='{{$element.Id}}' url='{{$element.Url}}'></luma-core-widget>
   {{end}}
 
   {{range $index, $element := .resources.Microservices}}
@@ -241,29 +243,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <luma-core-context></luma-core-context>
   <script>
     {{ if eq .mode "KNOCKOUT" }}
-		  window.load_epoch = new Date() / 1000;
+      window.load_epoch = new Date() / 1000;
       window.strings = {}
       {{range $i, $string := .data.Translations }}
         window.strings['{{ $string.ComponentData.StringId }}'] = '{{ $string.ComponentData.String }}';{{end}}
 
       window.variables = {}
       {{range $i, $variable := .data.Variables }}
-				{{ if eq $variable.ComponentType "stringVariableType" }}
-					window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.StringValue}}';
-				{{ end }}
-				{{ if eq $variable.ComponentType "colorVariableType" }}
-					window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.ColorValue}}';
-				{{ end }}
-				{{ if eq $variable.ComponentType "intVariableType" }}
-					window.variables['{{ $variable.ComponentData.VariableId }}'] = {{ $variable.ComponentData.IntValue}};
-				{{ end }}
-				{{ if eq $variable.ComponentType "imageVariableType" }}
-					window.variables['{{ $variable.ComponentData.VariableId }}'] = {};
-					window.variables['{{ $variable.ComponentData.VariableId }}'].preview = '{{ $variable.ComponentData.ImageValue.Preview }}';
-					window.variables['{{ $variable.ComponentData.VariableId }}'].previewSmall = '{{ $variable.ComponentData.ImageValue.PreviewSmall }}';
-					window.variables['{{ $variable.ComponentData.VariableId }}'].previewMedium = '{{ $variable.ComponentData.ImageValue.PreviewMedium }}';
-					window.variables['{{ $variable.ComponentData.VariableId }}'].previewLarge = '{{ $variable.ComponentData.ImageValue.PreviewLarge }}';
-				{{ end }}
+        {{ if eq $variable.ComponentType "stringVariableType" }}
+          window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.StringValue}}';
+        {{ end }}
+        {{ if eq $variable.ComponentType "colorVariableType" }}
+          window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.ColorValue}}';
+        {{ end }}
+        {{ if eq $variable.ComponentType "intVariableType" }}
+          window.variables['{{ $variable.ComponentData.VariableId }}'] = {{ $variable.ComponentData.IntValue}};
+        {{ end }}
+        {{ if eq $variable.ComponentType "imageVariableType" }}
+          window.variables['{{ $variable.ComponentData.VariableId }}'] = {};
+          window.variables['{{ $variable.ComponentData.VariableId }}'].preview = '{{ $variable.ComponentData.ImageValue.Preview }}';
+          window.variables['{{ $variable.ComponentData.VariableId }}'].previewSmall = '{{ $variable.ComponentData.ImageValue.PreviewSmall }}';
+          window.variables['{{ $variable.ComponentData.VariableId }}'].previewMedium = '{{ $variable.ComponentData.ImageValue.PreviewMedium }}';
+          window.variables['{{ $variable.ComponentData.VariableId }}'].previewLarge = '{{ $variable.ComponentData.ImageValue.PreviewLarge }}';
+        {{ end }}
       {{ end }}
 
       import_strings = function(o) {
@@ -277,6 +279,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           o[k] = window.variables[k];
         }
       }
+      setInterval(function(){
+          if (getCookieValue("pwa_jwt") == "" && navigator.onLine) {
+              window.location = '/';
+          }
+      }, 1000);
     {{ end }}
 
     var lc = document.querySelector('luma-core-context');
