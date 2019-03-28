@@ -206,7 +206,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       {{ if eq .mode "KNOCKOUT" }}
         {{range $i, $template := .data.Templates }}
           <script type="text/html" id="{{ $template.ComponentData.TemplateId }}">
-            {{ $template.ComponentData.Template }};
+            {{ $template.ComponentData.Template }}
           </script>
         {{ end }}
         {{ .data.ViewTemplate }}
@@ -266,19 +266,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           window.variables['{{ $variable.ComponentData.VariableId }}'].previewMedium = '{{ $variable.ComponentData.ImageValue.PreviewMedium }}';
           window.variables['{{ $variable.ComponentData.VariableId }}'].previewLarge = '{{ $variable.ComponentData.ImageValue.PreviewLarge }}';
         {{ end }}
+
+        import_strings = function(o) {
+          for (k in window.strings) {
+            o[k] = window.strings[k];
+          }
+        }
+
+        import_variables = function(o) {
+          for (k in window.variables) {
+            o[k] = window.variables[k];
+          }
+        }
+
+        ko.bindingHandlers.lumaValue = {
+            update: function(element, valueAccessor, allBindings) {
+                element.lumaObservable = valueAccessor;
+                element.setValue(ko.unwrap(valueAccessor()));
+            }
+        };
+
+        document.body.addEventListener('onValueChange', (evt) => {
+            if (evt.detail.lumaElement.lumaObservable != null) {
+                evt.detail.lumaElement.lumaObservable()(evt.detail.value);
+            }
+        })
       {{ end }}
 
-      import_strings = function(o) {
-        for (k in window.strings) {
-          o[k] = window.strings[k];
-        }
-      }
-
-      import_variables = function(o) {
-        for (k in window.variables) {
-          o[k] = window.variables[k];
-        }
-      }
       setInterval(function(){
           if (getCookieValue("pwa_jwt") == "" && navigator.onLine) {
               window.location = '/';
