@@ -42,11 +42,17 @@ func (this *PropertyController) GetLayoutProperties() []properties.PropertyType 
   displayOptions["optimal"] = "Optimal"
   displayOptions["degraded"] = "Degraded"
 
-  justifyOptions := make(map[string]string)
-  justifyOptions["start"] = "Start"
-  justifyOptions["end"] = "End"
-  justifyOptions["center"] = "Center"
-  justifyOptions["stretch"] = "Stretch"
+  vjustifyOptions := make(map[string]string)
+  vjustifyOptions["start"] = "Top"
+  vjustifyOptions["end"] = "Bottom"
+  vjustifyOptions["center"] = "Center"
+  vjustifyOptions["stretch"] = "Stretch"
+
+  hjustifyOptions := make(map[string]string)
+  hjustifyOptions["start"] = "Left"
+  hjustifyOptions["end"] = "Right"
+  hjustifyOptions["center"] = "Center"
+  hjustifyOptions["stretch"] = "Stretch"
 
   props = append(props, &properties.PropertyDropdown{
     &properties.PropertyBase{"displayMode", "", "Placement Settings", "Display Mode", help_mode}, "both", displayOptions})
@@ -58,6 +64,18 @@ func (this *PropertyController) GetLayoutProperties() []properties.PropertyType 
     &properties.PropertyBase{"templateColumnStart", "", "Placement Settings", "Body Column Start", "This is the Column at which the grid item will start"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
   props = append(props, &properties.PropertyNumeric{
     &properties.PropertyBase{"templateColumnSpan", "", "Placement Settings", "Number of Columns to Span", "This is the Column at which the grid item will end"}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 100}})
+  props = append(props, &properties.PropertyDropdown{
+		&properties.PropertyBase{"horizontalAlignment", "", "Placement Settings", "Horizontal Alignment", ""}, "stretch", hjustifyOptions})
+  props = append(props, &properties.PropertyDropdown{
+		&properties.PropertyBase{"verticalAlignment", "", "Placement Settings", "Vertical Alignment", ""}, "stretch", vjustifyOptions})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingLeft", "", "Placement Settings", "Padding Left (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingRight", "", "Placement Settings", "Padding Right (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingTop", "", "Placement Settings", "Padding Top (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingBottom", "", "Placement Settings", "Padding Bottom (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
   return props
 }
 
@@ -248,31 +266,43 @@ func (this *PropertyController) GetBodyItems() *properties.PropertyComponents {
   return p
 }
 func (this *PropertyController) GetBodyProperties() *properties.PropertyComponent {
-  justifyOptions := make(map[string]string)
-  justifyOptions["start"] = "Start"
-  justifyOptions["end"] = "End"
-  justifyOptions["center"] = "Center"
-  justifyOptions["stretch"] = "Stretch"
-  justifyOptions["space-around"] = "Space Around"
-  justifyOptions["space-between"] = "Space Between"
-  justifyOptions["space-evenly"] = "Space Evenly"
-
   props := [] properties.PropertyType {}
 
-  props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyNumRows", "", "Body Properties (Basic)", "Number Of Rows", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
-  props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyNumColumns", "", "Body Properties (Basic)", "Number Of Columns", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
-  props = append(props, &properties.PropertyNumeric{&properties.PropertyBase{"bodyMaxWidth", "", "Body Properties (Basic)", "Max Width (pixels)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 10000}})
+  props = append(props, &properties.PropertyNumeric{
+		&properties.PropertyBase{"bodyNumRows", "", "Body Properties (Basic)", "Number Of Rows", ""}, 5, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
+  props = append(props, &properties.PropertyNumeric{
+		&properties.PropertyBase{"bodyNumColumns", "", "Body Properties (Basic)", "Number Of Columns", ""}, 1, properties.PropertyOptionsNumeric{Min: 1, Max: 20}})
+  props = append(props, &properties.PropertyNumeric{
+		&properties.PropertyBase{"bodyMaxWidth", "", "Body Properties (Basic)", "Max Width (pixels)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 10000}})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingLeft", "", "Body Properties (Basic)", "Padding Left (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingRight", "", "Body Properties (Basic)", "Padding Right (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingTop", "", "Body Properties (Basic)", "Padding Top (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props = append(props, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingBottom", "", "Body Properties (Basic)", "Padding Bottom (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
 
   c := &properties.Component{"body-items", "", "body-items-basic", "Basic", "a", "Basic", props, ""}
 
   props2 := [] properties.PropertyType {}
 
-  props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyTemplateRows", "", "Body Properties (Advanced)", "Body Row Template", help_row_template}, "", properties.PropertyOptionsText{}})
-  props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyTemplateColumns", "", "Body Properties (Advanced)", "Body Column Template", help_column_template}, "", properties.PropertyOptionsText{}})
-  props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyRowGap", "", "Body Properties (Advanced)", "Body Row Gap", "This sets the size of the gap (gutter) between the grid rows"}, "", properties.PropertyOptionsText{}})
-  props2 = append(props2, &properties.PropertyText{&properties.PropertyBase{"bodyColumnGap", "", "Body Properties (Advanced)", "Body Column Gap", "This sets the size of the gap (gutter) between the grid columns"}, "", properties.PropertyOptionsText{}})
-  props2 = append(props2, &properties.PropertyDropdown{&properties.PropertyBase{"justifyContent", "", "Body Properties (Advanced)", "Body Row Alignment", "This property aligns the grid along the row axis"}, "start", justifyOptions})
-  props2 = append(props2, &properties.PropertyDropdown{&properties.PropertyBase{"alignContent", "", "Body Properties (Advanced)", "Body Column Alignment", "This property aligns the grid along the column axis"}, "start", justifyOptions})
+  props2 = append(props2, &properties.PropertyText{
+		&properties.PropertyBase{"bodyTemplateRows", "", "Body Properties (Advanced)", "Body Row Template", help_row_template}, "", properties.PropertyOptionsText{}})
+  props2 = append(props2, &properties.PropertyText{
+		&properties.PropertyBase{"bodyTemplateColumns", "", "Body Properties (Advanced)", "Body Column Template", help_column_template}, "", properties.PropertyOptionsText{}})
+  props2 = append(props2, &properties.PropertyText{
+		&properties.PropertyBase{"bodyRowGap", "", "Body Properties (Advanced)", "Body Row Gap", "This sets the size of the gap (gutter) between the grid rows"}, "", properties.PropertyOptionsText{}})
+  props2 = append(props2, &properties.PropertyText{
+		&properties.PropertyBase{"bodyColumnGap", "Body Properties (Advanced)", "Body Properties (Advanced)", "Body Column Gap", "This sets the size of the gap (gutter) between the grid columns"}, "", properties.PropertyOptionsText{}})
+  props2 = append(props2, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingLeft", "", "Body Properties (Advanced)", "Padding Left (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props2 = append(props2, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingRight", "", "Body Properties (Advanced)", "Padding Right (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props2 = append(props2, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingTop", "", "Body Properties (Advanced)", "Padding Top (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
+  props2 = append(props2, &properties.PropertyNumeric{
+    &properties.PropertyBase{"paddingBottom", "", "Body Properties (Advanced)", "Padding Bottom (px)", ""}, 0, properties.PropertyOptionsNumeric{Min: 0, Max: 200}})
 
   c2 := &properties.Component{"body-items", "", "body-items-advanced", "Advanced", "a", "Advanced", props2, ""}
 

@@ -4,6 +4,6 @@ docker service update \
  --mount-add type=bind,source="$(pwd)"/widget,destination=/go/src/widget \
  --mount-add type=bind,source=/home/john/code/base/lumavate-go-common,destination=/go/src/github.com/Lumavate-Team/lumavate-go-common \
  --mount-add type=bind,source=/home/john/code/base/lumavate-core-components/dist,destination=/lumavate-core-components \
- --env-add "MODE=KNOCKOUT" \
+ --env-add "MODE=CSSGRID" \
  layout-90
 #--mount-add type=bind,source=/home/john/code/go-signer,destination=/go/src/github.com/Lumavate-Team/go-signer \

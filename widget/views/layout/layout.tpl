@@ -107,7 +107,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {{end}}
 
     <div class="container">
-      <div class="wrapper">
+      <div class="wrapper" >
       <script>
         function getCookieValue(a) {
           var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
@@ -182,15 +182,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         {{ if not .degraded }}
           {{ if eq .data.BodyProperties.ComponentType "body-items-advanced" }}
-            <div class="content" style="display:grid;
-              grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
-              grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
-              grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
-              grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
-              justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
-              align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
+					  <div class="content" style="display:grid;box-sizing:border-box;width:100%;height:100%;padding:{{ .data.BodyProperties.ComponentData.PaddingTop }}px {{ .data.BodyProperties.ComponentData.PaddingRight }}px {{ .data.BodyProperties.ComponentData.PaddingBottom }}px {{ .data.BodyProperties.ComponentData.PaddingLeft }}px;
+								grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+								grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+								grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
+								grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
+								justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
+								align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
           {{ else }}
-            <div class="content" style="display:grid;
+            <div class="content" style="box-sizing:border-box;width:100%;height:100%;display:grid;padding:{{ .data.BodyProperties.ComponentData.PaddingTop }}px {{ .data.BodyProperties.ComponentData.PaddingRight }}px {{ .data.BodyProperties.ComponentData.PaddingBottom }}px {{ .data.BodyProperties.ComponentData.PaddingLeft }}px;
               grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
               grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
               max-width: {{safeCss .data.BodyProperties.ComponentData.BodyMaxWidthStr}}">
@@ -308,13 +308,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     {{ .data.Script }}
     {{ .data.ViewModel }}
-
-    orig = ko.applyBindings
-    ko.applyBindings = function(arg1) {
-      import_strings(arg1);
-      import_variables(arg1);
-      orig(arg1)
-    }
   </script>
   <script type="text/javascript">
     var athsScript = document.querySelector('#aths');

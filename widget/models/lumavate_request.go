@@ -42,6 +42,10 @@ type LumavateRequest struct {
       BodyNumColumns      int
       BodyMaxWidth        int
       BodyMaxWidthStr     string
+			PaddingTop          int
+			PaddingRight        int
+			PaddingLeft         int
+			PaddingBottom       int
     }
   }
   Variables [] struct {
