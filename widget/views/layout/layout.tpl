@@ -315,14 +315,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var userAgent = navigator.userAgent.toLowerCase();
       var isAndroid = userAgent.indexOf('android') > -1;
 
-      if((!isAndroid) && {{.data.HomeScreen.ShowAddToHome}} == true) {
+      if((!isAndroid) && {{.data.ShowAddToHome}} == true) {
         var HomeScreenConfig = {
           appID: 'lumavate.addtohomescreen.' + getActivationId(),
-          skipFirstVisit: {{.data.HomeScreen.SkipFirst}},
-          startDelay: {{.data.HomeScreen.StartDelay}},
-          lifespan: {{.data.HomeScreen.Lifespan}},
-          maxDisplayCount: {{.data.HomeScreen.DisplayCount}},
-          message: {{.data.HomeScreen.Message}}
+          skipFirstVisit: {{.data.SkipFirst}},
+          startDelay: {{.data.StartDelay}},
+          lifespan: {{.data.Lifespan}},
+          maxDisplayCount: {{.data.DisplayCount}},
+          message: {{.data.Message}}
         };
         addToHomescreen(HomeScreenConfig);
       };

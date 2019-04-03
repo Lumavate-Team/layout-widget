@@ -79,14 +79,12 @@ type LumavateRequest struct {
   Footer                 common_models.ComponentStruct
   Header                 common_models.ComponentStruct
   ModalItems             [] common_models.ComponentStruct
-  HomeScreen              struct {
-    ShowAddToHome bool
-    SkipFirst bool
-    StartDelay int
-    Lifespan int
-    DisplayCount int
-    Message string
-  }
+  ShowAddToHome bool
+  SkipFirst bool
+  StartDelay int
+  Lifespan int
+  DisplayCount int
+  Message string
   LogicItems []struct {
     common_models.ComponentStruct
     ComponentData struct {
