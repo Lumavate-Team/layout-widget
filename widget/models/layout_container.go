@@ -2,8 +2,8 @@ package models
 
 import (
 	"fmt"
-  common_models "github.com/Lumavate-Team/lumavate-go-common/models"
-  //"html/template"
+	common_models "github.com/Lumavate-Team/lumavate-go-common/models"
+	//"html/template"
 )
 
 type LayoutContainerStruct struct {
@@ -24,22 +24,22 @@ type LayoutContainerStruct struct {
 }
 
 func (this LayoutContainerStruct) GetHtml() string {
-  return fmt.Sprintf(`
+	return fmt.Sprintf(`
   <div class="layout-%v"
-	style="justify-self:%v;align-self:%v;grid-area:%v/%v/ span %v/ span %v;padding-top:%vpx;padding-right:%vpx;padding-bottom:%vpx;padding-left:%vpx">
+	style="justify-items:%v;align-items:%v;grid-area:%v/%v/ span %v/ span %v;padding-top:%vpx;padding-right:%vpx;padding-bottom:%vpx;padding-left:%vpx">
   %v
   </div>`,
-    this.ComponentData.DisplayMode,
+		this.ComponentData.DisplayMode,
 		this.ComponentData.HorizontalAlignment,
 		this.ComponentData.VerticalAlignment,
-    this.ComponentData.TemplateRowStart,
-    this.ComponentData.TemplateColumnStart,
-    this.ComponentData.TemplateRowSpan,
-    this.ComponentData.TemplateColumnSpan,
+		this.ComponentData.TemplateRowStart,
+		this.ComponentData.TemplateColumnStart,
+		this.ComponentData.TemplateRowSpan,
+		this.ComponentData.TemplateColumnSpan,
 		this.ComponentData.PaddingTop,
 		this.ComponentData.PaddingRight,
 		this.ComponentData.PaddingBottom,
 		this.ComponentData.PaddingLeft,
-    this.ComponentHtml)
-//template.HTML("<div style='display:inline-block;text-align:center;width:100%;height:100%;border:1px dotted red'>HELLO</div>"))
+		this.ComponentHtml)
+	//template.HTML("<div style='display:inline-block;text-align:center;width:100%;height:100%;border:1px dotted red'>HELLO</div>"))
 }
