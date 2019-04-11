@@ -26,7 +26,7 @@ type LayoutContainerStruct struct {
 func (this LayoutContainerStruct) GetHtml() string {
 	return fmt.Sprintf(`
   <div class="layout-%v"
-	style="justify-items:%v;align-items:%v;grid-area:%v/%v/ span %v/ span %v;padding-top:%vpx;padding-right:%vpx;padding-bottom:%vpx;padding-left:%vpx">
+	style="justify-self:%v;align-self:%v;grid-area:%v/%v/ span %v/ span %v;padding-top:%vpx;padding-right:%vpx;padding-bottom:%vpx;padding-left:%vpx">
   %v
   </div>`,
 		this.ComponentData.DisplayMode,
