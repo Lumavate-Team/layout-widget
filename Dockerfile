@@ -21,7 +21,7 @@ RUN go get github.com/astaxie/beego && \
   cd /go/src/github.com/Lumavate-Team && \
   git clone https://github.com/Lumavate-Team/lumavate-go-common.git && \
   cd lumavate-go-common && \
-  git checkout performance && \
+  git checkout v2.0.0 && \
 	mkdir /lumavate-core-components-install && \
 	cd /lumavate-core-components-install && \
 	npm install @lumavate/lumavate-core-components
