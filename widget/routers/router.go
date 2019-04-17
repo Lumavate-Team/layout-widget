@@ -11,6 +11,7 @@ import (
 func init() {
   beego.Router("/:ic/:url_ref/:wid", &controllers.MainController{})
   beego.Router("/:ic/:url_ref/discover/health", &common_controllers.HealthController{})
+  beego.Router("/:ic/:url_ref/discover/routes", &controllers.RouteController{})
   beego.Router("/:ic/:url_ref/:wid/single-use-token", &controllers.SingleUseTokenController{})
   beego.Router("/:ic/:url_ref/discover/properties", &controllers.PropertyController{})
 	beego.Router("/:ic/:url_ref/instances/:wid/on-create-version", &controllers.VersionCreateController{})

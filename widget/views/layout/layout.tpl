@@ -274,14 +274,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {{ end }}
 
         import_strings = function(o) {
-					o.translations = window.strings;
+          o.translations = window.strings;
           //for (k in window.strings) {
           //  o[k] = window.strings[k];
           //}
         }
 
         import_variables = function(o) {
-					o.variables = window.variables;
+          o.variables = window.variables;
           //for (k in window.variables) {
           //  o[k] = window.variables[k];
           //}
