@@ -23,6 +23,12 @@ func LogicHtml(in models.LogicContainerStruct) (out template.HTML){
 func HasSuffix(in string, test string) (out bool){
   return strings.HasSuffix(in, test)
 }
+func HasPrefix(in string, test string) (out bool){
+  return strings.HasPrefix(in, test)
+}
+func Replace(input, from,to string) string {
+	return strings.Replace(input,from,to, -1)
+}
 func main() {
   beego.BConfig.WebConfig.EnableXSRF = false
   beego.BConfig.WebConfig.XSRFKey = os.Getenv("PRIVATE_KEY")
@@ -37,5 +43,7 @@ func main() {
   beego.AddFuncMap("layoutHtml", LayoutHtml)
   beego.AddFuncMap("logicHtml", LogicHtml)
   beego.AddFuncMap("hasSuffix", HasSuffix)
+  beego.AddFuncMap("hasPrefix", HasPrefix)
+  beego.AddFuncMap("replace", Replace)
   beego.Run()
 }

@@ -46,6 +46,17 @@ func (this *MainController) Get() {
     }
   }
 
+  for i, element := range luma_response.StyleData {
+    if strings.HasSuffix(element.Name, "FontFamily") && !(strings.HasPrefix(element.Value, "custom:") || strings.HasPrefix(element.Value, "standard:") || strings.HasPrefix(element.Value, "google:")) {
+      luma_response.StyleData[i].Value = "google:" + element.Value
+    }
+  }
+
+  this.Data["baseUrl"] = fmt.Sprintf("%s%s",
+      os.Getenv("WIDGET_URL_PREFIX"),
+      this.Ctx.Input.Param(":wid"),
+  )
+
   this.Data["data"] = luma_response
   this.Data["mode"] = os.Getenv("MODE")
   this.Data["resources"] = response.Payload.Data.Resources

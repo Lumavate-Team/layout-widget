@@ -17,7 +17,7 @@
   {{ end }}
     <title>{{.data.InstanceName}}</title>
     <meta charset="utf-8">
-    <base href="{{.WidgetUrlPrefix}}">
+    <base href="{{.WidgetUrlPrefix}}236/">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="description" content="{{.data.InstanceName}}">
@@ -33,11 +33,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta property="og:image" content="{{.dnsInfo}}/iot/android-chrome-512x512.png" />
 
-    <link href="{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{.CacheKey}}/static/css/addtohomescreen.css">
+    <link href="../{{.CacheKey}}/static/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../{{.CacheKey}}/static/css/addtohomescreen.css">
     {{range $prop := .data.StyleData }}
-      {{if hasSuffix $prop.Name "FontFamily"}}
-        <link href="https://fonts.googleapis.com/css?family={{ $prop.Value }}" rel="stylesheet">
+      {{if and (hasSuffix $prop.Name "FontFamily") (ne $prop.Value "")}}
+        {{if hasPrefix $prop.Value "google:"}}
+          <link href="https://fonts.googleapis.com/css?family={{ replace $prop.Value "google:" "" }}" rel="stylesheet">
+        {{end}}
       {{end}}
     {{end}}
 
@@ -49,8 +51,8 @@
       <script src="{{$src}}" type="text/javascript"></script>
     {{end}}
 
-    <script id="aths" async type="text/javascript" src="{{.CacheKey}}/static/js/addtohomescreen.js"></script>
-    <script id="luma-core" type="text/javascript" src="{{.CacheKey}}/core/luma-core.js"></script>
+    <script id="aths" async type="text/javascript" src="../{{.CacheKey}}/static/js/addtohomescreen.js"></script>
+    <script id="luma-core" type="text/javascript" src="../{{.CacheKey}}/core/luma-core.js"></script>
 
 
     <script>
@@ -75,7 +77,11 @@
               a = a - 10;
             }
           {{end}}
-          body.style.setProperty(prop_name, '{{ $prop.Value }}');
+          {{if hasSuffix $prop.Name "FontFamily"}}
+            body.style.setProperty(prop_name, '{{ $prop.Value }}'.split(':')[1].split(':')[0].split('|')[0]);
+          {{else}}
+            body.style.setProperty(prop_name, '{{ $prop.Value }}');
+          {{end}}
         {{end}}
       });
     </script>
@@ -182,13 +188,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         {{ if not .degraded }}
           {{ if eq .data.BodyProperties.ComponentType "body-items-advanced" }}
-					  <div class="content" style="display:grid;box-sizing:border-box;width:100%;height:100%;padding:{{ .data.BodyProperties.ComponentData.PaddingTop }}px {{ .data.BodyProperties.ComponentData.PaddingRight }}px {{ .data.BodyProperties.ComponentData.PaddingBottom }}px {{ .data.BodyProperties.ComponentData.PaddingLeft }}px;
-								grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
-								grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
-								grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
-								grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
-								justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
-								align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
+            <div class="content" style="display:grid;box-sizing:border-box;width:100%;height:100%;padding:{{ .data.BodyProperties.ComponentData.PaddingTop }}px {{ .data.BodyProperties.ComponentData.PaddingRight }}px {{ .data.BodyProperties.ComponentData.PaddingBottom }}px {{ .data.BodyProperties.ComponentData.PaddingLeft }}px;
+                grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
+                grid-template-rows:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateRows}};
+                grid-row-gap:{{safeCss .data.BodyProperties.ComponentData.BodyRowGap}};
+                grid-column-gap:{{safeCss .data.BodyProperties.ComponentData.BodyColumnGap}};
+                justify-content:{{safeCss .data.BodyProperties.ComponentData.JustifyContent}};
+                align-content:{{safeCss .data.BodyProperties.ComponentData.AlignContent}}">
           {{ else }}
             <div class="content" style="box-sizing:border-box;width:100%;height:100%;display:grid;padding:{{ .data.BodyProperties.ComponentData.PaddingTop }}px {{ .data.BodyProperties.ComponentData.PaddingRight }}px {{ .data.BodyProperties.ComponentData.PaddingBottom }}px {{ .data.BodyProperties.ComponentData.PaddingLeft }}px;
               grid-template-columns:{{safeCss .data.BodyProperties.ComponentData.BodyTemplateColumns}};
@@ -268,15 +274,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {{ end }}
 
         import_strings = function(o) {
-          for (k in window.strings) {
-            o[k] = window.strings[k];
-          }
+					o.translations = window.strings;
+          //for (k in window.strings) {
+          //  o[k] = window.strings[k];
+          //}
         }
 
         import_variables = function(o) {
-          for (k in window.variables) {
-            o[k] = window.variables[k];
-          }
+					o.variables = window.variables;
+          //for (k in window.variables) {
+          //  o[k] = window.variables[k];
+          //}
         }
 
         ko.bindingHandlers.lumaValue = {
