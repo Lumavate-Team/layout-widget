@@ -196,7 +196,7 @@ func (this *PropertyController) GetTemplateProperties() *properties.PropertyComp
 func (this *PropertyController) GetTranslationProperties() *properties.PropertyComponents {
   props := [] properties.PropertyType {}
   props = append(props, &properties.PropertyText{&properties.PropertyBase{"stringId", "", "", "String Id", ""}, "", properties.PropertyOptionsText{}})
-  props = append(props, &properties.PropertyTranslatedText{&properties.PropertyBase{"string", "", "", "String", ""}, "", properties.PropertyOptionsText{}})
+  props = append(props, &properties.PropertyTranslatedText{&properties.PropertyBase{"string", "", "", "String", ""}, "", properties.PropertyOptionsText{false, 5}})
   c := &properties.Component{"translationType", "", "translationType", "Translation", "a", "Translation", props, "{{ componentData.stringId }} - {{ componentData.string['en-us'] | truncate(40) }} "}
 
   p := &properties.PropertyComponents{
@@ -229,9 +229,19 @@ func (this *PropertyController) GetVariableProperties() *properties.PropertyComp
   imageprops = append(imageprops, &properties.PropertyImage{&properties.PropertyBase{"imageValue", "", "", "Variable", ""}})
   uc := &properties.Component{"variableType", "", "imageVariableType", "Image", "a", "Image", imageprops, "{{ componentData.variableId }}"}
 
+  toggleprops := [] properties.PropertyType {}
+  toggleprops = append(toggleprops, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
+  toggleprops = append(toggleprops, &properties.PropertyToggle{&properties.PropertyBase{"toggleValue", "", "", "Variable", ""}, false})
+  bc := &properties.Component{"variableType", "", "toggleVariableType", "Toggle", "a", "Toggle", toggleprops, "{{ componentData.variableId }} - {{ componentData.toggleValue }}"}
+
+  pagelinkprops := [] properties.PropertyType {}
+  pagelinkprops = append(pagelinkprops, &properties.PropertyText{&properties.PropertyBase{"variableId", "", "", "Variable Id", ""}, "", properties.PropertyOptionsText{}})
+  pagelinkprops = append(pagelinkprops, &properties.PropertyPageLink{&properties.PropertyBase{"pageLinkValue", "", "", "Variable", ""}})
+  plc := &properties.Component{"variableType", "", "pageLinkVariableType", "Page Link", "a", "Page Link", pagelinkprops, "{{ componentData.variableId }} - {{ componentData.pageLinkValue.url }}"}
+
   p := &properties.PropertyComponents{
     &properties.PropertyBase{"variables", "Variables", "Variable Settings", "Variables", ""},
-    []*properties.Component {}, &properties.PropertyOptionsComponent{[] string {"variableProperties"}, [] *properties.Component {tc, ic, cc, uc} },
+    []*properties.Component {}, &properties.PropertyOptionsComponent{[] string {"variableProperties"}, [] *properties.Component {tc, ic, cc, uc, bc, plc} },
   }
 
   return p

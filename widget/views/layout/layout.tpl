@@ -265,6 +265,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {{ if eq $variable.ComponentType "intVariableType" }}
           window.variables['{{ $variable.ComponentData.VariableId }}'] = {{ $variable.ComponentData.IntValue}};
         {{ end }}
+        {{ if eq $variable.ComponentType "toggleVariableType" }}
+          window.variables['{{ $variable.ComponentData.VariableId }}'] = {{ $variable.ComponentData.ToggleValue}};
+        {{ end }}
+        {{ if eq $variable.ComponentType "pageLinkVariableType" }}
+          window.variables['{{ $variable.ComponentData.VariableId }}'] = '{{ $variable.ComponentData.PageLinkValue.Url}}';
+        {{ end }}
         {{ if eq $variable.ComponentType "imageVariableType" }}
           window.variables['{{ $variable.ComponentData.VariableId }}'] = {};
           window.variables['{{ $variable.ComponentData.VariableId }}'].preview = '{{ $variable.ComponentData.ImageValue.Preview }}';
@@ -272,34 +278,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           window.variables['{{ $variable.ComponentData.VariableId }}'].previewMedium = '{{ $variable.ComponentData.ImageValue.PreviewMedium }}';
           window.variables['{{ $variable.ComponentData.VariableId }}'].previewLarge = '{{ $variable.ComponentData.ImageValue.PreviewLarge }}';
         {{ end }}
-
-        import_strings = function(o) {
-          o.translations = window.strings;
-          //for (k in window.strings) {
-          //  o[k] = window.strings[k];
-          //}
-        }
-
-        import_variables = function(o) {
-          o.variables = window.variables;
-          //for (k in window.variables) {
-          //  o[k] = window.variables[k];
-          //}
-        }
-
-        ko.bindingHandlers.lumaValue = {
-            update: function(element, valueAccessor, allBindings) {
-                element.lumaObservable = valueAccessor;
-                element.setValue(ko.unwrap(valueAccessor()));
-            }
-        };
-
-        document.body.addEventListener('onValueChange', (evt) => {
-            if (evt.detail.lumaElement.lumaObservable != null) {
-                evt.detail.lumaElement.lumaObservable()(evt.detail.value);
-            }
-        })
       {{ end }}
+
+      ko.bindingHandlers.lumaValue = {
+          update: function(element, valueAccessor, allBindings) {
+              element.lumaObservable = valueAccessor;
+              element.setValue(ko.unwrap(valueAccessor()));
+          }
+      };
+
+      document.body.addEventListener('onValueChange', (evt) => {
+          if (evt.detail.lumaElement.lumaObservable != null) {
+              evt.detail.lumaElement.lumaObservable()(evt.detail.value);
+          }
+      })
+
+      import_strings = function(o) {
+        o.translations = window.strings;
+        //for (k in window.strings) {
+        //  o[k] = window.strings[k];
+        //}
+      }
+
+      import_variables = function(o) {
+        o.variables = window.variables;
+        //for (k in window.variables) {
+        //  o[k] = window.variables[k];
+        //}
+      }
+
 
       setInterval(function(){
           if (getCookieValue("pwa_jwt") == "" && navigator.onLine) {

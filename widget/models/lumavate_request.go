@@ -42,25 +42,29 @@ type LumavateRequest struct {
       BodyNumColumns      int
       BodyMaxWidth        int
       BodyMaxWidthStr     string
-			PaddingTop          int
-			PaddingRight        int
-			PaddingLeft         int
-			PaddingBottom       int
+      PaddingTop          int
+      PaddingRight        int
+      PaddingLeft         int
+      PaddingBottom       int
     }
   }
   Variables [] struct {
-		ComponentType string
+    ComponentType string
     ComponentData struct {
       VariableId          template.HTML
-			StringValue         template.HTML
-			IntValue            int
-			ColorValue          template.HTML
-		  ImageValue struct {
-				Preview string
-				PreviewSmall string
-				PreviewMedium string
-				PreviewLarge string
-			}
+      StringValue         template.HTML
+      IntValue            int
+      ColorValue          template.HTML
+      ToggleValue         bool
+      PageLinkValue struct {
+        Url               template.HTML
+      }
+      ImageValue struct {
+        Preview string
+        PreviewSmall string
+        PreviewMedium string
+        PreviewLarge string
+      }
     }
   }
   Translations [] struct {
