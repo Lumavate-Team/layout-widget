@@ -16,7 +16,7 @@ type RouteController struct {
 
 func (this *RouteController) Get() {
     this.Ctx.Output.SetStatus(200)
-    result := RouteStruct{".*", []string {"jwt"}, "page"}
+    result := RouteStruct{".*", []string {"none"}, "page"}
 		routes := [] RouteStruct {result}
     this.Data["json"] = routes
     this.ServeJSON()
