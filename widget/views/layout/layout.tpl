@@ -287,7 +287,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           }
       };
 
-      document.body.addEventListener('onValueChange', (evt) => {
+      document.body.addEventListener('lumaChange', (evt) => {
           if (evt.detail.lumaElement.lumaObservable != null) {
               evt.detail.lumaElement.lumaObservable()(evt.detail.value);
           }
