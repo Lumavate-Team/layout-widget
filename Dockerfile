@@ -1,4 +1,4 @@
-FROM edit:base-go as editor
+FROM edit:base as editor
 
 COPY layout_supervisord.conf /etc/supervisor/conf.d
 
