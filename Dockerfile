@@ -1,4 +1,31 @@
-FROM node:8.9-alpine as builder
+FROM edit:base-go as editor
+
+COPY layout_supervisord.conf /etc/supervisor/conf.d
+
+FROM node:8.9-alpine
+
+COPY --from=editor /editor /editor
+COPY --from=editor /logs /logs
+COPY --from=editor /etc/supervisor /etc/supervisor/
+COPY --from=editor /edit_requirements.txt /edit_requirements.txt
+
+RUN apk update && apk add --no-cache -t .build_deps \
+    gcc \
+    libc-dev \
+    libgcc \
+    linux-headers \
+    libffi-dev \
+    libressl-dev \
+    musl-dev \
+  && apk add --no-cache py3-greenlet \
+  && apk add --no-cache python3 \
+  && python3 -m ensurepip \
+  && pip3 install --upgrade pip setuptools \
+  && mkdir -p /editor \
+  && pip3 install -r edit_requirements.txt \
+  && apk del .build_deps
+
+ENV EDITOR_SETTINGS=config/go_app.cfg
 
 RUN apk update && \
                 apk add --no-cache \
@@ -21,20 +48,6 @@ RUN go get github.com/astaxie/beego && \
   cd /go/src/github.com/Lumavate-Team && \
   git clone https://github.com/Lumavate-Team/lumavate-go-common.git && \
   cd lumavate-go-common && \
-  git checkout v2.0.0 && \
-	mkdir /lumavate-core-components-install && \
-	cd /lumavate-core-components-install && \
-	npm install @lumavate/lumavate-core-components
+  git checkout master
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
-
-FROM scratch
-
-ADD ca-certificates.crt /etc/ssl/certs/
-
-COPY --from=builder /go/src/widget /app/
-COPY --from=builder /lumavate-core-components-install/node_modules/@lumavate/lumavate-core-components/dist /lumavate-core-components
-
-WORKDIR /app
-
-CMD ["./main"]
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
