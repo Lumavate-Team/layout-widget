@@ -35,9 +35,11 @@ func (this *MainController) Get() {
 		}
 	}
 
-	this.Data["jsonp"] = &luma_response.ViewModel
-	this.ServeJSONP()
+	this.Data["json"] = &luma_response
+	//  this.Ctx.Output.SetStatus(200)
+	this.ServeJSON()
 }
+
 func (this *MainController) checkRole(userRoles []string, definedRoles []string) bool {
 	fmt.Println(userRoles)
 	fmt.Println(definedRoles)
