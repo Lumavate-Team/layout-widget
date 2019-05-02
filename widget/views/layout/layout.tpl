@@ -212,7 +212,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       {{ if eq .mode "KNOCKOUT" }}
         {{range $i, $template := .data.Templates }}
           <script type="text/html" id="{{ $template.ComponentData.TemplateId }}">
-            {{ $template.ComponentData.Template }}
+            {{ $template.ComponentData.Template `}}
           </script>
         {{ end }}
         {{ .data.ViewTemplate }}
