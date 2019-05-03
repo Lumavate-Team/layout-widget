@@ -18,11 +18,11 @@ var customTemplateLoader = {
         if (viewModelConfig.fromUrl) {
             var fullUrl = window.location.origin + viewModelConfig.fromUrl + '/js';
             $.getScript(fullUrl, function(data, textStatus, jqxhr) {
-            // We need a createViewModel function, not a plain constructor.
-            // We can use the default loader to convert to the
-            // required format.
 
-              ko.components.defaultLoader.loadViewModel(name, new Function(data), callback);
+              /* loading view model from string, need to evaluate it */
+              let vm=new Function('return ' + data)();
+
+              ko.components.defaultLoader.loadViewModel(name, vm, callback);
             });
         } else {
             // Unrecognized config format. Let another loader handle it.
