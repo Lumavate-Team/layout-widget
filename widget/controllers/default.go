@@ -80,8 +80,6 @@ func (this *MainController) Get() {
 	}
 }
 
-func(this *MainController) loadTemplate(templateId
-
 func (this *MainController) checkRole(userRoles []string, definedRoles []string) bool {
 	fmt.Println(userRoles)
 	fmt.Println(definedRoles)

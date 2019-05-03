@@ -3,7 +3,9 @@
   <head>
   <script type="text/javascript" src="/ga.js?pageTitle={{.data.InstanceName}}"></script>
   {{ if eq .mode "KNOCKOUT" }}
-    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js'></script>
+    <!--<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js'></script>-->
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-debug.js'></script>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout-postbox/0.6.0/knockout-postbox.min.js'></script>
   {{ end }}
 
   {{if .gtm }}
@@ -17,7 +19,7 @@
   {{ end }}
     <title>{{.data.InstanceName}}</title>
     <meta charset="utf-8">
-    <base href="{{.WidgetUrlPrefix}}236/">
+    <base href="{{.WidgetUrlPrefix}}/">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="description" content="{{.data.InstanceName}}">
@@ -53,6 +55,9 @@
 
     <script id="aths" async type="text/javascript" src="../{{.CacheKey}}/static/js/addtohomescreen.js"></script>
     <script id="luma-core" type="text/javascript" src="../{{.CacheKey}}/core/luma-core.js"></script>
+
+    <script type="text/javascript" src="../{{.CacheKey}}/static/js/customLoader.js"></script>
+
 
 
     <script>
@@ -210,14 +215,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {{ end }}
       {{ end }}
       {{ if eq .mode "KNOCKOUT" }}
-        {{range $i, $template := .data.Templates }}
-          <script type="text/html" id="{{ $template.ComponentData.TemplateId }}">
-            {{ $template.ComponentData.Template `}}
-          </script>
-        {{ end }}
         {{ .data.ViewTemplate }}
       {{ end }}
-
       {{ if eq .mode "CSSGRID"}}
         {{if .data.DisplayFooter }}
           <div class="footer">
@@ -247,6 +246,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   {{end}}
 
   <luma-core-context></luma-core-context>
+
   <script>
     {{ if eq .mode "KNOCKOUT" }}
       window.load_epoch = new Date() / 1000;
@@ -322,6 +322,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       lc.domainData = {{ .domain_json }};
     });
     {{ .data.Script }}
+
+
+    <!-- Load components here -->
+    {{ if eq .mode "KNOCKOUT" }}
+      {{range $i, $template := .data.Templates }}
+        ko.components.register('{{$template.ComponentData.TemplateId}}',{
+          viewModel: { fromUrl: '{{$template.ComponentData.TemplateLink.Url}}' },
+          template: { fromUrl: '{{$template.ComponentData.TemplateLink.Url}}'}
+        });
+      {{ end }}
+    {{ end }}
+
+
     {{ .data.ViewModel }}
   </script>
   <script type="text/javascript">

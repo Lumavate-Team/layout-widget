@@ -2,6 +2,7 @@ package models
 
 import (
 	common_models "github.com/Lumavate-Team/lumavate-go-common/models"
+	component_data "github.com/Lumavate-Team/lumavate-go-common/properties/component_data"
 	"html/template"
 )
 
