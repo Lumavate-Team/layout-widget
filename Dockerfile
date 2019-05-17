@@ -1,4 +1,4 @@
-FROM edit:base as editor
+FROM quay.io/lumavate/edit:base as editor
 
 COPY layout_supervisord.conf /etc/supervisor/conf.d
 
@@ -24,8 +24,6 @@ RUN apk update && apk add --no-cache -t .build_deps \
   && mkdir -p /editor \
   && pip3 install -r edit_requirements.txt \
   && apk del .build_deps
-
-ENV EDITOR_SETTINGS=config/go_app.cfg
 
 RUN apk update && \
                 apk add --no-cache \
