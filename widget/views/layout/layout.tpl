@@ -17,7 +17,7 @@
   {{ end }}
     <title>{{.data.InstanceName}}</title>
     <meta charset="utf-8">
-    <base href="{{.WidgetUrlPrefix}}236/">
+    <base href="{{.baseUrl}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="description" content="{{.data.InstanceName}}">
@@ -143,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           let xhr = new XMLHttpRequest();
           xhr.responseType = 'json';
 
-          xhr.open('POST', window.location.href.split('?')[0] + '/sut');
+          xhr.open('POST', window.location.origin + window.location.pathname + '/sut');
           xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           xhr.onload = function() {
             if (xhr.status === 200) {
@@ -307,13 +307,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         //}
       }
 
-
-      setInterval(function(){
-          if (getCookieValue("pwa_jwt") == "" && navigator.onLine) {
-              window.location = '/';
-          }
-      }, 1000);
     {{ end }}
+
+    setInterval(function(){
+        if (getCookieValue("pwa_jwt") == "" && navigator.onLine) {
+            window.location = '/';
+        }
+    }, 1000);
 
     var lc = document.querySelector('luma-core-context');
     lc.componentOnReady().then(function() {

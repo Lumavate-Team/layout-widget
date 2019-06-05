@@ -52,7 +52,7 @@ func (this *MainController) Get() {
     }
   }
 
-  this.Data["baseUrl"] = fmt.Sprintf("%s%s",
+  this.Data["baseUrl"] = fmt.Sprintf("%s%s/",
       os.Getenv("WIDGET_URL_PREFIX"),
       this.Ctx.Input.Param(":wid"),
   )
