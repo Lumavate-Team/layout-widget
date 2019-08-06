@@ -28,7 +28,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/iot/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/iot/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json" crossOrigin="use-credentials">
-    <link rel="shortcut icon" href="/iot/favicon.ico">
+    <link rel="shortcut icon" href="/iot/favicon-32x32.png">
     <meta name="apple-mobile-web-app-capable" content="no">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta property="og:image" content="{{.dnsInfo}}/iot/android-chrome-512x512.png" />
