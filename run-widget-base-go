@@ -1,5 +1,5 @@
 DOCKER_IP=`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`
-docker run  --rm \
+docker service create \
 -e "PUBLIC_KEY=VJX65E11HOvZN6a6C8dD" \
 -e "PRIVATE_KEY=k19DUvXLczz1XLuepLawkIimOBXLw2g619D34dh3bjLmmfPD1LdWtkRKErUhKoa2lZvdQ0I0I8RlGZTy0nfcAsxCDUmCTtEA9poN" \
 -e "BASE_URL=http://$DOCKER_IP" \
@@ -8,4 +8,4 @@ docker run  --rm \
 --name=layout-widget \
 -p 8091:8080 \
 -p 5001:5001 \
-layoutwidget:edit
+registry.gunnar.labelnexusdev.com/build:ba93

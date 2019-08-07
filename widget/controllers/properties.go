@@ -86,24 +86,24 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
     if os.Getenv("MODE") == "CSSGRID" {
       props = append(props,
         &properties.PropertyToggle{
-          &properties.PropertyBase{"displayHeader", "Header", "Header Settings", "Display Header", ""}, false},
+          &properties.PropertyBase{"displayHeader", "Layout Settings", "Header Settings", "Display Header", ""}, false},
         this.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
         &properties.PropertyToggle{
-          &properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
+          &properties.PropertyBase{"displayFooter", "Layout Settings", "Footer Settings", "Display Footer", ""}, false},
         this.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
       )
 
       props = append(props,
         &properties.PropertyColor{
-          &properties.PropertyBase{"backgroundColor", "Body", "Body Settings", "Background Color", ""}, "#ffffff"})
+          &properties.PropertyBase{"backgroundColor", "Layout Settings", "Body Settings", "Background Color", ""}, "#ffffff"})
 
       props = append(props,
         &properties.PropertyToggle{
-          &properties.PropertyBase{"displayBackgroundImage", "Body", "Body Settings", "Display Background Image", ""}, false})
+          &properties.PropertyBase{"displayBackgroundImage", "Layout Settings", "Body Settings", "Display Background Image", ""}, false})
 
       props = append(props,
         &properties.PropertyImage{
-          &properties.PropertyBase{"backgroundImage", "Body", "Body Settings", "Background Image", ""}})
+          &properties.PropertyBase{"backgroundImage", "Layout Settings", "Body Settings", "Background Image", ""}})
 
       props = append(props, this.GetBodyProperties())
 
@@ -317,7 +317,7 @@ func (this *PropertyController) GetBodyProperties() *properties.PropertyComponen
   c2 := &properties.Component{"body-items", "", "body-items-advanced", "Advanced", "a", "Advanced", props2, ""}
 
   p := &properties.PropertyComponent{
-    &properties.PropertyBase{"bodyProperties", "Body", "Body Settings", "Body Style", ""},
+    &properties.PropertyBase{"bodyProperties", "Layout Settings", "Body Settings", "Body Style", ""},
     c, &properties.PropertyOptionsComponent{[] string {"body-items"}, [] *properties.Component {c, c2} },
   }
 
