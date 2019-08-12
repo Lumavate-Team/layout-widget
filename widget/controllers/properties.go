@@ -84,34 +84,40 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
     props := []properties.PropertyType{}
 
     if os.Getenv("MODE") == "CSSGRID" {
-      props = append(props,
-        &properties.PropertyToggle{
-          &properties.PropertyBase{"displayHeader", "Header", "Header Settings", "Display Header", ""}, false},
-        this.GetDynamicComponentProperty("header", "header", "Header", "Header Settings", "Header Data", ""),
-        &properties.PropertyToggle{
-          &properties.PropertyBase{"displayFooter", "Footer", "Footer Settings", "Display Footer", ""}, false},
-        this.GetDynamicComponentProperty("footer", "footer", "Footer", "Footer Settings", "Footer Data", ""),
-      )
-
-      props = append(props,
-        &properties.PropertyColor{
-          &properties.PropertyBase{"backgroundColor", "Body", "Body Settings", "Background Color", ""}, "#ffffff"})
-
-      props = append(props,
-        &properties.PropertyToggle{
-          &properties.PropertyBase{"displayBackgroundImage", "Body", "Body Settings", "Display Background Image", ""}, false})
-
-      props = append(props,
-        &properties.PropertyImage{
-          &properties.PropertyBase{"backgroundImage", "Body", "Body Settings", "Background Image", ""}})
-
-      props = append(props, this.GetBodyProperties())
 
       props = append(props, this.GetBodyItems())
 
       props = append(props,
+        &properties.PropertyToggle{
+          &properties.PropertyBase{"displayHeader", "Layout", "Header Settings", "Display Header", ""}, false},
+        this.GetDynamicComponentProperty("header", "header", "Layout", "Header Settings", "Header Data", ""),
+        &properties.PropertyToggle{
+          &properties.PropertyBase{"displayFooter", "Layout", "Footer Settings", "Display Footer", ""}, false},
+        this.GetDynamicComponentProperty("footer", "footer", "Layout", "Footer Settings", "Footer Data", ""),
+      )
+
+      props = append(props,
+        &properties.PropertyColor{
+          &properties.PropertyBase{"backgroundColor", "Layout", "Body Settings", "Background Color", ""}, "#ffffff"})
+
+      props = append(props,
+        &properties.PropertyToggle{
+          &properties.PropertyBase{"displayBackgroundImage", "Layout", "Body Settings", "Display Background Image", ""}, false})
+
+      props = append(props,
+        &properties.PropertyImage{
+          &properties.PropertyBase{"backgroundImage", "Layout", "Body Settings", "Background Image", ""}})
+
+      props = append(props, this.GetBodyProperties())
+
+      for _, element := range components.GetAddToHomeProperties() {
+        props = append(props, element)
+      }
+
+
+      props = append(props,
         &properties.PropertyCodeEditor{
-          &properties.PropertyBase{"script", "Script", "Javascript", "On Pageload", ""}, ""})
+          &properties.PropertyBase{"script", "Advanced", "Javascript", "On Pageload", ""}, ""})
     }
 
     if os.Getenv("MODE") == "KNOCKOUT" {
@@ -127,17 +133,18 @@ func (this *PropertyController) GetAllProperties() []properties.PropertyType {
 
       props = append(props, this.GetTranslationProperties())
       props = append(props, this.GetVariableProperties())
+
+      for _, element := range components.GetAddToHomeProperties() {
+        props = append(props, element)
+      }
     }
+
 
     props = append(props, this.GetSecurityProperties())
 
     props = append(props, this.GetLogicItems())
 
     props = append(props, this.GetDynamicComponentsProperty("modal", "modalItems", "Modal", "Modal Items", "", ""))
-
-    for _, element := range components.GetAddToHomeProperties() {
-      props = append(props, element)
-    }
 
   return props
 }
@@ -263,7 +270,7 @@ func (this *PropertyController) GetLogicItems() *properties.PropertyComponents {
 }
 
 func (this *PropertyController) GetBodyItems() *properties.PropertyComponents {
-  p := this.GetDynamicComponentsProperty("body", "bodyItems", "Body", "Body Items", "", "")
+  p := this.GetDynamicComponentsProperty("body", "bodyItems", "Content", "Body Items", "", "")
   for _, component := range p.Options.Components {
     for _, property := range component.Properties {
       p := property.(map[string]interface{})
@@ -317,7 +324,7 @@ func (this *PropertyController) GetBodyProperties() *properties.PropertyComponen
   c2 := &properties.Component{"body-items", "", "body-items-advanced", "Advanced", "a", "Advanced", props2, ""}
 
   p := &properties.PropertyComponent{
-    &properties.PropertyBase{"bodyProperties", "Body", "Body Settings", "Body Style", ""},
+    &properties.PropertyBase{"bodyProperties", "Layout", "Body Settings", "Body Style", ""},
     c, &properties.PropertyOptionsComponent{[] string {"body-items"}, [] *properties.Component {c, c2} },
   }
 
