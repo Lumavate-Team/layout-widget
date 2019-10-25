@@ -36,5 +36,7 @@ COPY --from=builder /go/src/widget /app/
 COPY --from=builder /lumavate-core-components-install/node_modules/@lumavate/lumavate-core-components/dist /lumavate-core-components
 
 WORKDIR /app
+# remove custom bee.json with templtae file watcher
+RUN rm bee.json
 
 CMD ["./main"]
