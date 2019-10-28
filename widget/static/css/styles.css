@@ -1,8 +1,8 @@
 .container {
   display: flex;
   height: auto;
-}
 
+}
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -12,6 +12,23 @@
   right: 0;
   bottom: 0;
   align-items:center;
+}
+
+
+@media 
+only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-min-device-pixel-ratio: 2),
+only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+
+    .wrapper {/* including constant fallback for ios 11.2 prior */
+      padding-left: constant(safe-area-inset-left);
+      padding-left: env(safe-area-inset-left);
+      padding-right: constant(safe-area-inset-right);
+      padding-right: env(safe-area-inset-right);
+      padding-bottom: constant(safe-area-inset-bottom);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-top: constant(safe-area-inset-top);
+      padding-top: env(safe-area-inset-top);
+    }
 }
 
 .header {
