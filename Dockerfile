@@ -24,7 +24,7 @@ RUN go get github.com/astaxie/beego && \
   git checkout v2.0.0 && \
 	mkdir /lumavate-core-components-install && \
 	cd /lumavate-core-components-install && \
-	npm install @lumavate/lumavate-core-components
+	npm install @lumavate/lumavate-core-components@1.0.6
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
 

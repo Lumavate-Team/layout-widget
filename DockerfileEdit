@@ -49,7 +49,7 @@ RUN go get github.com/astaxie/beego && \
   git checkout master && \
   mkdir /lumavate-core-components-install && \
   cd /lumavate-core-components-install && \
-  npm install @lumavate/lumavate-core-components && \
+  npm install @lumavate/lumavate-core-components@1.0.6 && \
   mv /lumavate-core-components-install/node_modules/@lumavate/lumavate-core-components/dist /lumavate-core-components
 
 ADD ca-certificates.crt /etc/ssl/certs/
